@@ -1,0 +1,6 @@
+backend/config*
+backend/node_modules/*
+backend/sentistrength/*
+backend/named-entity/*
+backend/mongo_dump/*
+backend/documents/*

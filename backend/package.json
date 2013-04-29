@@ -1,0 +1,17 @@
+{
+  "author": "",
+  "name": "eyeo_semanticsabotage",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sosolimited/eyeo_semanticsabotage.git"
+  },
+  "dependencies": {
+    "mongodb": "0.9.9-1",
+    "engine.io": "0.2.2",
+    "async": "0.1.22"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
