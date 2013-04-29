@@ -16,7 +16,9 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var app = express();
+var app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -40,11 +42,23 @@ app.get('/', function (req, res)
 {
   res.render('index.html');
 });
-app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+app.get('/socket', function (req, res)
+{
+  res.render('socket_test.html');
 });
+
+
+app.listen(3000);
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
+
 
 
 var ccSocket; 
