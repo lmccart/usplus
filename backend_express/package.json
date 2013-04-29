@@ -15,6 +15,7 @@
     "mongodb": "0.9.9-1",
     "engine.io": "0.2.2",
     "async": "0.1.22",
-    "ejs": "*"
+    "ejs": "*",
+    "socket.io": "*"
   }
 }
