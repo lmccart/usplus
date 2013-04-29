@@ -4,3 +4,7 @@ backend/sentistrength/*
 backend/named-entity/*
 backend/mongo_dump/*
 backend/documents/*
+
+backend_express/config*
+backend_express/node_modules/*
+backend_express/mongo_dump/*
