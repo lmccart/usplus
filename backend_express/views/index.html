@@ -211,6 +211,7 @@ if (!('webkitSpeechRecognition' in window)) {
   recognition.interimResults = true;
 
   recognition.onstart = function() {
+    console.log("started speaking");
     recognizing = true;
     showInfo('info_speak_now');
     start_img.src = './img/mic-animate.gif';
@@ -238,6 +239,7 @@ if (!('webkitSpeechRecognition' in window)) {
   };
 
   recognition.onend = function() {
+    console.log("stopped speaking");
     recognizing = false;
     if (ignore_onend) {
       return;
@@ -274,6 +276,7 @@ if (!('webkitSpeechRecognition' in window)) {
         final_transcript += "(" + event.results[i][0].confidence + ")";
       } else {
         interim_transcript += "|";
+        console.log(event.results[0]);
         for (var j = 0; j < event.results[i].length; ++j) {
           interim_transcript += event.results[i][j].transcript;
           interim_transcript += "(" + event.results[i][j].confidence + ")";
@@ -284,9 +287,6 @@ if (!('webkitSpeechRecognition' in window)) {
     final_transcript = capitalize(final_transcript);
     final_span.innerHTML = linebreak(final_transcript);
     interim_span.innerHTML = linebreak(interim_transcript);
-    if (final_transcript || interim_transcript) {
-      showButtons('inline-block');
-    }
   };
 }
 
@@ -316,16 +316,6 @@ function createEmail() {
   window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
 }
 
-function copyButton() {
-  if (recognizing) {
-    recognizing = false;
-    recognition.stop();
-  }
-  copy_button.style.display = 'none';
-  copy_info.style.display = 'inline-block';
-  showInfo('');
-}
-
 function emailButton() {
   if (recognizing) {
     create_email = true;
@@ -352,7 +342,6 @@ function startButton(event) {
   interim_span.innerHTML = '';
   start_img.src = './img/mic-slash.gif';
   showInfo('info_allow');
-  showButtons('none');
   start_timestamp = event.timeStamp;
 }
 
@@ -367,18 +356,6 @@ function showInfo(s) {
   } else {
     info.style.visibility = 'hidden';
   }
-}
-
-var current_style;
-function showButtons(style) {
-  if (style == current_style) {
-    return;
-  }
-  current_style = style;
-  copy_button.style.display = style;
-  email_button.style.display = style;
-  copy_info.style.display = 'none';
-  email_info.style.display = 'none';
 }
     </script>
   
