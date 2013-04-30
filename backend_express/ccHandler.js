@@ -88,9 +88,7 @@ function parseWords(text)
 	for (i in tokens) //JRO - hack to only process one token at a time
 	{
 		//If the element isn't the last in an array, it is a new word
-		//if ((i<tokens.length - 1) && tokens[i] !== "")
-		if ((i == 0) && (i<tokens.length - 1) && tokens[i] !== "") //JRO - hack to only process one token at a time
-		//if ((i == 0) && (i<tokens.length - 1))
+		if (tokens[i] !== "")
 		{
 			var tok = tokens[i];
 			
@@ -186,10 +184,9 @@ function parseWords(text)
 			}
 
 
-			if (!speakerSwitch)
-			{
+
+			if (word)
 				handleWord(curSpeaker, leadPunct, word.toString(), endPunct, sentenceEnd, speakerSwitch); 
-			}
 
 
 		}

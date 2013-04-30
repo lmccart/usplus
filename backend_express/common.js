@@ -36,21 +36,15 @@ var Db = require('mongodb').Db;
 var MongoServer = require('mongodb').Server;
 var mongo = new Db(config.mongo.db, new MongoServer(config.mongo.host, config.mongo.port, {strict:true, auto_reconnect:true}), {w: 1});
 
-
-
 var fs = require('fs');
 
-var engine =  require('engine.io').listen(8081, "127.0.0.1");
-
 var db_suffix = '_scratch';
-var unlock_db = false;
-
-var usingDoc = false; //JRO
 
 
 function sendMessage(msg, log) {
+	console.log(msg);
 
-	if (engine.clients) {
+	/*if (engine.clients) {
 
 		// send msg
 	  Object.keys(engine.clients).forEach(function(key) {
@@ -59,7 +53,7 @@ function sendMessage(msg, log) {
 	  
 	  //for printing all messages
 	  //console.log(msg);
-	}
+	}*/
 
   // log msg
   if (log) {
@@ -88,6 +82,7 @@ function sendLiveState(socket)
 		debate: db
 	};
 	
+	/*
 	//if socket is provided, send only to that socket
 	if (socket) {
 		console.log("CONNECT: sending live state: " + JSON.stringify(msg)); 
@@ -99,7 +94,7 @@ function sendLiveState(socket)
 		Object.keys(engine.clients).forEach(function(key) {
 		  engine.clients[key].send(JSON.stringify(msg));
 	  });
-	}
+	}*/
   
 	
 }
@@ -120,7 +115,6 @@ module.exports = {
 	sendMessage : sendMessage,
 
 	mongo : mongo,
- 	engine : engine,
  	async : require('async'),
  	db_suffix : db_suffix,
  	
