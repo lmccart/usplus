@@ -47,9 +47,11 @@ if ('development' == app.get('env')) {
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('event', function (data) {
-    console.log(data.transcript);
+    console.log('event: '+data.transcript+' ('+data.confidence+')');
 		cc.handleChars(' '+data.transcript+' ');
-
+  });
+  socket.on('speaking', function (data) {
+    console.log('speaking: ' + data.status);
   });
 });
 

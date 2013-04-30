@@ -3,6 +3,7 @@
 <html class="js consumer chrome" lang="en" id="mac"><head>
 
 
+<script src="/javascripts/hysteresis.js"></script>
 <script src="/socket.io/socket.io.js"> </script>
 <script>
   var socket = io.connect('http://localhost');
@@ -20,7 +21,10 @@
     </title>
 
     <style>
-#info {
+    body {
+    font-family: sans-serif;
+    }
+    #info {
     font-size: 20px;
     }
     #div_start {
@@ -221,8 +225,22 @@ if (!('webkitSpeechRecognition' in window)) {
   recognition.continuous = true;
   recognition.interimResults = true;
 
+  // set up a hysteresis object that turns "on" immediately, but takes 1 second to turn "off"
+  var speechHysteresis = new hysteresis();
+  speechHysteresis.risingDelay = 0;
+  speechHysteresis.fallingDelay = 1000;
+  speechHysteresis.ontrigger = function() {
+    console.log("trigger");
+    socket.emit('speaking', { status: true});
+  };
+  speechHysteresis.onuntrigger = function() {
+    console.log("untrigger");
+    socket.emit('speaking', { status: false});
+  };
+  // regularly feed the hysteresis object "off" in order to generate "end of speech" events
+  setInterval(function() {speechHysteresis.update(false)}, 200);
+
   recognition.onstart = function() {
-    console.log("started speaking");
     recognizing = true;
     showInfo('info_speak_now');
     start_img.src = './img/mic-animate.gif';
@@ -250,7 +268,6 @@ if (!('webkitSpeechRecognition' in window)) {
   };
 
   recognition.onend = function() {
-    console.log("stopped speaking");
     recognizing = false;
     if (ignore_onend) {
       return;
@@ -277,17 +294,20 @@ if (!('webkitSpeechRecognition' in window)) {
       upgrade();
       return;
     }
+    // there is some kind of speech event
+    speechHysteresis.update(true);
+    //console.log(event);
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
         final_transcript += event.results[i][0].transcript;
         final_transcript += "(" + event.results[i][0].confidence + ")";
 
         // lmccart - send msg to socket
-        socket.emit('event', { transcript: event.results[i][0].transcript });
+        console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
+        socket.emit('event', { transcript: event.results[i][0].transcript, confidence: event.results[i][0].confidence});
 
       } else {
         interim_transcript += "|";
-        console.log(event.results[0]);
         for (var j = 0; j < event.results[i].length; ++j) {
           interim_transcript += event.results[i][j].transcript;
           interim_transcript += "(" + event.results[i][j].confidence + ")";
