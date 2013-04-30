@@ -1,55 +1,29 @@
 function hysteresis() {
 	var lastTime = 0;
 	var lastValue = false, curValue = false;
-	var risingDelay = 0, fallingDelay = 0;
-	var triggered = false, untriggered = false;
 
-	this.setDelay = function(risingDelay, fallingDelay) {
-		this.risingDelay = 1000 * risingDelay;
-		this.fallingDelay = 1000 * fallingDelay;
-	}
-	this.setDelay = function(delay) {
-		setDelay(delay, delay);
-	}
+	this.risingDelay = 0;
+	this.fallingDelay = 0;
+	this.ontrigger = function(){};
+	this.onuntrigger = function(){};
+
+
 	this.update = function(value) {
 		var curTime = Date.now();
 		if(value != curValue) {
 			if(value != lastValue) {
 				lastTime = curTime;
 			}
-			var delay = value ? risingDelay : fallingDelay;
+			var delay = value ? this.risingDelay : this.fallingDelay;
 			if(curTime - lastTime > delay) {
-				curValue = value;
-				if(value) {
-					triggered = true;
-				} else {
-					untriggered = true;
+				if(value && !curValue) {
+					this.ontrigger();
+				} else if(!value && curValue) {
+					this.onuntrigger();
 				}
+				curValue = value;
 			}
 		}
 		lastValue = value;
-	}
-	this.get = function() {
-		return curValue;
-	}
-	this.wasTriggered = function() {
-		if(triggered) {
-			triggered = false;
-			return true;
-		}
-		return false;
-	}
-	this.wasUntriggered = function() {
-		if(untriggered) {
-			untriggered = false;
-			return true;
-		}
-		return false;
-	}
-	this.length = function() {
-		return lengthMillis() / 1000.;
-	}
-	this.lengthMillis = function() {
-		return Date.now() - lastTime;
 	}
 }
