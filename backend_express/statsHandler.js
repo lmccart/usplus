@@ -32,47 +32,50 @@ var common = require('./common.js');
 
 function sendStats() {
 
-	var curTime = new Date().getTime();
-	if (curTime - common.lastCCTime < 5*1000) //stop sending stats fifteen seconds after last cc
+	if (common.dbUnlocked())
 	{
-		//JRO - adding suffix
-		common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
-			collection.find({speakerID:1}).count(function(err, total1) {
-				collection.find({speakerID:2}).count(function(err, total2) {
-		
-					//console.log('STATS >> 1:'+total1+' 2:'+total2);
-		
-					var message = {
-						type: "stats",
-						calcs: [["funct", "+funct"], //function words. for testing.
-										["posemo", "+posemo"], //use cat names if they correspond!
-										["negemo", "+negemo"], 
-										["anger", "+anger"], 
-										["i", "+i"], 
-										["we", "+we"], 
-										["complexity", "+excl+tentat+negate-incl+discrep"],
-										["status", "+we-i"],
-										["depression", "+i+bio+negemo-posemo"],
-										["formality", "-i+article+sixltr-present-discrep"],
-										["honesty", "+i+excl-negemo"]],
-						tempVal: [0,0],
-						total: [total1, total2],
-						timeDiff: new Date().getTime() - common.startTime
-					};
-				
-					calcCats(message);
+		var curTime = new Date().getTime();
+		if (curTime - common.lastCCTime < 5*1000) //stop sending stats fifteen seconds after last cc
+		{
+			//JRO - adding suffix
+			common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
+				collection.find({speakerID:1}).count(function(err, total1) {
+					collection.find({speakerID:2}).count(function(err, total2) {
+			
+						//console.log('STATS >> 1:'+total1+' 2:'+total2);
+			
+						var message = {
+							type: "stats",
+							calcs: [["funct", "+funct"], //function words. for testing.
+											["posemo", "+posemo"], //use cat names if they correspond!
+											["negemo", "+negemo"], 
+											["anger", "+anger"], 
+											["i", "+i"], 
+											["we", "+we"], 
+											["complexity", "+excl+tentat+negate-incl+discrep"],
+											["status", "+we-i"],
+											["depression", "+i+bio+negemo-posemo"],
+											["formality", "-i+article+sixltr-present-discrep"],
+											["honesty", "+i+excl-negemo"]],
+							tempVal: [0,0],
+							total: [total1, total2],
+							timeDiff: new Date().getTime() - common.startTime
+						};
 					
-
+						calcCats(message);
+						
+	
+					});
+					
 				});
-				
 			});
-		});
-		
-		//send heartbeat as well:
-		common.sendLiveState();
-		
-	}
+			
+			//send heartbeat as well:
+			common.sendLiveState();
+			
+		}
 		else console.log("sendStats(): no recent cc data");
+	}
 }
 
 function calcCats(msg) {
