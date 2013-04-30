@@ -3,6 +3,7 @@
 <html class="js consumer chrome" lang="en" id="mac"><head>
 
 
+<script src="/javascripts/hysteresis.js"></script>
 <script src="/socket.io/socket.io.js"> </script>
 <script>
   var socket = io.connect('http://localhost');
@@ -20,7 +21,10 @@
     </title>
 
     <style>
-#info {
+    body {
+    font-family: sans-serif;
+    }
+    #info {
     font-size: 20px;
     }
     #div_start {
