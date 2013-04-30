@@ -294,6 +294,7 @@ if (!('webkitSpeechRecognition' in window)) {
       upgrade();
       return;
     }
+    // there is some kind of speech event
     speechHysteresis.update(true);
     //console.log(event);
     for (var i = event.resultIndex; i < event.results.length; ++i) {

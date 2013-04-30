@@ -15,10 +15,10 @@ function hysteresis() {
 				lastTime = curTime;
 			}
 			var delay = value ? this.risingDelay : this.fallingDelay;
-			if(curTime - lastTime > delay) {
-				if(value && !curValue) {
+			if(curTime - lastTime >= delay) {
+				if(value) {
 					this.ontrigger();
-				} else if(!value && curValue) {
+				} else {
 					this.onuntrigger();
 				}
 				curValue = value;
