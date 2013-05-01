@@ -92,20 +92,19 @@ function start() {
 
 	// mongodb
 	common.mongo.open(function(err, p_client) {
-	
-		common.initialized = true;
-		
+
 		// authenticate
-		if (common.mongouser) {
-		  common.mongo.authenticate(common.mongouser, common.mongopass, function(err, p_client) { 
+		if (common.config.mongo.user) {
+		  common.mongo.authenticate(common.config.mongo.user, common.config.mongo.pass, function(err, p_client) { 
+		  	console.log("authenticated");
+				common.initialized = true;
+	  		clearDB(common.db_suffix);
 		  }); 
-		}
-
-	  clearDB(common.db_suffix);
-		
+		} else {
+			common.initialized = true;
+	  	clearDB(common.db_suffix);
+	  }
 	});
-
-    
 }
 
 // do it
@@ -121,7 +120,6 @@ function clearDB(dbSuffix)
   try {
   	common.fs.unlinkSync("/tmp/test.json");
   } catch (ex) { }
-
 
 	//clear out all the collections
 	common.mongo.collection("messages"+dbSuffix, function(err, collection) {
@@ -144,7 +142,6 @@ function clearDB(dbSuffix)
 			collection.remove(function(err, result) {});
 		});
 	}
-
 }
 
 

@@ -36,9 +36,6 @@ var Db = require('mongodb').Db;
 var MongoServer = require('mongodb').Server;
 var mongo = new Db(config.mongo.db, new MongoServer(config.mongo.host, config.mongo.port, {strict:true, auto_reconnect:true}), {w: 1});
 
-var fs = require('fs');
-
-var db_suffix = '_scratch';
 
 function sendMessage(msg, socket, log) {
 	console.log(msg);
@@ -71,9 +68,12 @@ function sendMessage(msg, socket, log) {
 
 
 module.exports = {
+
+	config: config,
+
 	url : require('url'),
 	net : require('net'),
-	fs : fs,	
+	fs : require('fs'),	
 	
 	//JRO - now setting start time when you unlock a db
 	startTime : new Date(2012, 9, 22, 21), //defaults to third debate right now
@@ -84,7 +84,7 @@ module.exports = {
 
 	mongo : mongo,
  	async : require('async'),
- 	db_suffix : db_suffix,
+ 	db_suffix : '_scratch',
  	
 
  	// is there a live streaming debate

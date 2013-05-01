@@ -56,6 +56,7 @@ function sendStats(socket) {
 										["formality", "-i+article+sixltr-present-discrep"],
 										["honesty", "+i+excl-negemo"]],
 						tempVal: [0,0],
+						users: [common.users[0], common.users[1]],
 						total: [total1, total2],
 						timeDiff: new Date().getTime() - common.startTime
 					};
