@@ -44,17 +44,40 @@ if ('development' == app.get('env')) {
 
 //app.listen(3000);
 
+
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  socket.on('event', function (data) {
-    console.log('event: '+data.transcript+' ('+data.confidence+')');
-		cc.handleChars(' '+data.transcript+' ');
+  
+  socket.on('set nickname', function (data) {
+    socket.set('nickname', data.name, function () {
+      socket.emit('ready');
+      if (common.users.indexOf(data.name) == -1) {
+      	console.log("adding name "+data.name+" user:"+common.users.length);
+      	common.users.push(data.name);
+      }
+    });
   });
+
+  socket.on('event', function (data) {
+    socket.get('nickname', function (err, name) {
+    	var user = common.users.indexOf(name);
+    	if (user !== -1) {
+	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
+				cc.handleChars(' '+data.transcript+' ', user);
+				stats.sendStats();
+			} else console.log("unrecognized nickname "+name)
+    });
+  });
+
   socket.on('speaking', function (data) {
-    console.log('speaking: ' + data.status);
+    socket.get('nickname', function (err, name) {
+    	var user = common.users.indexOf(name);
+    	if (user !== -1) {
+     		console.log('speaking: ' + data.status + ' by'+name);
+     	} else console.log("unrecognized nickname "+name)
+    });
   });
 });
-
 
 
 var ccSocket; 
@@ -96,7 +119,7 @@ function clearDB(dbSuffix)
 
   // Remove the file.
   try {
-  common.fs.unlinkSync("/tmp/test.json");
+  	common.fs.unlinkSync("/tmp/test.json");
   } catch (ex) { }
 
 

@@ -65,40 +65,6 @@ function sendMessage(msg, log) {
 }
 
 
-function sendLiveState(socket)
-{
-	var db = -1;
-	
-	if (unlock_db)
-	{
-		if (db_suffix == '_d0' || db_suffix == '_d0test') db = 0;
-		else if (db_suffix == '_d1' || db_suffix == '_d1test') db = 1;
-		else if (db_suffix == '_d2' || db_suffix == '_d2test') db = 2;
-		else db = -1; //using -1 if scratch db is selected
-	}
-
-	var msg = {
-		type: "livestate",
-		debate: db
-	};
-	
-	/*
-	//if socket is provided, send only to that socket
-	if (socket) {
-		console.log("CONNECT: sending live state: " + JSON.stringify(msg)); 
-		socket.send(JSON.stringify(msg)); 
-	}
-	else
-	{
-		//console.log("HEARTBEAT: sending live state: " + JSON.stringify(msg));
-		Object.keys(engine.clients).forEach(function(key) {
-		  engine.clients[key].send(JSON.stringify(msg));
-	  });
-	}*/
-  
-	
-}
-
 
 
 
@@ -118,12 +84,13 @@ module.exports = {
  	async : require('async'),
  	db_suffix : db_suffix,
  	
- 	sendLiveState : sendLiveState,
- 	
+
  	// is there a live streaming debate
  	live : false,
  	
  	// is it initialized
- 	initialized : false
+ 	initialized : false,
+
+ 	users: []
 };
 
