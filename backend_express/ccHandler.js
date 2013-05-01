@@ -36,14 +36,14 @@ var cur4Gram = ["", ""];
 var minNGramOccurrences = 2;
 
 //Called from outside of 
-function handleChars(newChars, user)
+function handleChars(newChars, user, socket)
 {
-	parseWords(newChars, user);
+	parseWords(newChars, user, socket);
 
 }
 
 //Function takes a buffer and pulls out any words
-function parseWords(text, user)
+function parseWords(text, user, socket)
 {
 
 	//split input string with RegExo
@@ -58,12 +58,12 @@ function parseWords(text, user)
 			
 			console.log("tok:"+tok + " l:"+tok.length );
 
-			handleWord(user, tok.toString()); 
+			handleWord(user, tok.toString(), socket); 
 		}
 	}
 }
 
-function handleWord(user, w)
+function handleWord(user, w, socket)
 {	
 
 	console.log("HANDLE WORD "+w+" user "+user);
@@ -92,15 +92,15 @@ function handleWord(user, w)
 	   	},
 
 	    function(uniqueWDoc, cb) { // process 4 grams
-				processNGrams(4, timeDiff, user, curWordID, uniqueWDoc, [], cb);
+				processNGrams(4, timeDiff, user, curWordID, uniqueWDoc, [], cb, socket);
 			},
 
 	    function(uniqueWDoc, ngrams, cb) { // process 3 grams
-				processNGrams(3, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
+				processNGrams(3, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb, socket);
 			},
 
 	    function(uniqueWDoc, ngrams, cb) { // process 2 grams
-				processNGrams(2, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
+				processNGrams(2, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb, socket);
 			}
 	];
 
@@ -189,7 +189,7 @@ function logWordInstance(user, wordID, uniqueWDoc, time, cb) {
 }
 
 
-function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
+function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb, socket) {
 
 	//console.log('processNGrams');
 
@@ -210,7 +210,7 @@ function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
 				{upsert:true, new:true},
 				function(err, object) {
 					if(object.wordInstanceIDs.length == minNGramOccurrences) {
-						sendNewNGram(t, user, object._id, curGram, l);
+						sendNewNGram(t, user, object._id, curGram, l, socket);
 					}
 					if(object.wordInstanceIDs.length >= minNGramOccurrences) {
 						ngrams.push([object._id, object.wordInstanceIDs.length]);
@@ -231,7 +231,7 @@ function checkNGram(i, msg) {
 		common.mongo.collection('unique_words'+common.db_suffix, function(e, c) {
 			c.find({categories:'funct', word:msg.ngram[i]}).count(function(err, val) {
 				if (val == 0) {
-					if (i == msg.ngram.length-1) common.sendMessage(msg, true);
+					if (i == msg.ngram.length-1) return msg;
 					else checkNGram(i+1, msg);
 				}
 			});
@@ -239,7 +239,7 @@ function checkNGram(i, msg) {
 	}
 }
 
-function sendNewNGram(t, user, nid, n, nInstances) {
+function sendNewNGram(t, user, nid, n, nInstances, socket) {
 	
 	var message = {
 		type: "newNGram",
@@ -250,6 +250,7 @@ function sendNewNGram(t, user, nid, n, nInstances) {
 		instances: nInstances
 	};
   checkNGram(0, message);
+  common.sendMessage(message, socket, true);
 }
 
 

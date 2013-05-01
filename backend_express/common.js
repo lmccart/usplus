@@ -40,9 +40,10 @@ var fs = require('fs');
 
 var db_suffix = '_scratch';
 
-
-function sendMessage(msg, log) {
+function sendMessage(msg, socket, log) {
 	console.log(msg);
+
+	socket.emit('stats', msg);
 
 	/*if (engine.clients) {
 

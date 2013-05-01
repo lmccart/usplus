@@ -30,7 +30,7 @@
 
 var common = require('./common.js');
 
-function sendStats() {
+function sendStats(socket) {
 
 	var curTime = new Date().getTime();
 	if (curTime - common.lastCCTime < 5*1000) //stop sending stats fifteen seconds after last cc
@@ -61,8 +61,8 @@ function sendStats() {
 					};
 				
 					calcCats(message);
-					
-
+				
+					common.sendMessage(message, socket, true);
 				});
 				
 			});
@@ -74,7 +74,7 @@ function sendStats() {
 function calcCats(msg) {
 
 	if (msg['calcs'].length === 0) {
-		common.sendMessage(msg, true);
+		return msg;
 	}
 	
 	else {

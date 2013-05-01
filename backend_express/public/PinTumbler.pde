@@ -1,24 +1,24 @@
 String categories[] = {
-"angry",
-"depressed",
-"formal",
-"honest",
-"talkative",
-"pausing"
+"funct", 
+"posemo",
+"negemo",
+"anger", 
+"complexity", 
+"status",
+"depression",
+"formality",
+"honesty"
 };
+
 float scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 PFont font;
 
 String getSuggestion(int category, float balance) {
   boolean needLess = balance > .5;
-  switch(category) {
-    case 0: return needLess ? "Try being more calm." : "Get angrier.";
-    case 1: return needLess ? "Try being more upbeat." : "Don't act so upbeat.";
-    case 2: return needLess ? "Don't be so formal." : "Try being more formal.";
-    case 3: return needLess ? "Don't be so honest." : "Try being more honest.";
-    case 4: return needLess ? "Try talking less." : "Try talking more.";
-    case 5: return needLess ? "Try pausing more." : "Try pausing less.";
-    default: return "";
+  if(needLess) {
+    return "Try being less " + categories[category];
+  } else {
+    return "Try being more " + categories[category];
   }
 }
 
@@ -36,7 +36,7 @@ void setup() {
 void draw() {
   background(255);
   
-  //fakeData();
+  fakeData();
   
   float totalScale = 0;
   float maxScale = 0;
@@ -92,12 +92,16 @@ void draw() {
 void fakeData() {
   float t = (millis() / 30000.);
   for(int i = 0; i < categories.length; i++) {
-    scoresa[i] = noise(0, i, t);
+    //scoresa[i] = noise(0, i, t);
     scoresb[i] = noise(1, i, t);
   }
   // scoresa[0] = map(mouseX, 0, width, 0, 10); // manual override first score
 }
 
-socket.on('status', function (data) {
-  
+socket.on('stats', function (data) {
+  console.log(data);
+  for(var i = 0; i < data.calcs.length; i++) {
+    scoresa[i] = data.calcs[i];
+  }
+  console.log(scoresa);
 });
