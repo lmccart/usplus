@@ -11,6 +11,11 @@
     console.log(data);
     socket.emit('my other event', { my: 'data' });
   });
+  function manualInputSubmit() {
+    socket.emit('event', {
+      transcript: document.getElementById('manualInput').value,
+      confidence: 1});
+  }
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,7 +38,7 @@
     #headline {
     text-decoration: none
     }
-    #results {
+    #results, textarea {
     font-size: 14px;
     font-weight: bold;
     border: 1px solid #ddd;
@@ -120,6 +125,9 @@ a.c1 {font-weight: normal;}
         <div id="results">
           <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
         </div>
+
+        <textarea id="manualInput"></textarea>
+        <button onclick="manualInputSubmit()">Submit</button>
         
         <div class="compact marquee" id="div_language">
           <select id="select_language" onchange="updateCountry()">
@@ -239,6 +247,10 @@ if (!('webkitSpeechRecognition' in window)) {
   };
   // regularly feed the hysteresis object "off" in order to generate "end of speech" events
   setInterval(function() {speechHysteresis.update(false)}, 200);
+
+  socket.on('status', function (data) {
+    console.log(data);
+  });
 
   recognition.onstart = function() {
     recognizing = true;
