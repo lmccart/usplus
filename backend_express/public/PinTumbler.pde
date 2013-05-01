@@ -100,8 +100,10 @@ void fakeData() {
 
 socket.on('stats', function (data) {
   console.log(data);
-  for(var i = 0; i < data.calcs.length; i++) {
-    scoresa[i] = data.calcs[i];
+  if(data.calcs) {
+    for(var i = 0; i < data.calcs.length; i++) {
+      scoresa[i] = data.calcs[i];
+    }
+    console.log(scoresa);
   }
-  console.log(scoresa);
 });
