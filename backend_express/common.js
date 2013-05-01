@@ -55,6 +55,7 @@ function sendMessage(msg, socket, log) {
 	  //for printing all messages
 	  //console.log(msg);
 	}*/
+	
 
   // log msg
   if (log) {
