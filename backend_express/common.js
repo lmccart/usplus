@@ -54,6 +54,7 @@ function sendMessage(msg, log) {
 	  //for printing all messages
 	  //console.log(msg);
 	}*/
+	
 
   // log msg
   if (log) {

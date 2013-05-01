@@ -37,8 +37,8 @@ function sendStats() {
 	{
 		//JRO - adding suffix
 		common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
-			collection.find({speakerID:1}).count(function(err, total1) {
-				collection.find({speakerID:2}).count(function(err, total2) {
+			collection.find({userID:0}).count(function(err, total1) {
+				collection.find({userID:1}).count(function(err, total2) {
 		
 					//console.log('STATS >> 1:'+total1+' 2:'+total2);
 		
@@ -103,8 +103,8 @@ function calcCats(msg) {
 			//JRO - adding db suffix
 			common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
 
-				collection.find({categories:catName, userID:0}).count(function(err, val1) {
-					collection.find({categories:catName, userID:1}).count(function(err, val2) {
+				collection.find({cats:catName, userID:0}).count(function(err, val1) {
+					collection.find({cats:catName, userID:1}).count(function(err, val2) {
 	
 						addVal(msg, traitModifier, traitName, [val1, val2], remainder);
 					});
@@ -119,7 +119,7 @@ function calcCats(msg) {
 }
 
 function addVal(msg, modifier, name, val, remainder) {
-	//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder);
+	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
 
@@ -130,6 +130,8 @@ function addVal(msg, modifier, name, val, remainder) {
 								 (msg['total'][1] == 0) ? 0 : msg['tempVal'][1]/msg['total'][1]];
 		msg['tempVal'] = [0,0];
 		msg['calcs'].shift();
+		console.log('msg done');
+		console.log(msg);
 	}
 	else {
 		//console.log(curVal+" "+val+" "+msg['total']+" "+traitName+"="+msg[traitName]);

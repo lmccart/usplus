@@ -162,7 +162,7 @@ function logUniqueWord(wordID, w, cats, cb) {
 		collection.findAndModify(
 			{word: w}, 
 			[['_id','asc']], 
-			{$push: {wordInstanceIDs: wordID}, $set: {categories: cats}},
+			{$push: {wordInstanceIDs: wordID}, $set: {cats: cats}},
 			{upsert:true, new:true},
 			function(err, object) {
 				//console.log("object "+object);
@@ -180,7 +180,7 @@ function logWordInstance(user, wordID, uniqueWDoc, time, cb) {
 			_id: wordID,
 			word: uniqueWDoc.word,
 			userID: user,
-			categories: uniqueWDoc.categories,
+			cats: uniqueWDoc.cats,
 			timeDiff: time
 		}
 		collection.insert(doc);
@@ -229,7 +229,7 @@ function checkNGram(i, msg) {
 
 	if (i < msg.ngram.length) {
 		common.mongo.collection('unique_words'+common.db_suffix, function(e, c) {
-			c.find({categories:'funct', word:msg.ngram[i]}).count(function(err, val) {
+			c.find({cats:'funct', word:msg.ngram[i]}).count(function(err, val) {
 				if (val == 0) {
 					if (i == msg.ngram.length-1) common.sendMessage(msg, true);
 					else checkNGram(i+1, msg);
