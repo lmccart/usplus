@@ -46,6 +46,9 @@ if ('development' == app.get('env')) {
 
 
 io.sockets.on('connection', function (socket) {
+
+	common.socket = socket; // PEND change for multiple cxns
+
   socket.emit('news', { hello: 'world' });
   
   socket.on('set nickname', function (data) {
@@ -64,7 +67,7 @@ io.sockets.on('connection', function (socket) {
     	if (user !== -1) {
 	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
 				cc.handleChars(' '+data.transcript+' ', user, socket);
-				stats.sendStats(socket);
+				stats.sendStats();
 			} else console.log("unrecognized nickname "+name)
     });
   });

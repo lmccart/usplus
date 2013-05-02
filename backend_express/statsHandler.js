@@ -63,7 +63,7 @@ function sendStats(socket) {
 				
 					calcCats(message);
 				
-					common.sendMessage(message, socket, true);
+					//common.sendMessage(message, true);
 				});
 				
 			});
@@ -75,9 +75,9 @@ function sendStats(socket) {
 function calcCats(msg) {
 
 	if (msg['calcs'].length === 0) {
-		return msg;
-	}
-	
+		common.sendMessage(msg, true); //pend change to callback
+	} 
+
 	else {
 	
 		var traitModifier = msg['calcs'][0][1].substring(0,1);
@@ -120,7 +120,7 @@ function calcCats(msg) {
 }
 
 function addVal(msg, modifier, name, val, remainder) {
-	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
+	//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
 
@@ -131,8 +131,8 @@ function addVal(msg, modifier, name, val, remainder) {
 								 (msg['total'][1] == 0) ? 0 : msg['tempVal'][1]/msg['total'][1]];
 		msg['tempVal'] = [0,0];
 		msg['calcs'].shift();
-		console.log('msg done');
-		console.log(msg);
+		//console.log('msg done');
+		//console.log(msg);
 	}
 	else {
 		//console.log(curVal+" "+val+" "+msg['total']+" "+traitName+"="+msg[traitName]);
