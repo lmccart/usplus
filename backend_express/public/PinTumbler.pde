@@ -53,7 +53,7 @@ void setup() {
 void draw() {
   background(255);
   
-  fakeData();
+  //fakeData();
   
   float totalScale = 0;
   float maxScale = 0;
@@ -117,11 +117,15 @@ void fakeData() {
 
 socket.on('stats', function (data) {
   console.log(data);
-  if(data.calcs) {
-    for(var i = 0; i < categories.length; i++) {
-      scoresa[i] = baseScore + data[categories[i]][0];
+  if(data.users[1] != undefined) {
+    var flip = userGuid != data.users[0];
+    var usera = flip ? 1 : 0;
+    var userb = flip ? 0 : 1;
+    if(data.calcs) {
+      for(var i = 0; i < categories.length; i++) {
+        scoresa[i] = data[categories[i]][usera];
+        scoresb[i] = data[categories[i]][userb];
+      }
     }
-    console.log(scoresa);
-    console.log(scoresb);
   }
 });
