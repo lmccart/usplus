@@ -36,15 +36,21 @@ var Db = require('mongodb').Db;
 var MongoServer = require('mongodb').Server;
 var mongo = new Db(config.mongo.db, new MongoServer(config.mongo.host, config.mongo.port, {strict:true, auto_reconnect:true}), {w: 1});
 
-var fs = require('fs');
-
 var db_suffix = '_scratch';
+var socket = '';
 
-function sendMessage(msg, socket, log) {
+function sendMessage(msg, log) {
 	console.log(msg);
 
-	socket.emit('stats', msg);
+	if (module.exports.socket) {
+		console.log("socket = ");
+		console.log(module.exports.socket);
+		console.log('that was socket');
+		socket.emit('stats', msg);
+	}
+	else console.log('no socket');
 
+	io.sockets.emit('stats', msg);
 	/*if (engine.clients) {
 
 		// send msg
@@ -66,14 +72,19 @@ function sendMessage(msg, socket, log) {
 	}	
 }
 
-
-
+function setSocket(socket) {
+	socket = socket;
+	module.exports.socket = socket;
+}
 
 
 module.exports = {
+
+	config: config,
+
 	url : require('url'),
 	net : require('net'),
-	fs : fs,	
+	fs : require('fs'),	
 	
 	//JRO - now setting start time when you unlock a db
 	startTime : new Date(2012, 9, 22, 21), //defaults to third debate right now
@@ -86,12 +97,12 @@ module.exports = {
  	async : require('async'),
  	db_suffix : db_suffix,
  	
-
- 	// is there a live streaming debate
- 	live : false,
  	
  	// is it initialized
  	initialized : false,
+
+ 	socket: "",
+ 	setSocket: setSocket,
 
  	users: []
 };

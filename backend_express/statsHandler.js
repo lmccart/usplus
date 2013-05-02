@@ -56,13 +56,13 @@ function sendStats(socket) {
 										["formality", "-i+article+sixltr-present-discrep"],
 										["honesty", "+i+excl-negemo"]],
 						tempVal: [0,0],
+						users: [common.users[0], common.users[1]],
 						total: [total1, total2],
 						timeDiff: new Date().getTime() - common.startTime
 					};
 				
 					calcCats(message, socket);
 				
-					//common.sendMessage(message, socket, true);
 				});
 				
 			});
@@ -130,8 +130,8 @@ function addVal(msg, modifier, name, val, remainder, socket) {
 								 (msg['total'][1] == 0) ? 0 : msg['tempVal'][1]/msg['total'][1]];
 		msg['tempVal'] = [0,0];
 		msg['calcs'].shift();
-		console.log('msg done');
-		console.log(msg);
+		//console.log('msg done');
+		//console.log(msg);
 	}
 	else {
 		//console.log(curVal+" "+val+" "+msg['total']+" "+traitName+"="+msg[traitName]);

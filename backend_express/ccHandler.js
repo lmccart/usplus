@@ -56,7 +56,7 @@ function parseWords(text, user, socket)
 		{
 			var tok = tokens[i];
 			
-			console.log("tok:"+tok + " l:"+tok.length );
+			//console.log("tok:"+tok + " l:"+tok.length );
 
 			handleWord(user, tok.toString(), socket); 
 		}
@@ -66,7 +66,7 @@ function parseWords(text, user, socket)
 function handleWord(user, w, socket)
 {	
 
-	console.log("HANDLE WORD "+w+" user "+user);
+	//console.log("HANDLE WORD "+w+" user "+user);
 	var curWordID = new common.mongo.bson_serializer.ObjectID(); 
 	var curTime = new Date().getTime();
 	var timeDiff = curTime - common.startTime;
@@ -105,7 +105,7 @@ function handleWord(user, w, socket)
 	];
 
 	var cb = function(err, res) {
-	    console.log(arguments);
+	    //console.log(arguments);
 	};
 
 	common.async.waterfall(funcs, cb);
