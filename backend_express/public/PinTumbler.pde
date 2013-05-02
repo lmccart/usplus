@@ -1,5 +1,4 @@
 String categories[] = {
-"funct", 
 "posemo",
 "negemo",
 "anger", 
@@ -10,16 +9,34 @@ String categories[] = {
 "honesty"
 };
 
+String lessCommand[] = {
+"Dial down the sunshine!",
+"Look on the bright side!",
+"Calm down, don't be such a dick!", 
+"Can't you say it clearly?",
+"Speak for yourself!",
+"Pull yourself out of it already!",
+"You elitist asshole.",
+"Nobody wants to read your diary!"
+};
+
+String moreCommand[] = {
+"Look on the bright side!",
+"Dial down the sunshine!",
+"Grow a pair.", 
+"Thank you captain obvious.", 
+"It's not all about you all the time!",
+"You can't really be that happy.",
+"Who do you think you're talking to? Ever heard of manners?",
+"Be more honest! Fucking lying piece of shit!"
+};
+
+float baseScore = 1;
 float scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 PFont font;
 
-String getSuggestion(int category, float balance) {
-  boolean needLess = balance > .5;
-  if(needLess) {
-    return "Try being less " + categories[category];
-  } else {
-    return "Try being more " + categories[category];
-  }
+String getCommand(int category, float balance) {
+  return (balance < .5 ? lessCommand : moreCommand)[category];
 }
 
 float scoresa[] = new float[categories.length];
@@ -73,7 +90,7 @@ void draw() {
     if(i == maxScaleIndex) {
       textAlign(CENTER, CENTER);
       fill(0);
-      text(getSuggestion(i, balances[i]), width / 2, y + curHeight / 2);
+      text(getCommand(i, balances[i]), width / 2, y + curHeight / 2);
     }
     y += curHeight;
   }
@@ -93,7 +110,7 @@ void fakeData() {
   float t = (millis() / 30000.);
   for(int i = 0; i < categories.length; i++) {
     //scoresa[i] = noise(0, i, t);
-    scoresb[i] = .1 + 2. * abs(noise(1, i, t) - .5);
+    scoresb[i] = baseScore + 2. * abs(noise(1, i, t) - .5);
   }
   // scoresa[0] = map(mouseX, 0, width, 0, 10); // manual override first score
 }
@@ -102,7 +119,7 @@ socket.on('stats', function (data) {
   console.log(data);
   if(data.calcs) {
     for(var i = 0; i < categories.length; i++) {
-      scoresa[i] = data[categories[i]][0];
+      scoresa[i] = baseScore + data[categories[i]][0];
     }
     console.log(scoresa);
     console.log(scoresb);
