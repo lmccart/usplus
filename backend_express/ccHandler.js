@@ -250,7 +250,8 @@ function sendNewNGram(t, user, nid, n, nInstances, socket) {
 		instances: nInstances
 	};
   checkNGram(0, message);
-  common.sendMessage(message, socket, true);
+  // todo: add ngrams back in
+  //common.sendMessage(message, true);
 }
 
 

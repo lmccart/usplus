@@ -67,7 +67,7 @@ io.sockets.on('connection', function (socket) {
     	if (user !== -1) {
 	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
 				cc.handleChars(' '+data.transcript+' ', user, socket);
-				stats.sendStats();
+				stats.sendStats(socket);
 			} else console.log("unrecognized nickname "+name)
     });
   });
