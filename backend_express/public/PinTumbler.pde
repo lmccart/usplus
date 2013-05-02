@@ -93,7 +93,7 @@ void fakeData() {
   float t = (millis() / 30000.);
   for(int i = 0; i < categories.length; i++) {
     //scoresa[i] = noise(0, i, t);
-    scoresb[i] = noise(1, i, t);
+    scoresb[i] = .1 + 2. * abs(noise(1, i, t) - .5);
   }
   // scoresa[0] = map(mouseX, 0, width, 0, 10); // manual override first score
 }
@@ -101,9 +101,10 @@ void fakeData() {
 socket.on('stats', function (data) {
   console.log(data);
   if(data.calcs) {
-    for(var i = 0; i < data.calcs.length; i++) {
-      scoresa[i] = data.calcs[i];
+    for(var i = 0; i < categories.length; i++) {
+      scoresa[i] = data[categories[i]][0];
     }
     console.log(scoresa);
+    console.log(scoresb);
   }
 });
