@@ -36,14 +36,14 @@ var cur4Gram = ["", ""];
 var minNGramOccurrences = 2;
 
 //Called from outside of 
-function handleChars(newChars, user, socket)
+function handleChars(newChars, user, callback)
 {
-	parseWords(newChars, user, socket);
+	parseWords(newChars, user, callback);
 
 }
 
 //Function takes a buffer and pulls out any words
-function parseWords(text, user, socket)
+function parseWords(text, user, callback)
 {
 
 	//split input string with RegExo
@@ -58,12 +58,12 @@ function parseWords(text, user, socket)
 			
 			//console.log("tok:"+tok + " l:"+tok.length );
 
-			handleWord(user, tok.toString(), socket); 
+			handleWord(user, tok.toString(), callback); 
 		}
 	}
 }
 
-function handleWord(user, w, socket)
+function handleWord(user, w, callback)
 {	
 
 	//console.log("HANDLE WORD "+w+" user "+user);
@@ -92,16 +92,19 @@ function handleWord(user, w, socket)
 	   	},
 
 	    function(uniqueWDoc, cb) { // process 4 grams
-				processNGrams(4, timeDiff, user, curWordID, uniqueWDoc, [], cb, socket);
+				processNGrams(4, timeDiff, user, curWordID, uniqueWDoc, [], cb);
 			},
 
 	    function(uniqueWDoc, ngrams, cb) { // process 3 grams
-				processNGrams(3, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb, socket);
+				processNGrams(3, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
 			},
 
 	    function(uniqueWDoc, ngrams, cb) { // process 2 grams
-				processNGrams(2, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb, socket);
-			}
+				processNGrams(2, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
+			},
+		function() {
+			callback();
+		}
 	];
 
 	var cb = function(err, res) {
@@ -189,7 +192,7 @@ function logWordInstance(user, wordID, uniqueWDoc, time, cb) {
 }
 
 
-function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb, socket) {
+function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
 
 	//console.log('processNGrams');
 
@@ -210,7 +213,7 @@ function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb, socket) {
 				{upsert:true, new:true},
 				function(err, object) {
 					if(object.wordInstanceIDs.length == minNGramOccurrences) {
-						sendNewNGram(t, user, object._id, curGram, l, socket);
+						sendNewNGram(t, user, object._id, curGram, l);
 					}
 					if(object.wordInstanceIDs.length >= minNGramOccurrences) {
 						ngrams.push([object._id, object.wordInstanceIDs.length]);
@@ -239,7 +242,7 @@ function checkNGram(i, msg) {
 	}
 }
 
-function sendNewNGram(t, user, nid, n, nInstances, socket) {
+function sendNewNGram(t, user, nid, n, nInstances) {
 	
 	var message = {
 		type: "newNGram",

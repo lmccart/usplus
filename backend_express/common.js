@@ -104,6 +104,7 @@ module.exports = {
  	socket: "",
  	setSocket: setSocket,
 
- 	users: []
+ 	users: [],
+ 	io: []
 };
 

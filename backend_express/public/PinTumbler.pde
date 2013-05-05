@@ -62,7 +62,11 @@ void draw() {
   float scales[] = new float[categories.length];
   for(int i = 0; i < categories.length; i++) {
     float totalScore = scoresa[i] + scoresb[i];
-    balances[i] = scoresa[i] / totalScore;
+    if(totalScore > 0) {
+      balances[i] = scoresa[i] / totalScore;
+    } else {
+      balances[i] = .5;
+    }
     scales[i] = pow(2 * abs(balances[i] - .5), scalePower);
     scales[i] = map(scales[i], 0, 1, minHeightScale, maxHeightScale);
     totalScale += scales[i];
@@ -71,7 +75,7 @@ void draw() {
       maxScaleIndex = i;
     }
   }
-  
+
   float y = 0;
   for(int i = 0; i < categories.length; i++) {
     float curHeight = height * (scales[i] / totalScale);
@@ -121,11 +125,11 @@ socket.on('stats', function (data) {
     var flip = userGuid != data.users[0];
     var usera = flip ? 1 : 0;
     var userb = flip ? 0 : 1;
-    if(data.calcs) {
-      for(var i = 0; i < categories.length; i++) {
-        scoresa[i] = data[categories[i]][usera];
-        scoresb[i] = data[categories[i]][userb];
-      }
+    for(var i = 0; i < categories.length; i++) {
+      scoresa[i] = baseScore + data[categories[i]][usera];
+      scoresb[i] = baseScore + data[categories[i]][userb];
     }
   }
+  console.log(scoresa);
+  console.log(scoresb);
 });

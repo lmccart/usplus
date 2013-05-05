@@ -30,7 +30,7 @@
 
 var common = require('./common.js');
 
-function sendStats(socket) {
+function sendStats() {
 
 	var curTime = new Date().getTime();
 	if (curTime - common.lastCCTime < 5*1000) //stop sending stats fifteen seconds after last cc
@@ -61,7 +61,7 @@ function sendStats(socket) {
 						timeDiff: new Date().getTime() - common.startTime
 					};
 				
-					calcCats(message, socket);
+					calcCats(message);
 				
 				});
 				
@@ -71,10 +71,12 @@ function sendStats(socket) {
 	}
 }
 
-function calcCats(msg, socket) {
+function calcCats(msg) {
 
 	if (msg['calcs'].length === 0) {
-		socket.emit('stats', msg);
+
+		console.log(common.sockets);
+		common.io.sockets.emit('stats', msg);	
 	}
 	
 	else {
@@ -106,7 +108,7 @@ function calcCats(msg, socket) {
 				collection.find({cats:catName, userID:0}).count(function(err, val1) {
 					collection.find({cats:catName, userID:1}).count(function(err, val2) {
 	
-						addVal(msg, traitModifier, traitName, [val1, val2], remainder, socket);
+						addVal(msg, traitModifier, traitName, [val1, val2], remainder);
 					});
 					
 				});
@@ -118,7 +120,7 @@ function calcCats(msg, socket) {
 	}
 }
 
-function addVal(msg, modifier, name, val, remainder, socket) {
+function addVal(msg, modifier, name, val, remainder) {
 	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
@@ -137,7 +139,7 @@ function addVal(msg, modifier, name, val, remainder, socket) {
 		//console.log(curVal+" "+val+" "+msg['total']+" "+traitName+"="+msg[traitName]);
 		msg['calcs'][0][1] = remainder;
 	}				
-	calcCats(msg, socket);
+	calcCats(msg);
 	
 }
 

@@ -35,7 +35,7 @@ var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-var io = require('socket.io').listen(server);
+common.io = require('socket.io').listen(server);
 
 // development only
 if ('development' == app.get('env')) {
@@ -45,10 +45,9 @@ if ('development' == app.get('env')) {
 //app.listen(3000);
 
 
-io.sockets.on('connection', function (socket) {
+common.io.sockets.on('connection', function (socket) {
 
-	common.socket = socket; // PEND change for multiple cxns
-
+	
   socket.emit('news', { hello: 'world' });
   
   socket.on('set nickname', function (data) {
@@ -66,8 +65,8 @@ io.sockets.on('connection', function (socket) {
     	var user = common.users.indexOf(name);
     	if (user !== -1) {
 	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
-				cc.handleChars(' '+data.transcript+' ', user, socket);
-				stats.sendStats(socket);
+				cc.handleChars(' '+data.transcript+' ', user, stats.sendStats);
+				stats.sendStats();
 			} else console.log("unrecognized nickname "+name)
     });
   });
