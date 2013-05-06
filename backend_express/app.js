@@ -13,6 +13,7 @@ var stats = require('./statsHandler.js');
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , https = require('https')
   , http = require('http')
   , path = require('path');
 
@@ -31,11 +32,25 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+var options = {
+  key: common.fs.readFileSync('key.pem'),
+  cert: common.fs.readFileSync('cert.pem')
+};
+
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+https.createServer(options, app).listen(3100, function(){
+  console.log("Express server listening on port " + 3100);
+});
+
+
+
 common.io = require('socket.io').listen(server);
+common.io.configure(function () {
+  common.io.set('transports', ['websocket','flashsocket','xhr-polling']);
+});
 
 // development only
 if ('development' == app.get('env')) {

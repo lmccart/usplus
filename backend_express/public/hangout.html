@@ -22,13 +22,14 @@ function getProcessingSketchId () { return 'PinTumbler'; }
            s4() + '-' + s4() + s4() + s4();
   }
 
-  var socket = io.connect('http://localhost'); // PEND fix to work for remote
+  var socket = io.connect(window.location.host, {connectTimeout:10000});
   var userGuid = guid();
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('set nickname', { name: userGuid });
   });
   function manualInputSubmit() {
+    console.log("manualInputSubmit");
     socket.emit('event', {
       transcript: document.getElementById('manualInput').value,
       confidence: 1});

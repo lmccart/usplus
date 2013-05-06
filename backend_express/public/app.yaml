@@ -1,0 +1,17 @@
+# a test version of the app.yaml used for development. This is not intended to be checked in
+application: YOUR_APP_ID
+
+version: 1
+runtime: python
+api_version: 1
+
+# Set cache duration to 0 for development
+default_expiration: "0m"
+
+handlers:
+- url: /static/(.*)
+  static_files: static/\1
+  upload: static/(.*)
+
+- url: .*
+  script: main.py

@@ -1,6 +1,6 @@
 {
   "name": "fixus",
-  "version": "0.0.1-2",
+  "version": "0.0.1-20",
   "repository": {
     "type": "git",
     "url": "git://github.com/lmccart/fixus.git"
@@ -18,7 +18,7 @@
     "mongodb": "*",
     "async": "0.1.22",
     "ejs": "0.8.3",
-    "socket.io": "0.7.11"
+    "socket.io": "0.9.13"
   },
   "subdomain": "fixus"
 }

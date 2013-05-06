@@ -10,3 +10,5 @@ backend/documents/*
 backend_express/config*
 backend_express/node_modules/*
 backend_express/mongo_dump/*
+backend_express/cert.pem
+backend_express/key.pem
