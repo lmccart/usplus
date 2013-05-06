@@ -74,8 +74,6 @@ function sendStats() {
 function calcCats(msg) {
 
 	if (msg['calcs'].length === 0) {
-
-		console.log(common.sockets);
 		common.io.sockets.emit('stats', msg);	
 	}
 	
@@ -121,7 +119,7 @@ function calcCats(msg) {
 }
 
 function addVal(msg, modifier, name, val, remainder) {
-	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
+	//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
 

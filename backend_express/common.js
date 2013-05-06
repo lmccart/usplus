@@ -39,37 +39,10 @@ var mongo = new Db(config.mongo.db, new MongoServer(config.mongo.host, config.mo
 var db_suffix = '_scratch';
 var socket = '';
 
-function sendMessage(msg, log) {
-	console.log(msg);
-
-	if (module.exports.socket) {
-		console.log("socket = ");
-		console.log(module.exports.socket);
-		console.log('that was socket');
-		socket.emit('stats', msg);
-	}
-	else console.log('no socket');
+function sendMessage(msg) {
 
 	io.sockets.emit('stats', msg);
-	/*if (engine.clients) {
 
-		// send msg
-	  Object.keys(engine.clients).forEach(function(key) {
-		  engine.clients[key].send(JSON.stringify(msg));
-	  });
-	  
-	  //for printing all messages
-	  //console.log(msg);
-	}*/
-	
-
-  // log msg
-  if (log) {
-	  mongo.collection('messages'+db_suffix, function(err, collection) {
-			collection.insert(msg);
-	  //console.log("INSERTED IN 'messages"+db_suffix+msg);
-		});
-	}	
 }
 
 function setSocket(socket) {

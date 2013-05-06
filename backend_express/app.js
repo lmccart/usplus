@@ -53,7 +53,10 @@ common.io.sockets.on('connection', function (socket) {
   socket.on('set nickname', function (data) {
     socket.set('nickname', data.name, function () {
       socket.emit('ready');
-      if (common.users.indexOf(data.name) == -1) {
+      if (common.users.length > 2) {
+      	console.log('error adding user, already 2 sockets open with names '+common.users[0]+' '+common.users[1]);
+      }
+      else if (common.users.indexOf(data.name) == -1) {
       	console.log("adding name "+data.name+" user:"+common.users.length);
       	common.users.push(data.name);
       }
@@ -62,10 +65,10 @@ common.io.sockets.on('connection', function (socket) {
 
   socket.on('event', function (data) {
     socket.get('nickname', function (err, name) {
-    	var user = common.users.indexOf(name);
-    	if (user !== -1) {
+    	var ind = common.users.indexOf(name);
+    	if (ind !== -1) {
 	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
-				cc.handleChars(' '+data.transcript+' ', user, stats.sendStats);
+				cc.handleChars(' '+data.transcript+' ', ind, stats.sendStats);
 				stats.sendStats();
 			} else console.log("unrecognized nickname "+name)
     });
@@ -73,12 +76,22 @@ common.io.sockets.on('connection', function (socket) {
 
   socket.on('speaking', function (data) {
     socket.get('nickname', function (err, name) {
-    	var user = common.users.indexOf(name);
-    	if (user !== -1) {
+    	if (common.users.indexOf(name) !== -1) {
      		console.log('speaking: ' + data.status + ' by'+name);
      	} else console.log("unrecognized nickname "+name)
     });
   });
+
+
+  socket.on("disconnect", function(s) {
+    socket.get('nickname', function (err, name) {
+    	var ind = common.users.indexOf(name);
+    	if (ind !== -1) {
+    		common.users.splice(ind, 1);
+    	}
+     console.log("Disconnected " + name);
+   });
+  });            
 });
 
 
