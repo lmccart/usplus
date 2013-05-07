@@ -186,7 +186,10 @@ function logWordInstance(user, wordID, uniqueWDoc, time, cb) {
 			cats: uniqueWDoc.cats,
 			timeDiff: time
 		}
-		collection.insert(doc);
+
+		collection.insert(doc, function(e, c) {
+			console.log('word logged');
+		});
 		cb(null, uniqueWDoc);
 	});
 }

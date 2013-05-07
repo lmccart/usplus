@@ -32,43 +32,47 @@ var common = require('./common.js');
 
 function sendStats() {
 
-	var curTime = new Date().getTime();
-	if (curTime - common.lastCCTime < 5*1000) //stop sending stats fifteen seconds after last cc
-	{
-		//JRO - adding suffix
-		common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
-			collection.find({userID:0}).count(function(err, total1) {
-				collection.find({userID:1}).count(function(err, total2) {
-		
-					//console.log('STATS >> 1:'+total1+' 2:'+total2);
-		
-					var message = {
-						type: "stats",
-						calcs: [["funct", "+funct"], //function words. for testing.
-										["posemo", "+posemo"], //use cat names if they correspond!
-										["negemo", "+negemo"], 
-										["anger", "+anger"], 
-										["i", "+i"], 
-										["we", "+we"], 
-										["complexity", "+excl+tentat+negate-incl+discrep"],
-										["status", "+we-i"],
-										["depression", "+i+bio+negemo-posemo"],
-										["formality", "-i+article+sixltr-present-discrep"],
-										["honesty", "+i+excl-negemo"]],
-						tempVal: [0,0],
-						users: [common.users[0], common.users[1]],
-						total: [total1, total2],
-						timeDiff: new Date().getTime() - common.startTime
-					};
-				
-					calcCats(message);
-				
-				});
-				
+	console.log('send stats');
+
+	//JRO - adding suffix
+	common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
+		if (err) console.log(err);
+		else console.log('ok');
+		collection.find({userID:0}).count(function(err1, total1) {
+		if (err1) console.log(err1);
+		else console.log('ok');
+			collection.find({userID:1}).count(function(err2, total2) {
+		if (err2) console.log(err2);
+		else console.log('ok');
+	
+				console.log('STATS >> 1:'+total1+' 2:'+total2);
+	
+				var message = {
+					type: "stats",
+					calcs: [["funct", "+funct"], //function words. for testing.
+									["posemo", "+posemo"], //use cat names if they correspond!
+									["negemo", "+negemo"], 
+									["anger", "+anger"], 
+									["i", "+i"], 
+									["we", "+we"], 
+									["complexity", "+excl+tentat+negate-incl+discrep"],
+									["status", "+we-i"],
+									["depression", "+i+bio+negemo-posemo"],
+									["formality", "-i+article+sixltr-present-discrep"],
+									["honesty", "+i+excl-negemo"]],
+					tempVal: [0,0],
+					users: [common.users[0], common.users[1]],
+					total: [total1, total2],
+					timeDiff: new Date().getTime() - common.startTime
+				};
+			
+				calcCats(message);
+			
 			});
+			
 		});
-		
-	}
+	});
+	
 }
 
 function calcCats(msg) {
@@ -119,7 +123,7 @@ function calcCats(msg) {
 }
 
 function addVal(msg, modifier, name, val, remainder) {
-	//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
+	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
 

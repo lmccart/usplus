@@ -22,7 +22,7 @@ function getProcessingSketchId () { return 'PinTumbler'; }
            s4() + '-' + s4() + s4() + s4();
   }
 
-  var socket = io.connect('http://localhost'); // PEND fix to work for remote
+  var socket = io.connect();
   var userGuid = guid();
   socket.on('news', function (data) {
     console.log(data);

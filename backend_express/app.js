@@ -13,7 +13,6 @@ var stats = require('./statsHandler.js');
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
-  , https = require('https')
   , http = require('http')
   , path = require('path');
 
@@ -41,16 +40,9 @@ var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-https.createServer(options, app).listen(3100, function(){
-  console.log("Express server listening on port " + 3100);
-});
-
-
 
 common.io = require('socket.io').listen(server);
-common.io.configure(function () {
-  common.io.set('transports', ['websocket','flashsocket','xhr-polling']);
-});
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -117,28 +109,25 @@ var statIntervalID;
 
 
 
-function start() {
 
+// mongodb
+common.mongo.open(function(err, p_client) {
 
-	// mongodb
-	common.mongo.open(function(err, p_client) {
+  if (err) { throw err; }
+  console.log('mongo open');
 
-		// authenticate
-		if (common.config.mongo.user) {
-		  common.mongo.authenticate(common.config.mongo.user, common.config.mongo.pass, function(err, p_client) { 
-		  	console.log("authenticated");
-				common.initialized = true;
-	  		clearDB(common.db_suffix);
-		  }); 
-		} else {
+	// authenticate
+	if (common.config.mongo.user) {
+	  common.mongo.authenticate(common.config.mongo.user, common.config.mongo.pass, function(err, p_client) { 
+	  	console.log("authenticated");
 			common.initialized = true;
-	  	clearDB(common.db_suffix);
-	  }
-	});
-}
-
-// do it
-start();
+  		clearDB(common.db_suffix);
+	  }); 
+	} else {
+		common.initialized = true;
+  	clearDB(common.db_suffix);
+  }
+});
 
 
 function clearDB(dbSuffix)
