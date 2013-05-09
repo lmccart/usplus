@@ -6,6 +6,10 @@
       if (apiInitEvent.isApiReady) {
         //prepareAppDOM();
 
+
+        gapi.hangout.layout.displayNotice("testing", false);
+
+
         gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
           //updateLocalDataState(stateChangeEvent.state,
           //                     stateChangeEvent.metadata);

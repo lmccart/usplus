@@ -20,5 +20,7 @@ function manualInputSubmit() {
   socket.emit('event', {
     transcript: document.getElementById('manualInput').value,
     confidence: 1});
+
+
 }
 
