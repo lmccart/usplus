@@ -17,11 +17,13 @@
  */ -->
   <ModulePrefs title="Starter App">
     <Require feature="rpc"/>
+    <Require feature="views"/>
   </ModulePrefs>
   <Content type="html"><![CDATA[
   		<script type="text/javascript" src="//www.google.com/jsapi"></script>
  			<script type="text/javascript"
-      	src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4"></script>
+      	src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4&key=AIzaSyBgi_2gK6NPqMAj0QT1IZlrFFa9hnV8jYU"></script>
+			<script src="http://fixus.jit.su/javascripts/hangout.js"></script>
       <iframe src="http://fixus.jit.su/index.html" width="300" height="100%" scrolling=no frameborder=0></iframe>
     ]]></Content>
 </Module>

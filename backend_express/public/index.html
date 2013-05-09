@@ -2,37 +2,15 @@
 <!-- saved from url=(0054)http://www.google.com/intl/en/chrome/demos/speech.html -->
 <html class="js consumer chrome" lang="en" id="mac"><head>
 
+<script src="/socket.io/socket.io.js"> </script>
+<script src="/javascripts/fixus.js"> </script>
+
 <script src="/javascripts/processing.min.js" type="text/javascript"></script>
 <script type="text/javascript">
   // convenience function to get the id attribute of generated sketch html element
   function getProcessingSketchId () { return 'PinTumbler'; }
 </script>
 
-<script src="/socket.io/socket.io.js"> </script>
-<script>
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-               .toString(16)
-               .substring(1);
-  };
-
-  function guid() {
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-           s4() + '-' + s4() + s4() + s4();
-  }
-
-  var socket = io.connect();
-  var userGuid = guid();
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('set nickname', { name: userGuid });
-  });
-  function manualInputSubmit() {
-    socket.emit('event', {
-      transcript: document.getElementById('manualInput').value,
-      confidence: 1});
-  }
-</script>
 
 </head>
 <body class="" id="grid">
@@ -85,7 +63,7 @@
     </div>
   </div>
 
-    <canvas id="PinTumbler" data-processing-sources="PinTumbler.pde" width="1280" height="720"></canvas>
+    <canvas id="PinTumbler" data-processing-sources="ptest.pde" width="1280" height="720"></canvas>
 
   <script src="/javascripts/speech.js"></script>
   

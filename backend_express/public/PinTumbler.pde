@@ -1,60 +1,60 @@
 String categories[] = {
-"posemo",
-"negemo",
-"anger", 
-"complexity", 
-"status",
-"depression",
-"formality",
-"honesty"
+  "posemo",
+  "negemo",
+  "anger", 
+  "complexity", 
+  "status",
+  "depression",
+  "formality",
+  "honesty"
 };
 
+
 String lessCommand[] = {
-"Dial down the sunshine!",
-"Look on the bright side!",
-"Calm down, don't be such a dick!", 
-"Can't you say it clearly?",
-"Speak for yourself!",
-"Pull yourself out of it already!",
-"You elitist asshole.",
-"Nobody wants to read your diary!"
+  "Dial down the sunshine!",
+  "Look on the bright side!",
+  "Calm down, don't be such a dick!", 
+  "Can't you say it clearly?",
+  "Speak for yourself!",
+  "Pull yourself out of it already!",
+  "You elitist asshole.",
+  "Nobody wants to read your diary!"
 };
 
 String moreCommand[] = {
-"Look on the bright side!",
-"Dial down the sunshine!",
-"Grow a pair.", 
-"Thank you captain obvious.", 
-"It's not all about you all the time!",
-"You can't really be that happy.",
-"Who do you think you're talking to? Ever heard of manners?",
-"Be more honest! Fucking lying piece of shit!"
+  "Look on the bright side!",
+  "Dial down the sunshine!",
+  "Grow a pair.", 
+  "Thank you captain obvious.", 
+  "It's not all about you all the time!",
+  "You can't really be that happy.",
+  "Who do you think you're talking to? Ever heard of manners?",
+  "Be more honest! Fucking lying piece of shit!"
 };
 
 float baseScore = 1;
 float scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
-PFont font;
-
-String getCommand(int category, float balance) {
-  return (balance < .5 ? lessCommand : moreCommand)[category];
-}
 
 float scoresa[] = new float[categories.length];
 float scoresb[] = new float[categories.length];
 
 void setup() {
-  size(1280, 720);
+  size(300, 200);
   strokeWeight(3);
-  font = createFont("Arial", 32);
-  textFont(font);
   smooth();
+
+  for (int i=0; i<categories.length; i++) {
+    scoresa[i] = 0;
+    scoresb[i] = 0;
+  }
 }
 
 void draw() {
-  background(255);
+  background(255, 0, 0);
+
+    //fakeData();
   
-  //fakeData();
-  
+
   float totalScale = 0;
   float maxScale = 0;
   int maxScaleIndex = 0;
@@ -108,7 +108,13 @@ void draw() {
   
   stroke(128, 32);
   line(width / 2, 0, width / 2, height);
+  
 }
+
+String getCommand(int category, float balance) {
+  return (balance < .5 ? lessCommand : moreCommand)[category];
+}
+
 
 void fakeData() {
   float t = (millis() / 30000.);
