@@ -120,16 +120,16 @@ void fakeData() {
 }
 
 socket.on('stats', function (data) {
+  var flip = userGuid != data.users[0];
+  var usera = flip ? 1 : 0;
+  var userb = flip ? 0 : 1;
   console.log(data);
-  if(data.users[1] != undefined) {
-    var flip = userGuid != data.users[0];
-    var usera = flip ? 1 : 0;
-    var userb = flip ? 0 : 1;
-    for(var i = 0; i < categories.length; i++) {
-      scoresa[i] = baseScore + data[categories[i]][usera];
-      scoresb[i] = baseScore + data[categories[i]][userb];
-    }
+  //console.log("usera:"+usera+" userb:"+userb+" flip:"+flip+" userGuid:"+userGuid+" data.users[0]:"+data.users[0]);
+  for(var i = 0; i < categories.length; i++) {
+    scoresa[i] = (data.users[usera]) ? baseScore + data[categories[i]][usera] : baseScore;
+    scoresb[i] = (data.users[userb]) ? baseScore + data[categories[i]][userb] : baseScore;
   }
+  
   console.log(scoresa);
   console.log(scoresb);
 });
