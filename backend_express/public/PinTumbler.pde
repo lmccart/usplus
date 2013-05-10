@@ -39,6 +39,7 @@ float scoresa[] = new float[categories.length];
 float scoresb[] = new float[categories.length];
 
 void setup() {
+  console.log('setup');
   size(300, 200);
   strokeWeight(3);
   smooth();

@@ -21,9 +21,9 @@
   </ModulePrefs>
   <Content type="html"><![CDATA[
   		<script type="text/javascript" src="//www.google.com/jsapi"></script>
+		  <script type="text/javascript">google.load("jquery", "1.3.2");</script>
  			<script type="text/javascript"
       	src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4"></script>
 			<script src="//fixus.jit.su/javascripts/hangout.js"></script>
-      <iframe src="//fixus.jit.su/index.html" width="300" height="100%" scrolling=no frameborder=0></iframe>
     ]]></Content>
 </Module>

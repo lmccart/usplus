@@ -12,3 +12,9 @@ backend_express/node_modules/*
 backend_express/mongo_dump/*
 backend_express/cert.pem
 backend_express/key.pem
+
+backend_experimental/config*
+backend_experimental/node_modules/*
+backend_experimental/mongo_dump/*
+backend_experimental/cert.pem
+backend_experimental/key.pem

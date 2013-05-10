@@ -28,14 +28,11 @@ if (!('webkitSpeechRecognition' in window)) {
   // regularly feed the hysteresis object "off" in order to generate "end of speech" events
   setInterval(function() {speechHysteresis.update(false)}, 200);
 
-  socket.on('status', function (data) {
-    console.log(data);
-  });
-
   recognition.onstart = function() {
     recognizing = true;
     showInfo('info_speak_now');
     start_img.src = './img/mic-animate.gif';
+    console.log(gapi);
   };
 
   recognition.onerror = function(event) {
