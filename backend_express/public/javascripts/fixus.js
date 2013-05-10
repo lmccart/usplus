@@ -16,11 +16,14 @@ socket.on('news', function (data) {
   console.log(data);
   socket.emit('set nickname', { name: userGuid });
 });
+
+
+
 function manualInputSubmit() {
   socket.emit('event', {
     transcript: document.getElementById('manualInput').value,
     confidence: 1});
 
-
 }
 
+function getProcessingSketchId () { return 'PinTumbler'; }

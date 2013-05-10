@@ -136,7 +136,7 @@ socket.on('stats', function (data) {
     scoresb[i] = (data.users[userb]) ? baseScore + data[categories[i]][userb] : baseScore;
   }
 
-  gapi.hangout.layout.displayNotice(flip, true);
+  //gapi.hangout.layout.displayNotice(flip, true);
 
   
   console.log(scoresa);
