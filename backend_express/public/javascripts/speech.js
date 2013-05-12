@@ -31,18 +31,18 @@ if (!('webkitSpeechRecognition' in window)) {
   recognition.onstart = function() {
     recognizing = true;
     showInfo('info_speak_now');
-    start_img.src = './img/mic-animate.gif';
+    start_img.src = '//fixus.jit.su/img/mic-animate.gif';
     console.log(gapi);
   };
 
   recognition.onerror = function(event) {
     if (event.error == 'no-speech') {
-      start_img.src = './img/mic.gif';
+      start_img.src = '//fixus.jit.su/img/mic.gif';
       showInfo('info_no_speech');
       ignore_onend = true;
     }
     if (event.error == 'audio-capture') {
-      start_img.src = './img/mic.gif';
+      start_img.src = '//fixus.jit.su/img/mic.gif';
       showInfo('info_no_microphone');
       ignore_onend = true;
     }
@@ -61,7 +61,7 @@ if (!('webkitSpeechRecognition' in window)) {
     if (ignore_onend) {
       return;
     }
-    start_img.src = './img/mic.gif';
+    start_img.src = '//fixus.jit.su/img/mic.gif';
     if (!final_transcript) {
       showInfo('info_start');
       return;
@@ -137,7 +137,7 @@ function startButton(event) {
   ignore_onend = false;
   final_span.innerHTML = '';
   interim_span.innerHTML = '';
-  start_img.src = './img/mic-slash.gif';
+  start_img.src = '//fixus.jit.su/img/mic-slash.gif';
   showInfo('info_allow');
   start_timestamp = event.timeStamp;
 }
