@@ -140,11 +140,17 @@ function clearDB(dbSuffix)
   	common.fs.unlinkSync("/tmp/test.json");
   } catch (ex) { }
 
+
+  db.collection.isCapped()
+
+  var max_words = 100;
 	//clear out all the collections
 	common.mongo.collection("messages"+dbSuffix, function(err, collection) {
-		collection.remove(function(err, result) {});
+    collection.remove(function(err, result) {});
 	});
 	common.mongo.collection("word_instances"+dbSuffix, function(err, collection) {
+    if (!collection.isCapped())
+      common.mongo.runCommand({"convertToCapped": "word_instances", size: max_words});
 		collection.remove(function(err, result) {});
 	});
 	common.mongo.collection("sentence_instances"+dbSuffix, function(err, collection) {
@@ -154,6 +160,8 @@ function clearDB(dbSuffix)
 
 		collection.remove(function(err, result) {});
 	});
+
+  db.createCollection("mycoll", {capped:true, size:100000})
 	
 	//ngrams
 	for (var j=2; j<5; j++) {

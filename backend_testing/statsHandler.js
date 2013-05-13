@@ -36,11 +36,18 @@ function sendStats() {
 
 	//JRO - adding suffix
 	common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
-		collection.find({userID:0}).count(function(err1, total1) {
-			collection.find({userID:1}).count(function(err2, total2) {
+		collection.find({userID:0}).sort({_id:-1}).limit(10).toArray(function(err0, arr0) {
+			collection.find({userID:1}).limit(10).toArray(function(err1, arr1) {
 
-				console.log('STATS >> 1:'+total1+' 2:'+total2);
-	
+
+
+				console.log('STATS >> 1:'+arr0.length+' 2:'+arr1.length);
+				//console.log(arr0);
+				
+				var lastIDs = [];
+				lastIDs[0] = (arr0.length > 0) ? arr0[arr0.length-1]["_id"] : 0;
+				lastIDs[1] = (arr1.length > 1) ? arr1[arr1.length-1]["_id"] : 1;
+
 				var message = {
 					type: "stats",
 					calcs: [["funct", "+funct"], //function words. for testing.
@@ -56,7 +63,8 @@ function sendStats() {
 									["honesty", "+i+excl-negemo"]],
 					tempVal: [0,0],
 					users: [common.users[0], common.users[1]],
-					total: [total1, total2],
+					lastIDs: lastIDs,
+					total: [arr0.length, arr1.length],
 					timeDiff: new Date().getTime() - common.startTime
 				};
 			
@@ -101,9 +109,8 @@ function calcCats(msg) {
 			//JRO - adding db suffix
 			common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
 
-				collection.find({cats:catName, userID:0}).count(function(err, val1) {
-					collection.find({cats:catName, userID:1}).count(function(err, val2) {
-	
+				collection.find({cats:catName, userID:0, _id: {$gt : msg['lastIDs'][0]} }).count(function(err, val1) {
+					collection.find({cats:catName, userID:1, _id: {$gt : msg['lastIDs'][1]}}).count(function(err, val2) {
 						addVal(msg, traitModifier, traitName, [val1, val2], remainder);
 					});
 					
@@ -117,7 +124,7 @@ function calcCats(msg) {
 }
 
 function addVal(msg, modifier, name, val, remainder) {
-	console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
+	//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder+" "+msg['total']);
 
 	if (modifier === '-') val = [-1*val[0], -1*val[1]];
 
