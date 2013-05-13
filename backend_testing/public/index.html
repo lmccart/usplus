@@ -91,7 +91,7 @@ body {
 }
 </style>
 <div id="feedback"></div>
-<div id="command"></div>c
+<div id="command"></div>
 
 <script type="text/javascript">
 var categories = [
@@ -190,7 +190,7 @@ function draw() {
     $('#your'+category).height(curHeight);
     
     if(i == maxScaleIndex) {
-      //$('#command').(getCommand(i, balances[i]), width / 2, y + curHeight / 2);
+      $('#command').text(getCommand(i, balances[i]));
     }
   }
   /*
