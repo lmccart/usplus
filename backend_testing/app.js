@@ -144,6 +144,7 @@ function clearDB(dbSuffix)
 	common.mongo.collection("messages"+dbSuffix, function(err, collection) {
 		collection.remove(function(err, result) {});
 	});
+
 	common.mongo.collection("word_instances"+dbSuffix, function(err, collection) {
 		collection.remove(function(err, result) {});
 	});
