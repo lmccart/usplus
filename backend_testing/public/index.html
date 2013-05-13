@@ -64,14 +64,34 @@
   <script src="/javascripts/speech.js"></script>
 
 <style>
+body {
+  font-family: sans-serif;
+}
+#command {
+
+}
 #feedback {
   width: 300px;
   height: 200px;
   background-color: rgb(128, 128, 128);
-  font-family: sans-serif;
+}
+.category {
+
+}
+.score {
+  float: left;
+  width: 50%;
+}
+.mine {
+  clear: both;
+  background-color: rgb(230, 230, 230);
+}
+.yours {
+  background-color: rgb(192, 192, 192);
 }
 </style>
-<div id="feedback">Feedback here</div>
+<div id="feedback"></div>
+<div id="command"></div>c
 
 <script type="text/javascript">
 var categories = [
@@ -127,8 +147,11 @@ setup();
 draw();
 
 function setup() {
+  var height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
-    $('#feedback').append("<div class=''>"+categories[i]+"</div>");
+    var category = categories[i];
+    $('#feedback').append("<div class='category'><div class='score mine' id='my"+category+"'>"+category+"</div><div class='score yours' id='your"+category+"'></div></div>");
+    $('.score').css('height', height / categories.length);
   }
 }
 
@@ -154,29 +177,21 @@ function draw() {
     }
   }
 
-  var y = 0;
+  var width = $('#feedback').width();
+  var height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
-    /*
     var curHeight = height * (scales[i] / totalScale);
     var widtha = balances[i] * width;
     var widthb = width - widtha;
-    noStroke();
-    fill(230);
-    rect(0, y, widtha, curHeight);
-    fill(192);
-    rect(widtha, y, widthb, curHeight);
-    stroke(250);
-    line(0, y, width, y);
-    stroke(64);
-    textAlign(LEFT, TOP);
-    text(categories[i], 10, y + 10);
+    var category = categories[i];
+    $('#my'+category).width(widtha);
+    $('#my'+category).height(curHeight);
+    $('#your'+category).width(widthb);
+    $('#your'+category).height(curHeight);
+    
     if(i == maxScaleIndex) {
-      textAlign(CENTER, CENTER);
-      fill(0);
-      text(getCommand(i, balances[i]), width / 2, y + curHeight / 2);
+      //$('#command').(getCommand(i, balances[i]), width / 2, y + curHeight / 2);
     }
-    y += curHeight;
-    */
   }
   /*
   noStroke();
@@ -205,6 +220,7 @@ socket.on('stats', function (data) {
     scoresa[i] = (data.users[usera]) ? baseScore + data[categories[i]][usera] : baseScore;
     scoresb[i] = (data.users[userb]) ? baseScore + data[categories[i]][userb] : baseScore;
   }
+  draw();
 
   //gapi.hangout.layout.displayNotice(flip, true);
 
