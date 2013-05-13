@@ -36,8 +36,8 @@ function sendStats() {
 
 	//JRO - adding suffix
 	common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
-		collection.find({userID:0}).sort({_id:-1}).limit(10).toArray(function(err0, arr0) {
-			collection.find({userID:1}).limit(10).toArray(function(err1, arr1) {
+		collection.find({userID:0}).sort({_id:-1}).limit(100).toArray(function(err0, arr0) {
+			collection.find({userID:1}).sort({_id:-1}).limit(100).toArray(function(err1, arr1) {
 
 
 
