@@ -68,19 +68,22 @@ body {
   font-family: sans-serif;
 }
 #command {
-
+  margin: 10px;
 }
 #feedback {
-  width: 300px;
+  margin: 10px;
+  width: 400px;
   height: 200px;
   background-color: rgb(128, 128, 128);
 }
 .category {
-
 }
 .score {
+  margin: -1px;
+  border: 1px solid rgb(128, 128, 128);
   float: left;
   width: 50%;
+  color: rgb(128, 128, 128);
 }
 .mine {
   clear: both;
@@ -89,8 +92,17 @@ body {
 .yours {
   background-color: rgb(192, 192, 192);
 }
+#overlay {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-right: 1px solid black;
+}
 </style>
-<div id="feedback"></div>
+
+<div id="feedback">
+  <div id="overlay"></div>
+</div>
 <div id="command"></div>
 
 <script type="text/javascript">
@@ -179,6 +191,8 @@ function draw() {
 
   var width = $('#feedback').width();
   var height = $('#feedback').height();
+  $('#overlay').width(width / 2 - 1);
+  $('#overlay').height(height);
   for(var i = 0; i < categories.length; i++) {
     var curHeight = height * (scales[i] / totalScale);
     var widtha = balances[i] * width;
@@ -188,22 +202,8 @@ function draw() {
     $('#my'+category).height(curHeight);
     $('#your'+category).width(widthb);
     $('#your'+category).height(curHeight);
-    
-    if(i == maxScaleIndex) {
-      $('#command').text(getCommand(i, balances[i]));
-    }
   }
-  /*
-  noStroke();
-  fill(0, 128);
-  textAlign(LEFT, BOTTOM);
-  text("you", 10, height - 10); 
-  textAlign(RIGHT, BOTTOM);
-  text("them", width - 10, height - 10);
-  
-  stroke(128, 32);
-  line(width / 2, 0, width / 2, height);
-  */
+  $('#command').text(getCommand(maxScaleIndex, balances[maxScaleIndex]));
 }
 
 function getCommand(category, balance) {
