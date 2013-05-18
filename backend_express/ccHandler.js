@@ -69,7 +69,6 @@ function handleWord(user, w, callback)
 	//console.log("HANDLE WORD "+w+" user "+user);
 	var curWordID = new common.mongo.bson_serializer.ObjectID(); 
 	var curTime = new Date().getTime();
-	var timeDiff = curTime - common.startTime;
 	
 	common.lastCCTime = curTime;
 
@@ -81,26 +80,21 @@ function handleWord(user, w, callback)
 		  	getCats(w, cb);
 	    },
 
-	    function(cats, cb) { // log unique word
-		    //console.log("cats "+cats);
-		    logUniqueWord(curWordID, w, cats, cb);
-	    },
-
-	    function(uniqueWDoc, cb) { // log word instance
+	    function(cats, cb) { // log word instance
 		    //console.log("uniqueWDoc "+uniqueWDoc);
-	   		logWordInstance(user, curWordID, uniqueWDoc, timeDiff, cb);
+	   		logWordInstance(user, curWordID, w, cats, cb);
 	   	},
 
-	    function(uniqueWDoc, cb) { // process 4 grams
-				processNGrams(4, timeDiff, user, curWordID, uniqueWDoc, [], cb);
+	    function(cb) { // process 4 grams
+				processNGrams(4, user, curWordID, w, [], cb);
 			},
 
-	    function(uniqueWDoc, ngrams, cb) { // process 3 grams
-				processNGrams(3, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
+	    function(ngrams, cb) { // process 3 grams
+				processNGrams(3, user, curWordID, w, ngrams, cb);
 			},
 
-	    function(uniqueWDoc, ngrams, cb) { // process 2 grams
-				processNGrams(2, timeDiff, user, curWordID, uniqueWDoc, ngrams, cb);
+	    function(ngrams, cb) { // process 2 grams
+				processNGrams(2, user, curWordID, w, ngrams, cb);
 			},
 		function() {
 			callback();
@@ -157,45 +151,29 @@ function getCats(w, cb) {
 	});
 }
 
-function logUniqueWord(wordID, w, cats, cb) {
 
-	//console.log('logUniqueWord:' + w);
-	common.mongo.collection('unique_words'+common.db_suffix, function(err, collection) { 
-		// upsert unique_words
-		collection.findAndModify(
-			{word: w}, 
-			[['_id','asc']], 
-			{$push: {wordInstanceIDs: wordID}, $set: {cats: cats}},
-			{upsert:true, new:true},
-			function(err, object) {
-				//console.log("object "+object);
-				cb(null, object);
-		});
-	});
-}
 
-function logWordInstance(user, wordID, uniqueWDoc, time, cb) {
+function logWordInstance(user, wordID, word, cats, cb) {
 	//console.log('logWordInstance');
 	// insert into word_instances with cats
 	common.mongo.collection('word_instances'+common.db_suffix, function(err, collection) {
 		// insert into word_instances
 		var doc = {
 			_id: wordID,
-			word: uniqueWDoc.word,
+			word: word,
 			userID: user,
-			cats: uniqueWDoc.cats,
-			timeDiff: time
+			cats: cats
 		}
 
 		collection.insert(doc, function(e, c) {
 			console.log('word logged');
 		});
-		cb(null, uniqueWDoc);
+		cb(null);
 	});
 }
 
 
-function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
+function processNGrams(l, user, wID, word, ngrams, cb) {
 
 	//console.log('processNGrams');
 
@@ -205,9 +183,9 @@ function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
 	else if (l == 4) curGram = cur4Gram;
 
 	// check for 2grams
-	if (curGram.length == l && (uniqueWDoc.word != 'Undefined') && (uniqueWDoc.word != 'undefined')) {
+	if (curGram.length == l && (word != 'Undefined') && (word != 'undefined')) {
 		curGram.shift();
-		curGram.push(uniqueWDoc.word);
+		curGram.push(word);
 		common.mongo.collection('unique_'+l+'grams'+common.db_suffix, function(e, c) {
 			c.findAndModify(
 				{ngram: curGram, userID:user},
@@ -221,13 +199,13 @@ function processNGrams(l, t, user, wID, uniqueWDoc, ngrams, cb) {
 					if(object.wordInstanceIDs.length >= minNGramOccurrences) {
 						ngrams.push([object._id, object.wordInstanceIDs.length]);
 					}
-					cb(null, uniqueWDoc, ngrams);
+					cb(null, ngrams);
 				}
 			);
 		});
 	} else {
-		curGram.push(uniqueWDoc.word);
-		cb(null, uniqueWDoc, ngrams);
+		curGram.push(word);
+		cb(null, ngrams);
 	}
 }
 
@@ -245,24 +223,18 @@ function checkNGram(i, msg) {
 	}
 }
 
-function sendNewNGram(t, user, nid, n, nInstances) {
+function sendNewNGram(user, nid, n, nInstances) {
 	
 	var message = {
 		type: "newNGram",
 		user: user,
-		timeDiff: t,
 		dbid: nid,
 		ngram: n, 
 		instances: nInstances
 	};
   checkNGram(0, message);
-  // todo: add ngrams back in
-  //common.sendMessage(message, true);
 }
 
 
-
-//exposing this to for debugging and testing
-//TODO: make private once tested
 exports.parseWords = parseWords;
 exports.handleChars = handleChars;

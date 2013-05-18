@@ -54,58 +54,52 @@ if ('development' == app.get('env')) {
 
 common.io.sockets.on('connection', function (socket) {
 
-	
+  
   socket.emit('news', { hello: 'world' });
   
   socket.on('set nickname', function (data) {
     socket.set('nickname', data.name, function () {
       socket.emit('ready');
       if (common.users.length > 2) {
-      	console.log('error adding user, already 2 sockets open with names '+common.users[0]+' '+common.users[1]);
+        console.log('error adding user, already 2 sockets open with names '+common.users[0]+' '+common.users[1]);
       }
       else if (common.users.indexOf(data.name) == -1) {
-      	console.log("adding name "+data.name+" user:"+common.users.length);
-      	common.users.push(data.name);
+        console.log("adding name "+data.name+" user:"+common.users.length);
+        common.users.push(data.name);
       }
     });
   });
 
   socket.on('event', function (data) {
     socket.get('nickname', function (err, name) {
-    	var ind = common.users.indexOf(name);
-    	if (ind !== -1) {
-	    	console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
-				cc.handleChars(' '+data.transcript+' ', ind, stats.sendStats);
-				stats.sendStats();
-			} else console.log("unrecognized nickname "+name)
+      var ind = common.users.indexOf(name);
+      if (ind !== -1) {
+        console.log('event: '+data.transcript+' ('+data.confidence+') by '+name);
+        cc.handleChars(' '+data.transcript+' ', ind, stats.sendStats);
+        stats.sendStats();
+      } else console.log("unrecognized nickname "+name)
     });
   });
 
   socket.on('speaking', function (data) {
     socket.get('nickname', function (err, name) {
-    	if (common.users.indexOf(name) !== -1) {
-     		console.log('speaking: ' + data.status + ' by'+name);
-     	} else console.log("unrecognized nickname "+name)
+      if (common.users.indexOf(name) !== -1) {
+        console.log('speaking: ' + data.status + ' by'+name);
+      } else console.log("unrecognized nickname "+name)
     });
   });
 
 
   socket.on("disconnect", function(s) {
     socket.get('nickname', function (err, name) {
-    	var ind = common.users.indexOf(name);
-    	if (ind !== -1) {
-    		common.users.splice(ind, 1);
-    	}
+      var ind = common.users.indexOf(name);
+      if (ind !== -1) {
+        common.users.splice(ind, 1);
+      }
      console.log("Disconnected " + name);
    });
   });            
 });
-
-
-var ccSocket; 
-var ind, nextInd;
-var charIntervalID;
-var statIntervalID;
 
 
 
@@ -116,16 +110,16 @@ common.mongo.open(function(err, p_client) {
   if (err) { throw err; }
   console.log('mongo open');
 
-	// authenticate
-	if (common.config.mongo.user) {
-	  common.mongo.authenticate(common.config.mongo.user, common.config.mongo.pass, function(err, p_client) { 
-	  	console.log("authenticated");
-			common.initialized = true;
-  		clearDB(common.db_suffix);
-	  }); 
-	} else {
-		common.initialized = true;
-  	clearDB(common.db_suffix);
+  // authenticate
+  if (common.config.mongo.user) {
+    common.mongo.authenticate(common.config.mongo.user, common.config.mongo.pass, function(err, p_client) { 
+      console.log("authenticated");
+      common.initialized = true;
+      clearDB(common.db_suffix);
+    }); 
+  } else {
+    common.initialized = true;
+    clearDB(common.db_suffix);
   }
 });
 
@@ -133,34 +127,25 @@ common.mongo.open(function(err, p_client) {
 function clearDB(dbSuffix)
 {
 
-	console.log('Clear DB:' + dbSuffix);	
+  console.log('Clear DB:' + dbSuffix);  
 
   // Remove the file.
   try {
-  	common.fs.unlinkSync("/tmp/test.json");
+    common.fs.unlinkSync("/tmp/test.json");
   } catch (ex) { }
 
-	//clear out all the collections
-	common.mongo.collection("messages"+dbSuffix, function(err, collection) {
+  //clear out all the collections
+  common.mongo.collection("words"+dbSuffix, function(err, collection) {
     collection.remove(function(err, result) {});
-	});
-	common.mongo.collection("word_instances"+dbSuffix, function(err, collection) {
-		collection.remove(function(err, result) {});
-	});
-	common.mongo.collection("sentence_instances"+dbSuffix, function(err, collection) {
-		collection.remove(function(err, result) {});
-	});
-	common.mongo.collection("unique_words"+dbSuffix, function(err, collection) {
+  });
 
-		collection.remove(function(err, result) {});
-	});
-	
-	//ngrams
-	for (var j=2; j<5; j++) {
-		common.mongo.collection("unique_"+j+"grams"+dbSuffix, function(err, collection) {
-			collection.remove(function(err, result) {});
-		});
-	}
+  
+  //ngrams
+  for (var j=2; j<5; j++) {
+    common.mongo.collection("unique_"+j+"grams"+dbSuffix, function(err, collection) {
+      collection.remove(function(err, result) {});
+    });
+  }
 }
 
 

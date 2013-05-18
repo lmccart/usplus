@@ -64,8 +64,7 @@ function sendStats() {
 					tempVal: [0,0],
 					users: [common.users[0], common.users[1]],
 					lastIDs: lastIDs,
-					total: [arr0.length, arr1.length],
-					timeDiff: new Date().getTime() - common.startTime
+					total: [arr0.length, arr1.length]
 				};
 			
 				calcCats(message);

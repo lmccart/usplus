@@ -102,12 +102,6 @@ common.io.sockets.on('connection', function (socket) {
 });
 
 
-var ccSocket; 
-var ind, nextInd;
-var charIntervalID;
-var statIntervalID;
-
-
 
 
 // mongodb
@@ -141,20 +135,10 @@ function clearDB(dbSuffix)
   } catch (ex) { }
 
 	//clear out all the collections
-	common.mongo.collection("messages"+dbSuffix, function(err, collection) {
+	common.mongo.collection("words"+dbSuffix, function(err, collection) {
 		collection.remove(function(err, result) {});
 	});
 
-	common.mongo.collection("word_instances"+dbSuffix, function(err, collection) {
-		collection.remove(function(err, result) {});
-	});
-	common.mongo.collection("sentence_instances"+dbSuffix, function(err, collection) {
-		collection.remove(function(err, result) {});
-	});
-	common.mongo.collection("unique_words"+dbSuffix, function(err, collection) {
-
-		collection.remove(function(err, result) {});
-	});
 	
 	//ngrams
 	for (var j=2; j<5; j++) {

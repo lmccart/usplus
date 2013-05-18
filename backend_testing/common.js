@@ -37,19 +37,6 @@ var MongoServer = require('mongodb').Server;
 var mongo = new Db(config.mongo.db, new MongoServer(config.mongo.host, config.mongo.port, {strict:true, auto_reconnect:true}), {w: 1});
 
 var db_suffix = '_scratch';
-var socket = '';
-
-function sendMessage(msg) {
-
-	io.sockets.emit('stats', msg);
-
-}
-
-function setSocket(socket) {
-	socket = socket;
-	module.exports.socket = socket;
-}
-
 
 module.exports = {
 
@@ -58,13 +45,6 @@ module.exports = {
 	url : require('url'),
 	net : require('net'),
 	fs : require('fs'),	
-	
-	//JRO - now setting start time when you unlock a db
-	startTime : new Date(2012, 9, 22, 21), //defaults to third debate right now
-	
-	lastCCTime : new Date().getTime(),
-	
-	sendMessage : sendMessage,
 
 	mongo : mongo,
  	async : require('async'),
@@ -74,10 +54,7 @@ module.exports = {
  	// is it initialized
  	initialized : false,
 
- 	socket: "",
- 	setSocket: setSocket,
-
  	users: [],
- 	io: []
+ 	sessions: []
 };
 
