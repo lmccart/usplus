@@ -149,7 +149,7 @@ function start() {
   draw();
 
   function getCommand(category, balance) {
-    return (balance < .5 ? lessCommand : moreCommand)[category];
+    return (balance > .5 ? lessCommand : moreCommand)[category];
   }
 
   socket.on('stats', function (data) {
