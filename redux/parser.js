@@ -6,7 +6,7 @@ var Parser = function(db) {
 
 	return {
 	
-		initialize: function(callback) {
+		initialize: function() {
 			// making two tables for LIWC because it's faster
 		
 			// load non-wild table if needed
@@ -35,18 +35,16 @@ var Parser = function(db) {
 					  	console.log("loaded wild "+json.length);
 					  	db.commit();
 					  	
-					  	// call callback fxn
-					  	callback();
 					  });
-					} else callback();
+					} 
 		
 			  });
-		 } else callback();
+		 } 
 		}, 
 	
 		parseLine: function(line) {
 		
-			//console.log(line);
+			console.log(line);
 			var spaceRegEx = new RegExp(/\S{1,}/g);
 			var numberRegEx = new RegExp(/\d{1,}.{1,}\d{1,}/);
 			var abbrevRegEx = new RegExp(/\w{1,}[\'|\-]\w{1,}/); //JRO edit\
@@ -63,7 +61,6 @@ var Parser = function(db) {
 				if (tokens[i] !== "") 
 				{
 					var tok = tokens[i];
-					//if (print) console.log(tok);
 					
 					var word = null;
 					// pull any numbers	
@@ -93,7 +90,7 @@ var Parser = function(db) {
 						word = word.toString();
 						var cats = this.getCats(word.toString());
 						statsHandler.logWordInstance(word, cats);
-						var msg = {type: "word", time:curTime, word:word, cats:this.getCats(word)};
+						var msg = {type: "word", word:word, cats:cats};
 						// send message
 						handleMessage(msg);
 					}
@@ -102,7 +99,7 @@ var Parser = function(db) {
 			}
 			
 			// calculate stats for the line
-			statsHandler.doStats(start+dur);
+			statsHandler.doStats();
 		},
 		
 		getCats: function(w) {

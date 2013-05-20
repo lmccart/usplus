@@ -42,7 +42,7 @@ var StatsHandler = function(db) {
 			//console.log("w:"+word+" c:"+cats);
 		},
 	
-		doStats: function(time) {
+		doStats: function() {
 	
 			var total = db.rowCount("word_instances");
 			
@@ -60,8 +60,7 @@ var StatsHandler = function(db) {
 								["formality", "-i+article+sixltr-present-discrep"],
 								["honesty", "+i+excl-negemo"]],
 				tempVal: 0,
-				total: db.rowCount("word_instances"),
-				time: time
+				total: db.rowCount("word_instances")
 			};
 		
 			this.calcCats(message);
