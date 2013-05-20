@@ -181,9 +181,6 @@ function map(x, inmin, inmax, outmin, outmax) {
 }
 
 function manualInputSubmit() {
-    console.log(socket);
-  socket.emit('event', {
-    transcript: document.getElementById('manualInput').value,
-    confidence: 1});
-
+  console.log(socket);
+  handleMessage(document.getElementById('manualInput').value)
 }
