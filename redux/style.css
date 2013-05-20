@@ -1,0 +1,26 @@
+body {
+  font-family: sans-serif;
+}
+#command {
+
+}
+#feedback {
+	margin-top: 60px;
+  width: 300px;
+  height: 200px;
+  background-color: rgb(128, 128, 128);
+}
+.category {
+
+}
+.score {
+  float: left;
+  width: 50%;
+}
+.mine {
+  clear: both;
+  background-color: rgb(230, 230, 230);
+}
+.yours {
+  background-color: rgb(192, 192, 192);
+}
