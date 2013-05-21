@@ -1,42 +1,6 @@
 var db = new localStorageDB("db", localStorage);;
 var parser = Parser(db);
-
-
-// wait until hangout ready then load everything
-var gapi = null;
-if (gapi && gapi.hangout) {
-
-  var initHangout = function(apiInitEvent) {
-    if (apiInitEvent.isApiReady) {
-      //prepareAppDOM();
-
-      console.log("hangout ready");
-
-      start();
-
-      gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
-      });
-      gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
-      });
-
-      gapi.hangout.onApiReady.remove(initHangout);
-    }
-  };
-
-  gapi.hangout.onApiReady.add(initHangout);
-}
-
-
-function start() {
-  console.log('start');
-
-  startSpeech();
-
-  parser.initialize();
-
-  draw();
-
-}
+var height;
 
 
 var categories = [
@@ -84,13 +48,52 @@ for (var i=0; i<categories.length; i++) {
 }
 
 
-// setup
-var height = $('#feedback').height();
-for(var i = 0; i < categories.length; i++) {
-  var category = categories[i];
-  $('#feedback').append("<div class='category'><div class='score mine' id='my"+category+"'>"+category+"</div><div class='score yours' id='your"+category+"'></div></div>");
-  $('.score').css('height', height / categories.length);
+// wait until hangout ready then load everything
+if (gapi && gapi.hangout) {
+
+  var initHangout = function(apiInitEvent) {
+    if (apiInitEvent.isApiReady) {
+      //prepareAppDOM();
+
+      console.log("hangout ready");
+
+      start();
+
+      gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
+      });
+      gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
+      });
+
+      gapi.hangout.onApiReady.remove(initHangout);
+    }
+  };
+
+  gapi.hangout.onApiReady.add(initHangout);
 }
+
+$(window).load(function() {
+  console.log('window load');
+
+  // setup
+  height = $('#feedback').height();
+  for(var i = 0; i < categories.length; i++) {
+    var category = categories[i];
+    $('#feedback').append("<div class='category'><div class='score mine' id='my"+category+"'>"+category+"</div><div class='score yours' id='your"+category+"'></div></div>");
+    $('.score').css('height', height / categories.length);
+  }
+
+
+  startSpeech();
+  draw();
+});
+
+function start() {
+  console.log('start');
+  parser.initialize();
+}
+
+
+
 
 
 function draw() {
