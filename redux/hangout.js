@@ -181,6 +181,5 @@ function map(x, inmin, inmax, outmin, outmax) {
 }
 
 function manualInputSubmit() {
-  console.log(socket);
-  handleMessage(document.getElementById('manualInput').value)
+  parser.parseLine(document.getElementById('manualInput').value)
 }
