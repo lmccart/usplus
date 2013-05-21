@@ -1,0 +1,10 @@
+application: lmccart-fixus
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+# Set cache duration to 0 for development
+default_expiration: "0m"
+handlers:
+- url: /static
+  static_dir: static
