@@ -90,9 +90,9 @@ var Parser = function(db) {
 						word = word.toString();
 						var cats = this.getCats(word.toString());
 						statsHandler.logWordInstance(word, cats);
-						var msg = {type: "word", word:word, cats:cats};
+						// var msg = {type: "word", word:word, cats:cats};
 						// send message
-						handleMessage(msg);
+						// handleMessage(msg);
 					}
 
 				}
