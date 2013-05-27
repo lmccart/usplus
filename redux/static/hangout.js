@@ -1,5 +1,6 @@
 var db = new localStorageDB("db", localStorage);;
 var parser = Parser(db);
+parser.initialize();
 var height;
 
 
@@ -39,15 +40,6 @@ var moreCommand = [
 var baseScore = 1;
 var scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 
-var scoresa = new Array(categories.length);
-var scoresb = new Array(categories.length);
-
-for (var i=0; i<categories.length; i++) {
-  scoresa[i] = 0;
-  scoresb[i] = 0;
-}
-
-
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
 
@@ -56,8 +48,6 @@ if (gapi && gapi.hangout) {
       //prepareAppDOM();
 
       console.log("hangout ready");
-
-      start();
 
       // init data vals
       gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", "0");
@@ -90,17 +80,8 @@ $(window).load(function() {
     $('#feedback').append("<div class='category'><div class='score mine' id='my"+category+"'>"+category+"</div><div class='score yours' id='your"+category+"'></div></div>");
     $('.score').css('height', height / categories.length);
   }
-
-
   startSpeech();
-  draw();
 });
-
-function start() {
-  console.log('start');
-  parser.initialize();
-}
-
 
 
 
@@ -111,10 +92,27 @@ function draw() {
   var maxScaleIndex = 0;
   var balances = new Array(categories.length);
   var scales = new Array(categories.length);
+
   for(var i = 0; i < categories.length; i++) {
-    var totalScore = scoresa[i] + scoresb[i];
+
+    console.log(gapi.hangout.getLocalParticipantId());
+    var myScore = parseFloat(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i]));
+    // pend: should this be stored instead of looked up each time?
+    var yourID = "";
+    var participants = gapi.hangout.getParticipants();
+    for (var i=0; i<participants.length; i++) {
+      console.log(participants[i].id);
+      //if (participants[i].id != gapi.hangout.getLocalParticipantId()) {
+      //  yourID = participants[i].id;
+      //  break;
+      //}
+    }
+
+    /*
+    var yourScore = yourID ? parseFloat(gapi.hangout.data.getValue(yourID+"-"+categories[i])) : baseScore;
+    var totalScore = myScore+yourScore;
     if(totalScore > 0) {
-      balances[i] = scoresa[i] / totalScore;
+      balances[i] = myScore / totalScore;
     } else {
       balances[i] = .5;
     }
@@ -124,7 +122,7 @@ function draw() {
     if(scales[i] > maxScale) {
       maxScale = scales[i];
       maxScaleIndex = i;
-    }
+    }*/
   }
 
   var width = $('#feedback').width();
@@ -158,10 +156,8 @@ function handleMessage(msg) {
   if (msg.type == 'stats') {
     console.log(msg);
     for(var i = 0; i < categories.length; i++) {
-      scoresa[i] = baseScore + msg[categories[i]];
       console.log(gapi.hangout.getLocalParticipantId()+"-"+categories[i]);
-      console.log(scoresa[i]);
-      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i], String(scoresa[i]));
+      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i], String(msg[categories[i]]));
     }
   }
   else if (msg.type == 'wordcount') {
@@ -180,7 +176,7 @@ function handleMessage(msg) {
 
 function handleStateChange(ev) {
   console.log('state changed');
-  console.log(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"));
+  //console.log(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
   draw();
