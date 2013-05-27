@@ -62,6 +62,9 @@ if (gapi && gapi.hangout) {
       // init data vals
       gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", "0");
       gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-st", "0");
+      for (var i=0; i<categories.length; i++) {
+        gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i], String(baseScore));
+      }
 
       // attach listeners
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
