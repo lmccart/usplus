@@ -60,6 +60,7 @@ if (gapi && gapi.hangout) {
       start();
 
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
+        handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
       });
@@ -147,25 +148,25 @@ function handleMessage(msg) {
   console.log(msg);
 
   if (msg.type == 'stats') {
-    var flip = userGuid != data.users[0];
-    var usera = flip ? 1 : 0;
-    var userb = flip ? 0 : 1;
-    console.log(data);
-    //console.log("usera:"+usera+" userb:"+userb+" flip:"+flip+" userGuid:"+userGuid+" data.users[0]:"+data.users[0]);
+    console.log(msg);
     for(var i = 0; i < categories.length; i++) {
-      scoresa[i] = (data.users[usera]) ? baseScore + data[categories[i]][usera] : baseScore;
-      scoresb[i] = (data.users[userb]) ? baseScore + data[categories[i]][userb] : baseScore;
+      scoresa[i] = baseScore + msg[categories[i]];
+      console.log(gapi.hangout.getLocalParticipantId()+"-"+categories[i]);
+      console.log(scoresa[i]);
+      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+categories[i], String(scoresa[i]));
     }
 
-    //gapi.hangout.layout.displayNotice(flip, true);
-
-    console.log(scoresa);
-    console.log(scoresb);
-
-
-    draw();
   }
 }
+
+function handleStateChange(ev) {
+  console.log('state changed');
+  //gapi.hangout.layout.displayNotice(flip, true);
+
+  draw();
+}
+
+
 
 function s4() {
   return Math.floor((1 + Math.random()) * 0x10000)
