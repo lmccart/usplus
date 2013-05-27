@@ -5,6 +5,7 @@ var recognizing = false;
 var ignore_onend;
 var start_timestamp;
 var recognition, speechHysteresis;
+var speechStartTime = 0;
 
 function startSpeech() {
 
@@ -23,10 +24,14 @@ function startSpeech() {
     speechHysteresis.fallingDelay = 1000;
     speechHysteresis.ontrigger = function() {
       console.log("trigger");
+      speechStartTime = new Date().getTime();
       //socket.emit('speaking', { status: true});
     };
     speechHysteresis.onuntrigger = function() {
       console.log("untrigger");
+      var t = new Date().getTime() - speechStartTime;
+      msg = {type: 'speechtime', time:t};
+      handleMessage(msg);
       //socket.emit('speaking', { status: false});
     };
     // regularly feed the hysteresis object "off" in order to generate "end of speech" events

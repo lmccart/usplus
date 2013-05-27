@@ -61,6 +61,7 @@ if (gapi && gapi.hangout) {
 
       // init data vals
       gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", "0");
+      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-st", "0");
 
       // attach listeners
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
@@ -165,27 +166,21 @@ function handleMessage(msg) {
     count += msg.count;
     gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", String(count));
   }
+  else if (msg.type == 'speechtime') {
+    var time = parseInt(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"), 10);
+    time += msg.time;
+    gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-st", String(time));
+  }
+  
+
 }
 
 function handleStateChange(ev) {
   console.log('state changed');
-  //console.log(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-wc"));
+  console.log(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
   draw();
-}
-
-
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-             .toString(16)
-             .substring(1);
-};
-
-function guid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-         s4() + '-' + s4() + s4() + s4();
 }
 
 
