@@ -48,6 +48,8 @@ var Parser = function(db) {
 			// add words to sentence
 			//split input string with RegExo
 			var tokens = line.match(spaceRegEx);
+			var msg = {type: "wordcount", count:tokens.length};
+			handleMessage(msg);
 
 			for (i in tokens) //JRO - hack to only process one token at a time
 			{
