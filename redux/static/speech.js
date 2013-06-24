@@ -99,10 +99,8 @@ function startSpeech() {
           final_transcript += event.results[i][0].transcript;
           final_transcript += "(" + event.results[i][0].confidence + ")";
 
-          // lmccart - send msg to socket
           console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
           parser.parseLine(event.results[i][0].transcript);
-          //socket.emit('event', { transcript: event.results[i][0].transcript, confidence: event.results[i][0].confidence});
 
         } else {
           interim_transcript += "|";

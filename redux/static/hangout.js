@@ -91,7 +91,7 @@ $(window).load(function() {
   height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
     var category = categories[i];
-    $('#feedback').append("<div class='category'><div class='score mine' id='my"+category+"'>"+category+"</div><div class='score yours' id='your"+category+"'></div></div>");
+    $('#feedback').append("<div class='category'><div class='score local' id='local"+category+"'>"+category+"</div><div class='score other' id='other"+category+"'></div></div>");
     $('.score').css('height', height / categories.length);
   }
   startSpeech();
@@ -141,10 +141,10 @@ function draw() {
     var widtha = balances[i] * width;
     var widthb = width - widtha;
     var category = categories[i];
-    $('#my'+category).width(widtha);
-    $('#my'+category).height(curHeight);
-    $('#your'+category).width(widthb);
-    $('#your'+category).height(curHeight);
+    $('#local'+category).width(widtha);
+    $('#local'+category).height(curHeight);
+    $('#other'+category).width(widthb);
+    $('#other'+category).height(curHeight);
     
     if(i == maxScaleIndex) {
       $('#command').text(getCommand(i, balances[i]));
