@@ -66,6 +66,7 @@ if (gapi && gapi.hangout) {
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
+        var idFound = false;
         for (var i=0; i<participants.length; i++) {
           if (participants[i].id != localID) {
             otherID = participants[i].id;
@@ -73,6 +74,7 @@ if (gapi && gapi.hangout) {
             break;
           }
         }
+        if (!idFound) otherID = ""; // reset to empty if no other participant
       });
 
       gapi.hangout.onApiReady.remove(initHangout);
