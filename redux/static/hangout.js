@@ -37,6 +37,8 @@ var moreCommand = [
   "Be more honest! Fucking lying piece of shit!"
 ];
 
+var localID = "";
+var otherID = "";
 var baseScore = 1;
 var scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 
@@ -50,10 +52,11 @@ if (gapi && gapi.hangout) {
       console.log("hangout ready");
 
       // init data vals
-      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", "0");
-      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-st", "0");
+      localID = gapi.hangout.getLocalParticipantId();
+      gapi.hangout.data.setValue(localID+"-wc", "0");
+      gapi.hangout.data.setValue(localID+"-st", "0");
       for (var i=0; i<categories.length; i++) {
-        gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i], String(baseScore));
+        gapi.hangout.data.setValue(localID+"-"+categories[i], String(baseScore));
       }
 
       // attach listeners
@@ -61,6 +64,15 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
+        console.log("participants changed");
+        var participants = gapi.hangout.getParticipants();
+        for (var i=0; i<participants.length; i++) {
+          if (participants[i].id != localID) {
+            otherID = participants[i].id;
+            console.log("otherID set to "+otherID);
+            break;
+          }
+        }
       });
 
       gapi.hangout.onApiReady.remove(initHangout);
@@ -87,7 +99,7 @@ $(window).load(function() {
 
 
 function draw() {
-/*
+
   var totalScale = 0;
   var maxScale = 0;
   var maxScaleIndex = 0;
@@ -96,24 +108,16 @@ function draw() {
 
   for(var i = 0; i < categories.length; i++) {
 
-    console.log(gapi.hangout.getLocalParticipantId());
-    var myScore = parseFloat(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i]));
-    // pend: should this be stored instead of looked up each time?
-    var yourID = "";
-    var participants = gapi.hangout.getParticipants();
-    for (var i=0; i<participants.length; i++) {
-      console.log(participants[i].id);
-      //if (participants[i].id != gapi.hangout.getLocalParticipantId()) {
-      //  yourID = participants[i].id;
-      //  break;
-      //}
-    }
+    var val = gapi.hangout.data.getValue(localID+"-"+categories[i]);
+    var localScore = val ? parseFloat(val) : baseScore;
+    console.log(localScore);
 
-    var yourScore = 1;//yourID ? parseFloat(gapi.hangout.data.getValue(yourID+"-"+categories[i])) : baseScore;
-    var totalScore = myScore+yourScore;
+    val = otherID ? gapi.hangout.data.getValue(otherID+"-"+categories[i]) : false;
+    var otherScore = val ? parseFloat(val) : baseScore;
+    var totalScore = localScore+otherScore;
     
     if(totalScore > 0) {
-      balances[i] = myScore / totalScore;
+      balances[i] = localScore / totalScore;
     } else {
       balances[i] = .5;
     }
@@ -126,6 +130,8 @@ function draw() {
       maxScaleIndex = i;
     }
   }
+  
+
   var width = $('#feedback').width();
   var height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
@@ -142,7 +148,7 @@ function draw() {
       $('#command').text(getCommand(i, balances[i]));
       gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     }
-  }*/
+  }
 
 }
 
@@ -157,19 +163,19 @@ function handleMessage(msg) {
   if (msg.type == 'stats') {
     console.log(msg);
     for(var i = 0; i < categories.length; i++) {
-      console.log(gapi.hangout.getLocalParticipantId()+"-"+categories[i]);
-      gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-"+categories[i], String(msg[categories[i]]));
+      console.log(localID+"-"+categories[i]);
+      gapi.hangout.data.setValue(localID+"-"+categories[i], String(msg[categories[i]]));
     }
   }
   else if (msg.type == 'wordcount') {
-    var count = parseInt(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-wc"), 10);
+    var count = parseInt(gapi.hangout.data.getValue(localID+"-wc"), 10);
     count += msg.count;
-    gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-wc", String(count));
+    gapi.hangout.data.setValue(localID+"-wc", String(count));
   }
   else if (msg.type == 'speechtime') {
-    var time = parseInt(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"), 10);
+    var time = parseInt(gapi.hangout.data.getValue(localID+"-st"), 10);
     time += msg.time;
-    gapi.hangout.data.setValue(gapi.hangout.getLocalParticipantId()+"-st", String(time));
+    gapi.hangout.data.setValue(localID+"-st", String(time));
   }
   
 
@@ -177,7 +183,7 @@ function handleMessage(msg) {
 
 function handleStateChange(ev) {
   console.log('state changed');
-  //console.log(gapi.hangout.data.getValue(gapi.hangout.getLocalParticipantId()+"-st"));
+  //console.log(gapi.hangout.data.getValue(localID+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
   draw();
