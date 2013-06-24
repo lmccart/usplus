@@ -87,6 +87,7 @@ $(window).load(function() {
 
 
 function draw() {
+/*
   var totalScale = 0;
   var maxScale = 0;
   var maxScaleIndex = 0;
@@ -108,23 +109,23 @@ function draw() {
       //}
     }
 
-    /*
-    var yourScore = yourID ? parseFloat(gapi.hangout.data.getValue(yourID+"-"+categories[i])) : baseScore;
+    var yourScore = 1;//yourID ? parseFloat(gapi.hangout.data.getValue(yourID+"-"+categories[i])) : baseScore;
     var totalScore = myScore+yourScore;
+    
     if(totalScore > 0) {
       balances[i] = myScore / totalScore;
     } else {
       balances[i] = .5;
     }
+
     scales[i] = Math.pow(2 * Math.abs(balances[i] - .5), scalePower);
     scales[i] = map(scales[i], 0, 1, minHeightScale, maxHeightScale);
     totalScale += scales[i];
     if(scales[i] > maxScale) {
       maxScale = scales[i];
       maxScaleIndex = i;
-    }*/
+    }
   }
-
   var width = $('#feedback').width();
   var height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
@@ -141,7 +142,7 @@ function draw() {
       $('#command').text(getCommand(i, balances[i]));
       gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     }
-  }
+  }*/
 
 }
 
