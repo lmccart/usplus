@@ -17,10 +17,10 @@ body {
   float: left;
   width: 50%;
 }
-.mine {
+.local {
   clear: both;
   background-color: rgb(230, 230, 230);
 }
-.yours {
+.other {
   background-color: rgb(192, 192, 192);
 }

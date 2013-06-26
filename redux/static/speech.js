@@ -5,6 +5,7 @@ var recognizing = false;
 var ignore_onend;
 var start_timestamp;
 var recognition, speechHysteresis;
+var speechStartTime = 0;
 
 function startSpeech() {
 
@@ -23,14 +24,18 @@ function startSpeech() {
     speechHysteresis.fallingDelay = 1000;
     speechHysteresis.ontrigger = function() {
       console.log("trigger");
+      speechStartTime = new Date().getTime();
       //socket.emit('speaking', { status: true});
     };
     speechHysteresis.onuntrigger = function() {
       console.log("untrigger");
+      var t = new Date().getTime() - speechStartTime;
+      msg = {type: 'speechtime', time:t};
+      handleMessage(msg);
       //socket.emit('speaking', { status: false});
     };
     // regularly feed the hysteresis object "off" in order to generate "end of speech" events
-    setInterval(function() {speechHysteresis.update(false)}, 200);
+    setInterval(forceBreak, 200);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -94,10 +99,8 @@ function startSpeech() {
           final_transcript += event.results[i][0].transcript;
           final_transcript += "(" + event.results[i][0].confidence + ")";
 
-          // lmccart - send msg to socket
           console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
           parser.parseLine(event.results[i][0].transcript);
-          //socket.emit('event', { transcript: event.results[i][0].transcript, confidence: event.results[i][0].confidence});
 
         } else {
           interim_transcript += "|";
@@ -112,6 +115,16 @@ function startSpeech() {
       final_span.innerHTML = linebreak(final_transcript);
       interim_span.innerHTML = linebreak(interim_transcript);
     };
+  }
+}
+
+function forceBreak() {
+  console.log("forceBreak "+recognizing);
+  if (recognizing) {
+    speechHysteresis.update(false);
+    speechHysteresis.update(true);
+  } else {
+    speechHysteresis.update(false);
   }
 }
 
