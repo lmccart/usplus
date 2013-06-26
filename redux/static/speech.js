@@ -47,7 +47,7 @@ function startSpeech() {
       if (event.error == 'no-speech') {
         //start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
         //showInfo('info_no_speech');
-        ignore_onend = true;
+        //ignore_onend = true;
         console.log("no speech RESTART");
         startButton();
       }
@@ -68,21 +68,7 @@ function startSpeech() {
 
     recognition.onend = function() {
       recognizing = false;
-      if (ignore_onend) {
-        return;
-      }
-      start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
-      if (!final_transcript) {
-        showInfo('info_start');
-        return;
-      }
-      showInfo('');
-      if (window.getSelection) {
-        window.getSelection().removeAllRanges();
-        var range = document.createRange();
-        range.selectNode(document.getElementById('final_span'));
-        window.getSelection().addRange(range);
-      }
+
       // retrigger
       console.log("RESTART");
       startButton();
@@ -143,19 +129,17 @@ function capitalize(s) {
 }
 
 function startButton(event) {
-  if (recognizing) {
-    recognition.stop();
-    return;
+  if (!recognizing) {
+    final_transcript = '';
+    recognition.lang = 'en-US';
+    recognition.start();
+    ignore_onend = false;
+    final_span.innerHTML = '';
+    interim_span.innerHTML = '';
+    start_img.src = '//lmccart-fixus.appspot.com/static/img/mic-slash.gif';
+    showInfo('info_allow');
+    start_timestamp = event ? event.timeStamp : new Date().getTime();
   }
-  final_transcript = '';
-  recognition.lang = 'en-US';
-  recognition.start();
-  ignore_onend = false;
-  final_span.innerHTML = '';
-  interim_span.innerHTML = '';
-  start_img.src = '//lmccart-fixus.appspot.com/static/img/mic-slash.gif';
-  showInfo('info_allow');
-  start_timestamp = event ? event.timeStamp : new Date().getTime();
 }
 
 function showInfo(s) {
