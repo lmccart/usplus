@@ -45,9 +45,11 @@ function startSpeech() {
 
     recognition.onerror = function(event) {
       if (event.error == 'no-speech') {
-        start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
-        showInfo('info_no_speech');
+        //start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
+        //showInfo('info_no_speech');
         ignore_onend = true;
+        console.log("no speech RESTART");
+        startButton();
       }
       if (event.error == 'audio-capture') {
         start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
