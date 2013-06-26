@@ -81,6 +81,9 @@ function startSpeech() {
         range.selectNode(document.getElementById('final_span'));
         window.getSelection().addRange(range);
       }
+      // retrigger
+      console.log("RESTART");
+      startButton();
     };
 
     recognition.onresult = function(event) {
@@ -150,7 +153,7 @@ function startButton(event) {
   interim_span.innerHTML = '';
   start_img.src = '//lmccart-fixus.appspot.com/static/img/mic-slash.gif';
   showInfo('info_allow');
-  start_timestamp = event.timeStamp;
+  start_timestamp = event ? event.timeStamp : new Date().getTime();
 }
 
 function showInfo(s) {

@@ -231,8 +231,9 @@ function unnormalize(point, ctx) {
   return result;
 }
 
-function length(a, b) {
-  return Math.sqrt(a.x * b.x + a.y * b.y);
+function length(a) {
+  //return Math.sqrt(a.x * b.x + a.y * b.y);
+  return Math.sqrt(a.x * a.x + a.y * a.y);
 }
 
 function distance(a, b) {
@@ -291,7 +292,7 @@ function onFaceTrackingDataChanged(event) {
     imagePointSum.y /= imagePoints.length;
     scale = length(imagePointSum);
     mouthWidth = distance(event.mouthLeft, event.mouthRight);
-    console.log(mouthWidth / scale);
+    //console.log(mouthWidth / scale);
 
     /*
     lastRoll.unshift(event.roll);
@@ -313,6 +314,6 @@ function onFaceTrackingDataChanged(event) {
     lastX.unshift(event.noseTip.x);
     lastX.pop();*/
   } catch (e) {
-    console.log(e);
+    console.log(e+": "+e.message);
   }
 }
