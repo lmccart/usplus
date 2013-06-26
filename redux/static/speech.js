@@ -35,7 +35,7 @@ function startSpeech() {
       //socket.emit('speaking', { status: false});
     };
     // regularly feed the hysteresis object "off" in order to generate "end of speech" events
-    setInterval(forceBreak, 200);
+    setInterval(function() {speechHysteresis.update(false)}, 200);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -115,16 +115,6 @@ function startSpeech() {
       final_span.innerHTML = linebreak(final_transcript);
       interim_span.innerHTML = linebreak(interim_transcript);
     };
-  }
-}
-
-function forceBreak() {
-  console.log("forceBreak "+recognizing);
-  if (recognizing) {
-    speechHysteresis.update(false);
-    speechHysteresis.update(true);
-  } else {
-    speechHysteresis.update(false);
   }
 }
 
