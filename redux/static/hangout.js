@@ -209,7 +209,7 @@ function rgb(brightness) {
 function background(brightness, ctx) {
   ctx.save();
   ctx.fillStyle = rgb(brightness);
-  ctx.fillRect(0, 0, ctx.width, ctx.height);
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   ctx.restore();
 }
 
@@ -222,6 +222,13 @@ function circle(center, radius, ctx) {
   ctx.beginPath();
   ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
   ctx.fill();
+}
+
+function unnormalize(point, ctx) {
+  result = new Object();
+  result.x = map(point.x, -.5, +.5, 0, ctx.canvas.width);
+  result.y = map(point.y, -.5, +.5, 0, ctx.canvas.height);
+  return result;
 }
 
 var lastEvent;
@@ -238,17 +245,16 @@ function onFaceTrackingDataChanged(event) {
 
     var canvas = document.getElementById("debugCanvas");
     var ctx = canvas.getContext('2d');
-/*
+
     background(255, ctx);
     fill(0, ctx);
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(1 / canvas.width, 1 / canvas.height);
-    circle(event.leftEye, .01, ctx);
-    circle(event.rightEye, .01, ctx);
-    circle(event.noseTip, .01, ctx);
-    ctx.restore();
-*/
+    leftEye = unnormalize(event.leftEye, ctx);
+    rightEye = unnormalize(event.rightEye, ctx);
+    noseTip = unnormalize(event.noseTip, ctx);
+    circle(leftEye, 4, ctx);
+    circle(rightEye, 4, ctx);
+    circle(noseTip, 4, ctx);
+
     /*
     lastRoll.unshift(event.roll);
     lastRoll.pop();
