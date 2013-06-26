@@ -116,6 +116,9 @@ function startSpeech() {
       interim_span.innerHTML = linebreak(interim_transcript);
     };
   }
+
+  // trigger start button
+  startButton();
 }
 
 function upgrade() {
