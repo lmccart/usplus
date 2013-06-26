@@ -76,7 +76,9 @@
           <textarea id="manualInput" rows="1">i me you we happy sad and angry</textarea>
           <button onclick="manualInputSubmit()" ontap="manualInputSubmit()">Submit</button>
 
-          
+          <canvas id="debugCanvas" width="320" height="180" style="border:1px solid #000000;"></canvas>
+          <br/><br/>
+          <div id="debugText">debug text...</div>
         </div>
       </div>
 

@@ -63,6 +63,7 @@ if (gapi && gapi.hangout) {
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
       });
+      gapi.hangout.av.effects.onFaceTrackingDataChanged.add(onFaceTrackingDataChanged);
 
       gapi.hangout.onApiReady.remove(initHangout);
     }
@@ -185,4 +186,76 @@ function map(x, inmin, inmax, outmin, outmax) {
 
 function manualInputSubmit() {
   parser.parseLine(document.getElementById('manualInput').value)
+}
+
+
+function rgb(brightness) {
+  return 'rgb(' + brightness + ',' + brightness + ',' + brightness + ')';
+}
+
+function background(brightness, ctx) {
+  ctx.save();
+  ctx.fillStyle = rgb(brightness);
+  ctx.fillRect(0, 0, ctx.width, ctx.height);
+  ctx.restore();
+}
+
+function fill(brightness, ctx) {
+  brightness |= 0;
+  ctx.strokeStyle = ctx.fillStyle = rgb(brightness);
+}
+
+function circle(center, radius, ctx) {
+  ctx.beginPath();
+  ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
+  ctx.fill();
+}
+
+var lastEvent;
+var lastRoll, lastPan, lastTilt, lastScale, lastX;
+function onFaceTrackingDataChanged(event) {
+  try {
+    lastEvent = event;
+
+    if (!event.hasFace) {
+      return;
+    }
+
+    $("#debugText").text(event.roll + " " + event.pan + " " + event.tilt);
+
+    var canvas = document.getElementById("debugCanvas");
+    var ctx = canvas.getContext('2d');
+/*
+    background(255, ctx);
+    fill(0, ctx);
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(1 / canvas.width, 1 / canvas.height);
+    circle(event.leftEye, .01, ctx);
+    circle(event.rightEye, .01, ctx);
+    circle(event.noseTip, .01, ctx);
+    ctx.restore();
+*/
+    /*
+    lastRoll.unshift(event.roll);
+    lastRoll.pop();
+    lastPan.unshift(event.pan);
+    lastPan.pop();
+    lastTilt.unshift(event.tilt);
+    lastTilt.pop();
+
+    var dist = Math.sqrt(
+        (event.leftEye.x - event.noseTip.x) *
+            (event.leftEye.x - event.noseTip.x) +
+                (event.leftEye.y - event.noseTip.y) *
+                    (event.leftEye.y - event.noseTip.y));
+
+    lastScale.unshift(dist);
+    lastScale.pop();
+
+    lastX.unshift(event.noseTip.x);
+    lastX.pop();*/
+  } catch (e) {
+    console.log(e);
+  }
 }
