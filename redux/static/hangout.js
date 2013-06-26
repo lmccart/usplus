@@ -231,6 +231,14 @@ function unnormalize(point, ctx) {
   return result;
 }
 
+function length(a, b) {
+  return Math.sqrt(a.x * b.x + a.y * b.y);
+}
+
+function distance(a, b) {
+  return length({x: b.x - a.x, y: b.y - a.y});
+}
+
 var lastEvent;
 var lastRoll, lastPan, lastTilt, lastScale, lastX;
 function onFaceTrackingDataChanged(event) {
@@ -248,12 +256,42 @@ function onFaceTrackingDataChanged(event) {
 
     background(255, ctx);
     fill(0, ctx);
-    leftEye = unnormalize(event.leftEye, ctx);
-    rightEye = unnormalize(event.rightEye, ctx);
-    noseTip = unnormalize(event.noseTip, ctx);
-    circle(leftEye, 4, ctx);
-    circle(rightEye, 4, ctx);
-    circle(noseTip, 4, ctx);
+
+    imagePoints = [
+      event.leftEye,
+      event.leftEyebrowLeft,
+      event.leftEyebrowRight,
+
+      event.rightEye,
+      event.rightEyebrowLeft,
+      event.rightEyebrowRight,
+
+      event.lowerLip,
+      event.upperLip,
+      event.mouthCenter,
+      event.mouthLeft,
+      event.mouthRight,
+
+      event.noseRoot,
+      event.noseTip
+    ];
+
+    for(point in imagePoints) {
+      circle(unnormalize(imagePoints[point], ctx), 2, ctx);
+    }
+
+
+    // type error somewhere around here>>
+    imagePointSum = {x: 0, y: 0};
+    for(point in imagePoints) {
+      imagePointSum.x += imagePoints[point].x;
+      imagePointSum.y += imagePoints[point].y;
+    }
+    imagePointSum.x /= imagePoints.length;
+    imagePointSum.y /= imagePoints.length;
+    scale = length(imagePointSum);
+    mouthWidth = distance(event.mouthLeft, event.mouthRight);
+    console.log(mouthWidth / scale);
 
     /*
     lastRoll.unshift(event.roll);
