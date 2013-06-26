@@ -2,7 +2,6 @@
 
 var final_transcript = '';
 var recognizing = false;
-var ignore_onend;
 var start_timestamp;
 var recognition, speechHysteresis;
 var speechStartTime = 0;
@@ -45,16 +44,12 @@ function startSpeech() {
 
     recognition.onerror = function(event) {
       if (event.error == 'no-speech') {
-        //start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
-        //showInfo('info_no_speech');
-        //ignore_onend = true;
         console.log("no speech RESTART");
         startButton();
       }
       if (event.error == 'audio-capture') {
         start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
         showInfo('info_no_microphone');
-        ignore_onend = true;
       }
       if (event.error == 'not-allowed') {
         if (event.timeStamp - start_timestamp < 100) {
@@ -62,7 +57,6 @@ function startSpeech() {
         } else {
           showInfo('info_denied');
         }
-        ignore_onend = true;
       }
     };
 
