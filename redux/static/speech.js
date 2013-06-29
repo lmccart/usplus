@@ -5,6 +5,7 @@ var recognizing = false;
 var start_timestamp;
 var recognition, speechHysteresis;
 var speechStartTime = 0;
+var selfSpeaking = false;
 
 function startSpeech() {
 
@@ -19,22 +20,9 @@ function startSpeech() {
 
     // set up a hysteresis object that turns "on" immediately, but takes 1 second to turn "off"
     speechHysteresis = new hysteresis();
-    speechHysteresis.risingDelay = 0;
-    speechHysteresis.fallingDelay = 1000;
-    speechHysteresis.ontrigger = function() {
-      console.log("trigger");
-      speechStartTime = new Date().getTime();
-      //socket.emit('speaking', { status: true});
-    };
-    speechHysteresis.onuntrigger = function() {
-      console.log("untrigger");
-      var t = new Date().getTime() - speechStartTime;
-      msg = {type: 'speechtime', time:t};
-      handleMessage(msg);
-      //socket.emit('speaking', { status: false});
-    };
     // regularly feed the hysteresis object "off" in order to generate "end of speech" events
     setInterval(function() {speechHysteresis.update(false)}, 200);
+    setInterval(checkSpeaker, 100);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -69,36 +57,39 @@ function startSpeech() {
     };
 
     recognition.onresult = function(event) {
-      var interim_transcript = '';
-      if (typeof(event.results) == 'undefined') {
-        recognition.onend = null;
-        recognition.stop();
-        upgrade();
-        return;
-      }
-      // there is some kind of speech event
-      speechHysteresis.update(true);
-      //console.log(event);
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          final_transcript += event.results[i][0].transcript;
-          final_transcript += "(" + event.results[i][0].confidence + ")";
+      // check it's your own audio
+      if (selfSpeaking) {
+        var interim_transcript = '';
+        if (typeof(event.results) == 'undefined') {
+          recognition.onend = null;
+          recognition.stop();
+          upgrade();
+          return;
+        }
+        // there is some kind of speech event
+        speechHysteresis.update(true);
+        //console.log(event);
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+            final_transcript += "(" + event.results[i][0].confidence + ")";
 
-          console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
-          parser.parseLine(event.results[i][0].transcript);
+            console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
+            parser.parseLine(event.results[i][0].transcript);
 
-        } else {
-          interim_transcript += "|";
-          for (var j = 0; j < event.results[i].length; ++j) {
-            interim_transcript += event.results[i][j].transcript;
-            interim_transcript += "(" + event.results[i][j].confidence + ")";
-            interim_transcript += " | ";
+          } else {
+            interim_transcript += "|";
+            for (var j = 0; j < event.results[i].length; ++j) {
+              interim_transcript += event.results[i][j].transcript;
+              interim_transcript += "(" + event.results[i][j].confidence + ")";
+              interim_transcript += " | ";
+            }
           }
         }
-      }
-      final_transcript = capitalize(final_transcript);
-      final_span.innerHTML = linebreak(final_transcript);
-      interim_span.innerHTML = linebreak(interim_transcript);
+        final_transcript = final_transcript;
+        final_span.innerHTML = linebreak(final_transcript);
+        interim_span.innerHTML = linebreak(interim_transcript);
+      } else console.log("other person speaking");
     };
   }
 
@@ -117,10 +108,6 @@ function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
-var first_char = /\S/;
-function capitalize(s) {
-  return s.replace(first_char, function(m) { return m.toUpperCase(); });
-}
 
 function startButton(event) {
   if (!recognizing) {
@@ -155,9 +142,17 @@ function hysteresis() {
   var lastValue = false, curValue = false;
 
   this.risingDelay = 0;
-  this.fallingDelay = 0;
-  this.ontrigger = function(){};
-  this.onuntrigger = function(){};
+  this.fallingDelay = 1000;
+  this.ontrigger = function(){
+    console.log("trigger");
+    speechStartTime = new Date().getTime();
+  };
+  this.onuntrigger = function(){
+    console.log("untrigger");
+    var t = new Date().getTime() - speechStartTime;
+    msg = {type: 'speechtime', time:t};
+    handleMessage(msg);
+  };
 
 
   this.update = function(value) {
@@ -178,4 +173,14 @@ function hysteresis() {
     }
     lastValue = value;
   }
+}
+
+function checkSpeaker() {
+  var volumes = gapi.hangout.av.getVolumes();
+  var localVol = localID ? volumes[localID] : 0;
+  var otherVol = otherID ? volumes[otherID] : 0;
+  //console.log(volumes);
+  var prevSpeaking = selfSpeaking;
+  selfSpeaking = localVol >= otherVol;
+  if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
 }
