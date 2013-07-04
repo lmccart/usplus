@@ -1,5 +1,6 @@
 var db = new localStorageDB("db", localStorage);;
-var parser = Parser(db).initialize();
+var parser = Parser(db)
+parser.initialize();
 var width, height;
 
 
