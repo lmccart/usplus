@@ -1,7 +1,6 @@
 var db = new localStorageDB("db", localStorage);;
-var parser = Parser(db);
-parser.initialize();
-var height;
+var parser = Parser(db).initialize();
+var width, height;
 
 
 var categories = [
@@ -15,27 +14,6 @@ var categories = [
   "honesty"
 ];
 
-var lessCommand = [
-  "Dial down the sunshine!",
-  "Look on the bright side!",
-  "Calm down, don't be such a dick!", 
-  "Can't you say it clearly?",
-  "Speak for yourself!",
-  "Pull yourself out of it already!",
-  "You elitist asshole.",
-  "Nobody wants to read your diary!"
-];
-
-var moreCommand = [
-  "Look on the bright side!",
-  "Dial down the sunshine!",
-  "Grow a pair.", 
-  "Thank you captain obvious.", 
-  "It's not all about you all the time!",
-  "You can't really be that happy.",
-  "Who do you think you're talking to? Ever heard of manners?",
-  "Be more honest! Fucking lying piece of shit!"
-];
 
 var localID = "";
 var otherID = "";
@@ -90,6 +68,7 @@ $(window).load(function() {
 
   // setup
   height = $('#feedback').height();
+  width = $('#feedback').width();
   for(var i = 0; i < categories.length; i++) {
     var category = categories[i];
     $('#feedback').append("<div class='category'><div class='score local' id='local"+category+"'>"+category+"</div><div class='score other' id='other"+category+"'></div></div>");
@@ -135,8 +114,6 @@ function draw() {
   }
   
 
-  var width = $('#feedback').width();
-  var height = $('#feedback').height();
   for(var i = 0; i < categories.length; i++) {
     var curHeight = height * (scales[i] / totalScale);
     var widtha = balances[i] * width;
@@ -147,17 +124,15 @@ function draw() {
     $('#other'+category).width(widthb);
     $('#other'+category).height(curHeight);
     
+    // PEND NOTIFY HERE
     if(i == maxScaleIndex) {
-      $('#command').text(getCommand(i, balances[i]));
-      gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
+      //$('#command').text(getCommand(i, balances[i]));
+      //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     }
   }
 
 }
 
-function getCommand(category, balance) {
-  return (balance > .5 ? lessCommand : moreCommand)[category];
-}
 
 // Handle incoming messages and distribute to appropriate functions.
 function handleMessage(msg) {
