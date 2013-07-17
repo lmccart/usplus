@@ -35,50 +35,104 @@
 
       <div class="browser-landing" id="main">
         <div class="compact marquee">
-          <div id="info" style="visibility: visible;">
-            <p id="info_start" style="display: inline;">
-              Click on the microphone icon and begin speaking for as long as you like.
-            </p>
-            <p id="info_speak_now" style="display: none;">
-              Speak now.
-            </p>
-            <p id="info_no_speech" style="display: none;">
-              No speech was detected. You may need to adjust your <a href="http://support.google.com/chrome/bin/answer.py?hl=en&answer=1407892">microphone
-              settings</a>.
-            </p>
-            <p id="info_no_microphone" style="display: none;">
-              No microphone was found. Ensure that a microphone is installed and that
-              <a href="http://support.google.com/chrome/bin/answer.py?hl=en&answer=1407892">
-              microphone settings</a> are configured correctly.
-            </p>
-            <p id="info_allow" style="display: none;">
-              Click the "Allow" button above to enable your microphone.
-            </p>
-            <p id="info_denied" style="display: none;">
-              Permission to use microphone was denied.
-            </p>
-            <p id="info_blocked" style="display: none;">
-              Permission to use microphone is blocked. To change, go to
-              chrome://settings/contentExceptions#media-stream
-            </p>
-            <p id="info_upgrade" style="display: none;">
-              Web Speech API is not supported by this browser. Upgrade to <a href="http://www.google.com/chrome">Chrome</a> version 25 or later.
-            </p>
-          </div>
-          <div id="div_start">
-            <button id="start_button" onclick="startButton(event)" style="display: inline-block;"><img alt="Start" id="start_img" src="//lmccart-fixus.appspot.com/static/img/mic.gif"></button>
-          </div>
-          
-          <div id="results">
-            <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
-          </div>
+<style>
+.debug {
+  padding: 15px;
+  font-family: sans-serif;
+  color: white;
+  background-color: rgb(143, 200, 209);
+}
+.leftColumn {
+  width: 50%;
+  float: left;
+}
+.rightColumn {
+  width: 50%;
+  float: right;
+}
+.container {
+  overflow: auto;
+  text-align: center;
+}
+.label {
+  text-align: left;
+}
+.user0 {
+  color: gray;
+}
+.user1 {
+  color: white;
+}
+.username {
+  font-size: 150%;
+}
+.bar {
+  height: 10px;
+  margin: 10px;
+}
+.user0.bar {
+  background-color: gray;
+  width: 25%;
+  margin-top: -20px;
+}
+.user1.bar {
+  background-color: white;
+}
+</style>
 
-          <textarea id="manualInput" rows="1">i me you we happy sad and angry</textarea>
-          <button onclick="manualInputSubmit()" ontap="manualInputSubmit()">Submit</button>
+<div class="debug">
+  <div class="container">
+    <div class="leftColumn">
+      <div id="username0" class="username user0">lauren</div>
+      <div id="face0" class="face user0">:|</div>
+    </div>
+    <div class="rightColumn">
+      <div id="username1" class="username user1">kyle</div>
+      <div id="face1" class="face user1">:)</div>
+    </div>
+  </div>
 
-          <canvas id="debugCanvas" width="320" height="180" style="border:1px solid #000000;"></canvas>
-          <br/><br/>
-          <div id="debugText">debug text...</div>
+  <div class="container">
+    <div class="label">talk time</div>
+    <div class="container">
+      <div class="leftColumn user0 time" id="talkTime0">3:27</div>
+      <div class="rightColumn user1 time" id="talkTime1">8:43</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">positivity</div>
+    <div>
+      <div class="user1 bar"></div>
+      <div class="user0 bar" id="positivityStatus"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">self absorption</div>
+    <div>
+      <div class="user1 bar"></div>
+      <div class="user0 bar" id="selfAbsorptionStatus"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">femininity</div>
+    <div>
+      <div class="user1 bar"></div>
+      <div class="user0 bar" id="femininityStatus"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">aggression</div>
+    <div>
+      <div class="user1 bar"></div>
+      <div class="user0 bar" id="aggressionStatus"></div>
+    </div>
+  </div>
+</div>
+
         </div>
       </div>
       <div id="feedback"></div>
