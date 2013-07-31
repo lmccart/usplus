@@ -142,11 +142,15 @@ function hysteresis() {
   this.ontrigger = function(){
     console.log("trigger");
     speechStartTime = new Date().getTime();
+    msg = {type: 'speech', true};
+    handleMessage(msg);
   };
   this.onuntrigger = function(){
     console.log("untrigger");
     var t = new Date().getTime() - speechStartTime;
     msg = {type: 'speechtime', time:t};
+    handleMessage(msg);
+    msg = {type: 'speech', false};
     handleMessage(msg);
   };
 
