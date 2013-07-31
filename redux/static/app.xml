@@ -104,7 +104,7 @@
     <div class="label">positivity</div>
     <div>
       <div class="user1 bar"></div>
-      <div class="user0 bar" id="positivityStatus"></div>
+      <div class="user0 bar" id="posemo"></div>
     </div>
   </div>
 
@@ -112,7 +112,7 @@
     <div class="label">self absorption</div>
     <div>
       <div class="user1 bar"></div>
-      <div class="user0 bar" id="selfAbsorptionStatus"></div>
+      <div class="user0 bar" id="i"></div>
     </div>
   </div>
 
@@ -120,7 +120,7 @@
     <div class="label">femininity</div>
     <div>
       <div class="user1 bar"></div>
-      <div class="user0 bar" id="femininityStatus"></div>
+      <div class="user0 bar" id="feminine"></div>
     </div>
   </div>
 
@@ -128,7 +128,7 @@
     <div class="label">aggression</div>
     <div>
       <div class="user1 bar"></div>
-      <div class="user0 bar" id="aggressionStatus"></div>
+      <div class="user0 bar" id="aggression"></div>
     </div>
   </div>
 </div>

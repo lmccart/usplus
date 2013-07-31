@@ -58,7 +58,8 @@ var StatsHandler = function(db) {
 								["status", "+we-i"],
 								["depression", "+i+bio+negemo-posemo"],
 								["formality", "-i+article+sixltr-present-discrep"],
-								["honesty", "+i+excl-negemo"]],
+								["honesty", "+i+excl-negemo"],
+								["feminine", "feminine"]],
 				tempVal: 0,
 				total: db.rowCount("word_instances")
 			};

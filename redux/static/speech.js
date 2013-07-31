@@ -13,7 +13,6 @@ function startSpeech() {
   if (!('webkitSpeechRecognition' in window)) {
     upgrade();
   } else {
-    start_button.style.display = 'inline-block';
     recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -27,7 +26,6 @@ function startSpeech() {
     recognition.onstart = function() {
       recognizing = true;
       showInfo('info_speak_now');
-      start_img.src = '//lmccart-fixus.appspot.com/static/img/mic-animate.gif';
     };
 
     recognition.onerror = function(event) {
@@ -36,7 +34,6 @@ function startSpeech() {
         startButton();
       }
       if (event.error == 'audio-capture') {
-        start_img.src = '//lmccart-fixus.appspot.com/static/img/mic.gif';
         showInfo('info_no_microphone');
       }
       if (event.error == 'not-allowed') {
@@ -87,8 +84,8 @@ function startSpeech() {
           }
         }
         final_transcript = final_transcript;
-        final_span.innerHTML = linebreak(final_transcript);
-        interim_span.innerHTML = linebreak(interim_transcript);
+        //final_span.innerHTML = linebreak(final_transcript);
+        //interim_span.innerHTML = linebreak(interim_transcript);
       } else console.log("other person speaking");
     };
   }
@@ -98,7 +95,6 @@ function startSpeech() {
 }
 
 function upgrade() {
-  start_button.style.visibility = 'hidden';
   showInfo('info_upgrade');
 }
 
@@ -110,14 +106,14 @@ function linebreak(s) {
 
 
 function startButton(event) {
+  console.log("start "+recognizing);
   if (!recognizing) {
     final_transcript = '';
     recognition.lang = 'en-US';
     recognition.start();
     ignore_onend = false;
-    final_span.innerHTML = '';
-    interim_span.innerHTML = '';
-    start_img.src = '//lmccart-fixus.appspot.com/static/img/mic-slash.gif';
+    // final_span.innerHTML = '';
+    // interim_span.innerHTML = '';
     showInfo('info_allow');
     start_timestamp = event ? event.timeStamp : new Date().getTime();
   }
@@ -125,16 +121,16 @@ function startButton(event) {
 
 function showInfo(s) {
 
-  if (s) {
-    for (var child = info.firstChild; child; child = child.nextSibling) {
-      if (child.style) {
-        child.style.display = child.id == s ? 'inline' : 'none';
-      }
-    }
-    info.style.visibility = 'visible';
-  } else {
-    info.style.visibility = 'hidden';
-  }
+  // if (s) {
+  //   for (var child = info.firstChild; child; child = child.nextSibling) {
+  //     if (child.style) {
+  //       child.style.display = child.id == s ? 'inline' : 'none';
+  //     }
+  //   }
+  //   info.style.visibility = 'visible';
+  // } else {
+  //   info.style.visibility = 'hidden';
+  // }
 }
 
 function hysteresis() {

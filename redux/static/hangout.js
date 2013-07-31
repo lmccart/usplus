@@ -6,19 +6,13 @@ var width, height;
 
 var categories = [
   "posemo",
-  "negemo",
-  "anger", 
-  "complexity", 
-  "status",
-  "depression",
-  "formality",
-  "honesty"
+  "i"
 ];
 
 
 var localID = "";
 var otherID = "";
-var baseScore = 1;
+var baseScore = 0;
 var scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 
 // wait until hangout ready then load everything
@@ -83,16 +77,14 @@ $(window).load(function() {
 
 function draw() {
 
-  var totalScale = 0;
-  var maxScale = 0;
-  var maxScaleIndex = 0;
-  var balances = new Array(categories.length);
-  var scales = new Array(categories.length);
+  // Update LIWC cats
+  var maxScale = 0.8;
 
   for(var i = 0; i < categories.length; i++) {
+    var balance = 0.5;
 
     var val = gapi.hangout.data.getValue(localID+"-"+categories[i]);
-    var localScore = val ? parseFloat(val) : baseScore;
+    var localScore = val ? parseFloat(val) : 0;
     console.log(localScore);
 
     val = otherID ? gapi.hangout.data.getValue(otherID+"-"+categories[i]) : false;
@@ -100,38 +92,44 @@ function draw() {
     var totalScore = localScore+otherScore;
     
     if(totalScore > 0) {
-      balances[i] = localScore / totalScore;
-    } else {
-      balances[i] = .5;
+      balance = localScore / totalScore;
     }
 
-    scales[i] = Math.pow(2 * Math.abs(balances[i] - .5), scalePower);
-    scales[i] = map(scales[i], 0, 1, minHeightScale, maxHeightScale);
-    totalScale += scales[i];
-    if(scales[i] > maxScale) {
-      maxScale = scales[i];
-      maxScaleIndex = i;
-    }
-  }
-  
-
-  for(var i = 0; i < categories.length; i++) {
-    var curHeight = height * (scales[i] / totalScale);
-    var widtha = balances[i] * width;
-    var widthb = width - widtha;
     var category = categories[i];
-    $('#local'+category).width(widtha);
-    $('#local'+category).height(curHeight);
-    $('#other'+category).width(widthb);
-    $('#other'+category).height(curHeight);
-    
+    var pct = Math.round(Math.min(balance, Math.max(balance, 0), 1)*100) + "%";
+    console.log(pct);
+    $('#'+category).width(pct);
+
     // PEND NOTIFY HERE
-    if(i == maxScaleIndex) {
+    if(i == maxScale) {
       //$('#command').text(getCommand(i, balances[i]));
       //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     }
   }
+  
+  // Update talk time
+  var balance = 0.5;
 
+  var st0 = new Date(parseInt(gapi.hangout.data.getValue(localID+"-st"), 10));
+  st0 = st0.toLocaleTimeString();
+  st0 = st0.substring(st0.indexOf(':')+1, st0.indexOf(' '));
+  
+  var st1 = otherID ? parseInt(gapi.hangout.data.getValue(otherID+"-st"), 10) : 0;
+  st1 = new Date(st1);
+  st1 = st1.toLocaleTimeString();
+  st1 = st1.substring(st1.indexOf(':')+1, st1.indexOf(' '));
+
+  
+  $('#talkTime0').text(st0);
+  $('#talkTime1').text(st1);
+  
+  // PEND NOTIFY HERE and AUTO MUTE
+  if(true) {
+    //$('#command').text(getCommand(i, balances[i]));
+    //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
+  }
+
+  // Update smile
 }
 
 
@@ -229,66 +227,68 @@ function onFaceTrackingDataChanged(event) {
     $("#debugText").text(event.roll + " " + event.pan + " " + event.tilt);
 
     var canvas = document.getElementById("debugCanvas");
-    var ctx = canvas.getContext('2d');
+    if (canvas) {
+      var ctx = canvas.getContext('2d');
 
-    background(255, ctx);
-    fill(0, ctx);
+      background(255, ctx);
+      fill(0, ctx);
 
-    imagePoints = [
-      event.leftEye,
-      event.leftEyebrowLeft,
-      event.leftEyebrowRight,
+      imagePoints = [
+        event.leftEye,
+        event.leftEyebrowLeft,
+        event.leftEyebrowRight,
 
-      event.rightEye,
-      event.rightEyebrowLeft,
-      event.rightEyebrowRight,
+        event.rightEye,
+        event.rightEyebrowLeft,
+        event.rightEyebrowRight,
 
-      event.lowerLip,
-      event.upperLip,
-      event.mouthCenter,
-      event.mouthLeft,
-      event.mouthRight,
+        event.lowerLip,
+        event.upperLip,
+        event.mouthCenter,
+        event.mouthLeft,
+        event.mouthRight,
 
-      event.noseRoot,
-      event.noseTip
-    ];
+        event.noseRoot,
+        event.noseTip
+      ];
 
-    for(point in imagePoints) {
-      circle(unnormalize(imagePoints[point], ctx), 2, ctx);
+      for(point in imagePoints) {
+        circle(unnormalize(imagePoints[point], ctx), 2, ctx);
+      }
+
+
+      // type error somewhere around here>>
+      imagePointSum = {x: 0, y: 0};
+      for(point in imagePoints) {
+        imagePointSum.x += imagePoints[point].x;
+        imagePointSum.y += imagePoints[point].y;
+      }
+      imagePointSum.x /= imagePoints.length;
+      imagePointSum.y /= imagePoints.length;
+      scale = length(imagePointSum);
+      mouthWidth = distance(event.mouthLeft, event.mouthRight);
+      //console.log(mouthWidth / scale);
+
+      /*
+      lastRoll.unshift(event.roll);
+      lastRoll.pop();
+      lastPan.unshift(event.pan);
+      lastPan.pop();
+      lastTilt.unshift(event.tilt);
+      lastTilt.pop();
+
+      var dist = Math.sqrt(
+          (event.leftEye.x - event.noseTip.x) *
+              (event.leftEye.x - event.noseTip.x) +
+                  (event.leftEye.y - event.noseTip.y) *
+                      (event.leftEye.y - event.noseTip.y));
+
+      lastScale.unshift(dist);
+      lastScale.pop();
+
+      lastX.unshift(event.noseTip.x);
+      lastX.pop();*/
     }
-
-
-    // type error somewhere around here>>
-    imagePointSum = {x: 0, y: 0};
-    for(point in imagePoints) {
-      imagePointSum.x += imagePoints[point].x;
-      imagePointSum.y += imagePoints[point].y;
-    }
-    imagePointSum.x /= imagePoints.length;
-    imagePointSum.y /= imagePoints.length;
-    scale = length(imagePointSum);
-    mouthWidth = distance(event.mouthLeft, event.mouthRight);
-    //console.log(mouthWidth / scale);
-
-    /*
-    lastRoll.unshift(event.roll);
-    lastRoll.pop();
-    lastPan.unshift(event.pan);
-    lastPan.pop();
-    lastTilt.unshift(event.tilt);
-    lastTilt.pop();
-
-    var dist = Math.sqrt(
-        (event.leftEye.x - event.noseTip.x) *
-            (event.leftEye.x - event.noseTip.x) +
-                (event.leftEye.y - event.noseTip.y) *
-                    (event.leftEye.y - event.noseTip.y));
-
-    lastScale.unshift(dist);
-    lastScale.pop();
-
-    lastX.unshift(event.noseTip.x);
-    lastX.pop();*/
   } catch (e) {
     console.log(e+": "+e.message);
   }
