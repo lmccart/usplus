@@ -95,8 +95,8 @@
   <div class="container">
     <div class="label">talk time</div>
     <div class="container">
-      <div class="leftColumn user0 time" id="talkTime0">3:27</div>
-      <div class="rightColumn user1 time" id="talkTime1">8:43</div>
+      <div class="leftColumn user0 time" id="talkTime0">0:00</div>
+      <div class="rightColumn user1 time" id="talkTime1">0:00</div>
     </div>
   </div>
 

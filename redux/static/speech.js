@@ -4,7 +4,6 @@ var final_transcript = '';
 var recognizing = false;
 var start_timestamp;
 var recognition, speechHysteresis;
-var speechStartTime = 0;
 var selfSpeaking = false;
 
 function startSpeech() {
@@ -20,8 +19,9 @@ function startSpeech() {
     // set up a hysteresis object that turns "on" immediately, but takes 1 second to turn "off"
     speechHysteresis = new hysteresis();
     // regularly feed the hysteresis object "off" in order to generate "end of speech" events
-    setInterval(function() {speechHysteresis.update(false)}, 200);
+    setInterval(function() {speechHysteresis.update(false);}, 200);
     setInterval(checkSpeaker, 100);
+    setInterval(function(){updateSpeechTime(250);}, 250);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -139,20 +139,12 @@ function hysteresis() {
 
   this.risingDelay = 0;
   this.fallingDelay = 1000;
-  this.ontrigger = function(){
+  /*this.ontrigger = function(){
     console.log("trigger");
-    speechStartTime = new Date().getTime();
-    msg = {type: 'speech', val:true};
-    handleMessage(msg);
   };
   this.onuntrigger = function(){
     console.log("untrigger");
-    var t = new Date().getTime() - speechStartTime;
-    msg = {type: 'speechtime', time:t};
-    handleMessage(msg);
-    msg = {type: 'speech', val:false};
-    handleMessage(msg);
-  };
+  };*/
 
 
   this.update = function(value) {
