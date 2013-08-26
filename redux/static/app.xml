@@ -27,6 +27,11 @@
       <link href='https://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="//lmccart-fixus.appspot.com/static/style.css" type="text/css" media="screen, projection">
 
+      <link href="//lmccart-fixus.appspot.com/static/bootstrap/bootstrap.css" rel="stylesheet"> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script src="//lmccart-fixus.appspot.com/static/bootstrap/tooltip.js"></script>
+      <script src="//lmccart-fixus.appspot.com/static/bootstrap/popover.js"></script>
+
       <script src="//lmccart-fixus.appspot.com/static/localStorageDB/localstoragedb.min.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/statsHandler.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/LIWC.js"></script>
@@ -36,11 +41,11 @@
 
       <div id="main">
         <div class="container">
-          <div class="leftColumn">
+          <div class="leftColumn well">
             <div id="username0" class="username user0">me</div>
             <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
           </div>
-          <div class="rightColumn">
+          <div class="rightColumn well">
             <div id="username1" class="username user1">you</div>
             <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
           </div>
@@ -55,7 +60,7 @@
         </div>
 
         <div class="container">
-          <div class="label">Positivity</div>
+          <div class="label"><a href="#" id="positivity-popover" class="btn btn-success" rel="popover" data-content="Positivity is based on how many positive words you say." data-original-title="Positivity">Positivity</a></div>
           <div class="bar-outside">
             <div class="bar-inside" id="category-posemo"></div>
           </div>
@@ -82,5 +87,10 @@
           </div>
         </div>
       </div>
+
+      <script>
+      $(function () { $("#positivity-popover").popover();});
+      </script>
+
     ]]></Content>
 </Module>
