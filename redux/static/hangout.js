@@ -12,7 +12,7 @@ var categories = [
   "honesty"
 ];
 
-Participant localParticipant, remoteParticipant;
+var localParticipant, remoteParticipant;
 
 var localID = "";
 var otherID = "";

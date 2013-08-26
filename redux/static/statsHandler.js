@@ -61,7 +61,7 @@ var StatsHandler = function(db) {
 								// ["formality", "-i+article+sixltr-present-discrep"],
 								["honesty", "+i+excl-negemo"],
 								["femininity", "+other+posemo+sixltr-negate-article-preps-swear-money-number"],
-								["aggressiveness", "+anger+swear"]
+								["aggression", "+anger+swear"]
 							],
 
 				tempVal: 0,
