@@ -31,9 +31,14 @@ if (gapi && gapi.hangout) {
       localParticipant = gapi.hangout.getLocalParticipant();
       participants = gapi.hangout.getParticipants();
       for(i in participants) {
-        person = participants[i];
-        console.log("participant " + i + ": " + person.displayName);
+        person = participants[i].person;
+        if(person != localParticipant) {
+          remoteParticipant = person;
+        }
       }
+
+      $("#username0").text(localParticipant.displayName);
+      $("#username1").text(remoteParticipant.displayName);
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
