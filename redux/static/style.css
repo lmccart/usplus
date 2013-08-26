@@ -1,26 +1,45 @@
 body {
   font-family: sans-serif;
+  background-color: rgb(143, 200, 209);
+  color: white;
+  padding: 1em;
 }
-#command {
-
+img {
+  margin: .5em;
 }
-#feedback {
-	margin-top: 60px;
-  width: 300px;
-  height: 200px;
-  background-color: rgb(128, 128, 128);
-}
-.category {
-
-}
-.score {
-  float: left;
+.leftColumn {
   width: 50%;
+  float: left;
 }
-.local {
-  clear: both;
-  background-color: rgb(230, 230, 230);
+.rightColumn {
+  width: 50%;
+  float: right;
 }
-.other {
-  background-color: rgb(192, 192, 192);
+.container {
+  overflow: auto;
+  text-align: center;
+}
+.label {
+  text-align: left;
+}
+.user0 {
+  color: gray;
+}
+.user1 {
+  color: white;
+}
+.username {
+  font-size: 150%;
+}
+.bar {
+  height: 10px;
+  margin: 10px;
+}
+.user0.bar {
+  background-color: gray;
+  width: 25%;
+  margin-top: -20px;
+}
+.user1.bar {
+  background-color: white;
 }

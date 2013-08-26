@@ -35,107 +35,57 @@
 
       <div class="browser-landing" id="main">
         <div class="compact marquee">
-<style>
-.debug {
-  padding: 15px;
-  font-family: sans-serif;
-  color: white;
-  background-color: rgb(143, 200, 209);
-}
-.leftColumn {
-  width: 50%;
-  float: left;
-}
-.rightColumn {
-  width: 50%;
-  float: right;
-}
-.container {
-  overflow: auto;
-  text-align: center;
-}
-.label {
-  text-align: left;
-}
-.user0 {
-  color: gray;
-}
-.user1 {
-  color: white;
-}
-.username {
-  font-size: 150%;
-}
-.bar {
-  height: 10px;
-  margin: 10px;
-}
-.user0.bar {
-  background-color: gray;
-  width: 25%;
-  margin-top: -20px;
-}
-.user1.bar {
-  background-color: white;
-}
-</style>
+          <div class="container">
+            <div class="leftColumn">
+              <div id="username0" class="username user0">me</div>
+              <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
+            </div>
+            <div class="rightColumn">
+              <div id="username1" class="username user1">you</div>
+              <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
+            </div>
+          </div>
 
-<div class="debug">
-  <div class="container">
-    <div class="leftColumn">
-      <div id="username0" class="username user0">lauren</div>
-      <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
-    </div>
-    <div class="rightColumn">
-      <div id="username1" class="username user1">kyle</div>
-      <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
-    </div>
-  </div>
+          <div class="container">
+            <div class="label">Talk time</div>
+            <div class="container">
+              <div class="leftColumn user0 time" id="talkTime0">3:27</div>
+              <div class="rightColumn user1 time" id="talkTime1">8:43</div>
+            </div>
+          </div>
 
-  <div class="container">
-    <div class="label">talk time</div>
-    <div class="container">
-      <div class="leftColumn user0 time" id="talkTime0">3:27</div>
-      <div class="rightColumn user1 time" id="talkTime1">8:43</div>
-    </div>
-  </div>
+          <div>
+            <div class="label">Positivity</div>
+            <div>
+              <div class="user1 bar"></div>
+              <div class="user0 bar" id="category-posemo"></div>
+            </div>
+          </div>
 
-  <div>
-    <div class="label">positivity</div>
-    <div>
-      <div class="user1 bar"></div>
-      <div class="user0 bar" id="posemo"></div>
-    </div>
-  </div>
+          <div>
+            <div class="label">Self absorption</div>
+            <div>
+              <div class="user1 bar"></div>
+              <div class="user0 bar" id="category-i"></div>
+            </div>
+          </div>
 
-  <div>
-    <div class="label">self absorption</div>
-    <div>
-      <div class="user1 bar"></div>
-      <div class="user0 bar" id="i"></div>
-    </div>
-  </div>
+          <div>
+            <div class="label">Femininity</div>
+            <div>
+              <div class="user1 bar"></div>
+              <div class="user0 bar" id="category-feminine"></div>
+            </div>
+          </div>
 
-  <div>
-    <div class="label">femininity</div>
-    <div>
-      <div class="user1 bar"></div>
-      <div class="user0 bar" id="feminine"></div>
-    </div>
-  </div>
-
-  <div>
-    <div class="label">aggression</div>
-    <div>
-      <div class="user1 bar"></div>
-      <div class="user0 bar" id="aggression"></div>
-    </div>
-  </div>
-</div>
-
+          <div>
+            <div class="label">Aggression</div>
+            <div>
+              <div class="user1 bar"></div>
+              <div class="user0 bar" id="category-aggression"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div id="feedback"></div>
-
     ]]></Content>
 </Module>
