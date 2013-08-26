@@ -12,9 +12,6 @@ var categories = [
   "honesty"
 ];
 
-
-var localParticipant, remoteParticipant;
-
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -28,18 +25,7 @@ if (gapi && gapi.hangout) {
 
       console.log("hangout ready");
 
-      // get participants
-      localParticipant = gapi.hangout.getLocalParticipant();
-      participants = gapi.hangout.getParticipants();
-      for(i in participants) {
-        person = participants[i].person;
-        if(person != localParticipant) {
-          remoteParticipant = person;
-        }
-      }
-
-      $("#username0").text(localParticipant.displayName);
-      $("#username1").text(remoteParticipant.displayName);
+      updateUsernames();
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
@@ -55,6 +41,7 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
+        updateUsernames();
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
         var idFound = false;
@@ -123,6 +110,22 @@ function draw() {
   }
 
   // Update smile
+}
+
+var localPerson, remotePerson;
+function updateUsernames() {
+  // get participants
+  localPerson = gapi.hangout.getLocalParticipant().person;
+  participants = gapi.hangout.getParticipants();
+  for(i in participants) {
+    person = participants[i].person;
+    if(person != localPerson) {
+      remotePerson = person;
+    }
+  }
+
+  $("#username0").text(localPerson.displayName);
+  $("#username1").text(remotePerson.displayName);
 }
 
 function updateSpeechTime(itvl) {
