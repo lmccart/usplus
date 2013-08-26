@@ -131,17 +131,21 @@ function updateSpeechTime(itvl) {
 
     var id = (i==0) ? localID : otherID;
      
-    // update volume avg
+    
     var vol = id ? volumes[id] : 0;
     var volAvg = parseFloat(gapi.hangout.data.getValue(id+"-volAvg"));
     console.log("volAvg:"+volAvg+" samples:"+numSamples);
-    volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
-    console.log("vol:"+vol+" avg:"+volAvg);
-    gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
+
+    // update volume avg
+    if (!i) {
+      volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
+      console.log("vol:"+vol+" avg:"+volAvg);
+      gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
+    }
 
     // update talk time
-    var st = parseInt(gapi.hangout.data.getValue(id+"-st"), 10);
-    if (vol > 0 || volAvg > 1.0) {
+    var st = id ? parseInt(gapi.hangout.data.getValue(id+"-st"), 10) : 0;
+    if (!i && (vol > 0 || volAvg > 1.0)) {
       st += itvl;
       gapi.hangout.data.setValue(id+"-st", String(st));
     }
@@ -174,7 +178,7 @@ function handleMessage(msg) {
 }
 
 function handleStateChange(ev) {
-  console.log('state changed');
+  //console.log('state changed');
   //console.log(gapi.hangout.data.getValue(localID+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
