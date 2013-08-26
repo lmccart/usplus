@@ -56,33 +56,29 @@
 
           <div>
             <div class="label">Positivity</div>
-            <div>
-              <div class="user1 bar"></div>
-              <div class="user0 bar" id="category-posemo"></div>
+            <div class="bar-outside">
+              <div class="bar-inside" id="category-posemo"></div>
             </div>
           </div>
 
           <div>
             <div class="label">Self absorption</div>
-            <div>
-              <div class="user1 bar"></div>
-              <div class="user0 bar" id="category-i"></div>
+            <div class="bar-outside">
+              <div class="bar-inside" id="category-i"></div>
             </div>
           </div>
 
           <div>
             <div class="label">Femininity</div>
-            <div>
-              <div class="user1 bar"></div>
-              <div class="user0 bar" id="category-feminine"></div>
+            <div class="bar-outside">
+              <div class="bar-inside" id="category-feminine"></div>
             </div>
           </div>
 
           <div>
             <div class="label">Aggression</div>
-            <div>
-              <div class="user1 bar"></div>
-              <div class="user0 bar" id="category-aggression"></div>
+            <div class="bar-outside">
+              <div class="bar-inside" id="category-aggression"></div>
             </div>
           </div>
         </div>

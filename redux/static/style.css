@@ -31,15 +31,10 @@ img {
 .username {
   font-size: 150%;
 }
-.bar {
-  height: 10px;
-  margin: 10px;
+.bar-outside {
+  background-color: white;
 }
-.user0.bar {
+.bar-inside {
   background-color: gray;
   width: 25%;
-  margin-top: -20px;
-}
-.user1.bar {
-  background-color: white;
 }
