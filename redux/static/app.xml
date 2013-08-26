@@ -41,46 +41,40 @@
       <script src="//lmccart-fixus.appspot.com/static/hangout.js"></script>
 
       <div id="fixusMain">
-        <div class="fixusContainer row">
+
+        <div class="fixusContainer">
           <div class="leftColumn well">
             <div id="username0" class="username user0">me</div>
             <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
-            <div id="talkTime0" class="user0 time">3:27</div>
+            <div id="talkTime0" class="user0 time">0:00</div>
           </div>
           <div class="rightColumn well">
             <div id="username1" class="username user1">you</div>
             <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
-            <div id="talkTime1" class="user1 time">8:43</div>
+            <div id="talkTime1" class="user1 time">0:00</div>
           </div>
         </div>
 
-        <div class="fixusContainer">
-          <div class="fixusLabel"><a href="#" id="positivity-popover" class="btn btn-link" rel="popover" data-content="Positivity is based on how many positive words you say." data-original-title="Positivity">Positivity</a></div>
-          <div class="bar-outside">
-            <div class="bar-inside" id="category-posemo"></div>
-          </div>
+        <a href="#" id="positivity-popover" class="btn btn-link" rel="popover" data-content="Positivity is based on how many positive words you say." data-original-title="Positivity">Positivity</a>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-posemo"></div>
         </div>
 
-        <div class="fixusContainer">
-          <div class="fixusLabel"><a href="#" id="self-absorption-popover" class="btn btn-link" rel="popover" data-content="Self absorption is based on how much you use first person pronouns compared." data-original-title="Self absorption">Self absorption</a></div>
-          <div class="bar-outside">
-            <div class="bar-inside" id="category-i"></div>
-          </div>
+        <a href="#" id="self-absorption-popover" class="btn btn-link" rel="popover" data-content="Self absorption is based on how much you use first person pronouns compared." data-original-title="Self absorption">Self absorption</a>
+         <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-i"></div>
         </div>
 
-        <div class="fixusContainer">
-          <div class="fixusLabel"><a href="#" id="femininity-popover" class="btn btn-link" rel="popover" data-content="Femininity is based on a complex heuristic." data-original-title="Femininity">Femininity</a></div>
-          <div class="bar-outside">
-            <div class="bar-inside" id="category-feminine"></div>
-          </div>
+        <a href="#" id="femininity-popover" class="btn btn-link" rel="popover" data-content="Femininity is based on a complex heuristic." data-original-title="Femininity">Femininity</a>
+         <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-feminine"></div>
         </div>
 
-        <div class="fixusContainer">
-          <div class="fixusLabel"><a href="#" id="aggression-popover" class="btn btn-link" rel="popover" data-content="Aggression is based on a complex heuristic." data-original-title="Aggression">Aggression</a></div>
-          <div class="bar-outside">
-            <div class="bar-inside" id="category-aggression"></div>
-          </div>
+        <a href="#" id="aggression-popover" class="btn btn-link" rel="popover" data-content="Aggression is based on a complex heuristic." data-original-title="Aggression">Aggression</a>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-aggression"></div>
         </div>
+
       </div>
 
       <script>
