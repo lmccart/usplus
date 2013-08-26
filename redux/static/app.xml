@@ -40,7 +40,7 @@
       <script src="//lmccart-fixus.appspot.com/static/speech.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/hangout.js"></script>
 
-      <div id="main">
+      <div id="fixusMain">
         <div class="fixusContainer row">
           <div class="leftColumn well">
             <div id="username0" class="username user0">me</div>
