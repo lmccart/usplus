@@ -158,7 +158,7 @@ function handleMessage(msg) {
   }
   
   else if (msg.type == 'speech') {
-    gapi.hangout.data.setValue(localID+"-speaking", msg.val);
+    gapi.hangout.data.setValue(localID+"-speaking", String(msg.val));
   }
   
 
