@@ -34,53 +34,51 @@
       <script src="//lmccart-fixus.appspot.com/static/speech.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/hangout.js"></script>
 
-      <div class="browser-landing" id="main">
-        <div class="compact marquee">
-          <div class="container">
-            <div class="leftColumn">
-              <div id="username0" class="username user0">me</div>
-              <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
-            </div>
-            <div class="rightColumn">
-              <div id="username1" class="username user1">you</div>
-              <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
-            </div>
+      <div id="main">
+        <div class="container">
+          <div class="leftColumn">
+            <div id="username0" class="username user0">me</div>
+            <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
           </div>
-
-          <div class="container">
-            <div class="label">Talk time</div>
-            <div class="container">
-              <div class="leftColumn user0 time" id="talkTime0">3:27</div>
-              <div class="rightColumn user1 time" id="talkTime1">8:43</div>
-            </div>
+          <div class="rightColumn">
+            <div id="username1" class="username user1">you</div>
+            <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
           </div>
+        </div>
 
-          <div class="container">
-            <div class="label">Positivity</div>
-            <div class="bar-outside">
-              <div class="bar-inside" id="category-posemo"></div>
-            </div>
+        <div class="container">
+          <div class="label">Talk time</div>
+          <div>
+            <div class="leftColumn user0 time" id="talkTime0">3:27</div>
+            <div class="rightColumn user1 time" id="talkTime1">8:43</div>
           </div>
+        </div>
 
-          <div class="container">
-            <div class="label">Self absorption</div>
-            <div class="bar-outside">
-              <div class="bar-inside" id="category-i"></div>
-            </div>
+        <div class="container">
+          <div class="label">Positivity</div>
+          <div class="bar-outside">
+            <div class="bar-inside" id="category-posemo"></div>
           </div>
+        </div>
 
-          <div class="container">
-            <div class="label">Femininity</div>
-            <div class="bar-outside">
-              <div class="bar-inside" id="category-feminine"></div>
-            </div>
+        <div class="container">
+          <div class="label">Self absorption</div>
+          <div class="bar-outside">
+            <div class="bar-inside" id="category-i"></div>
           </div>
+        </div>
 
-          <div class="container">
-            <div class="label">Aggression</div>
-            <div class="bar-outside">
-              <div class="bar-inside" id="category-aggression"></div>
-            </div>
+        <div class="container">
+          <div class="label">Femininity</div>
+          <div class="bar-outside">
+            <div class="bar-inside" id="category-feminine"></div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="label">Aggression</div>
+          <div class="bar-outside">
+            <div class="bar-inside" id="category-aggression"></div>
           </div>
         </div>
       </div>
