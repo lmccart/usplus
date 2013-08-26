@@ -88,7 +88,7 @@ function draw() {
 
     var val = gapi.hangout.data.getValue(localID+"-"+categories[i]);
     var localScore = val ? parseFloat(val) : 0;
-    console.log(localScore);
+    //console.log(localScore);
 
     val = otherID ? gapi.hangout.data.getValue(otherID+"-"+categories[i]) : false;
     var otherScore = val ? parseFloat(val) : baseScore;
@@ -100,7 +100,7 @@ function draw() {
 
     var category = categories[i];
     var pct = Math.round(Math.min(balance, Math.max(balance, 0), 1)*100) + "%";
-    console.log(pct);
+    //console.log(pct);
     $('#category-'+category).width(pct);
 
     // PEND NOTIFY HERE
@@ -131,15 +131,12 @@ function updateSpeechTime(itvl) {
 
     var id = (i==0) ? localID : otherID;
      
-    
     var vol = id ? volumes[id] : 0;
-    var volAvg = parseFloat(gapi.hangout.data.getValue(id+"-volAvg"));
-    console.log("volAvg:"+volAvg+" samples:"+numSamples);
+    var volAvg = id ? parseFloat(gapi.hangout.data.getValue(id+"-volAvg")) : 0;
 
     // update volume avg
     if (!i) {
       volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
-      console.log("vol:"+vol+" avg:"+volAvg);
       gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
     }
 
@@ -150,7 +147,6 @@ function updateSpeechTime(itvl) {
       gapi.hangout.data.setValue(id+"-st", String(st));
     }
 
-    console.log("st:"+st);
     st = new Date(st);
     st = st.toLocaleTimeString();
     st = st.substring(st.indexOf(':')+1, st.indexOf(' '));
