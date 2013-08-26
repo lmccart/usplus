@@ -3,7 +3,7 @@
 var final_transcript = '';
 var recognizing = false;
 var start_timestamp;
-var recognition, speechHysteresis;
+var recognition;
 var selfSpeaking = false;
 
 function startSpeech() {
@@ -16,10 +16,6 @@ function startSpeech() {
     recognition.continuous = true;
     recognition.interimResults = true;
 
-    // set up a hysteresis object that turns "on" immediately, but takes 1 second to turn "off"
-    speechHysteresis = new hysteresis();
-    // regularly feed the hysteresis object "off" in order to generate "end of speech" events
-    setInterval(function() {speechHysteresis.update(false);}, 200);
     setInterval(checkSpeaker, 100);
     setInterval(function(){updateSpeechTime(250);}, 250);
 
@@ -63,8 +59,6 @@ function startSpeech() {
           upgrade();
           return;
         }
-        // there is some kind of speech event
-        speechHysteresis.update(true);
         //console.log(event);
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
@@ -133,39 +127,6 @@ function showInfo(s) {
   // }
 }
 
-function hysteresis() {
-  var lastTime = 0;
-  var lastValue = false, curValue = false;
-
-  this.risingDelay = 0;
-  this.fallingDelay = 1000;
-  /*this.ontrigger = function(){
-    console.log("trigger");
-  };
-  this.onuntrigger = function(){
-    console.log("untrigger");
-  };*/
-
-
-  this.update = function(value) {
-    var curTime = Date.now();
-    if(value != curValue) {
-      if(value != lastValue) {
-        lastTime = curTime;
-      }
-      var delay = value ? this.risingDelay : this.fallingDelay;
-      if(curTime - lastTime >= delay) {
-        if(value) {
-          this.ontrigger();
-        } else {
-          this.onuntrigger();
-        }
-        curValue = value;
-      }
-    }
-    lastValue = value;
-  }
-}
 
 function checkSpeaker() {
   var volumes = gapi.hangout.av.getVolumes();
