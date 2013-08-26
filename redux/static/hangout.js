@@ -63,6 +63,7 @@ $(window).load(function() {
   console.log('window load');
 
   // setup
+  /*
   height = $('#feedback').height();
   width = $('#feedback').width();
   for(var i = 0; i < categories.length; i++) {
@@ -70,6 +71,7 @@ $(window).load(function() {
     $('#feedback').append("<div class='category'><div class='score local' id='local"+category+"'>"+category+"</div><div class='score other' id='other"+category+"'></div></div>");
     $('.score').css('height', height / categories.length);
   }
+  */
   startSpeech();
 });
 
@@ -99,7 +101,7 @@ function draw() {
     var category = categories[i];
     var pct = Math.round(Math.min(balance, Math.max(balance, 0), 1)*100) + "%";
     console.log(pct);
-    $('#'+category).width(pct);
+    $('#category-'+category).width(pct);
 
     // PEND NOTIFY HERE
     if(i == maxScale) {
