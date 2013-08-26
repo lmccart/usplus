@@ -12,6 +12,8 @@ var categories = [
   "honesty"
 ];
 
+Participant localParticipant, remoteParticipant;
+
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -24,6 +26,14 @@ if (gapi && gapi.hangout) {
       //prepareAppDOM();
 
       console.log("hangout ready");
+
+      // get participants
+      localParticipant = gapi.hangout.getLocalParticipant();
+      participants = gapi.hangout.getParticipants();
+      for(i in participants) {
+        person = participants[i];
+        console.log("participant " + i + ": " + person.displayName);
+      }
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
