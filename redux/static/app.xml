@@ -84,11 +84,11 @@
   <div class="container">
     <div class="leftColumn">
       <div id="username0" class="username user0">lauren</div>
-      <div id="face0" class="face user0">:|</div>
+      <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
     </div>
     <div class="rightColumn">
       <div id="username1" class="username user1">kyle</div>
-      <div id="face1" class="face user1">:)</div>
+      <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
     </div>
   </div>
 
