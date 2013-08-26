@@ -6,7 +6,10 @@ var width, height;
 
 var categories = [
   "posemo",
-  "i"
+  "i",
+  "femininity",
+  "aggression",
+  "honesty"
 ];
 
 
@@ -15,7 +18,6 @@ var localParticipant, remoteParticipant;
 var localID = "";
 var otherID = "";
 var baseScore = 0;
-var scalePower = 2, minHeightScale = 1, maxHeightScale = 50;
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -76,17 +78,6 @@ if (gapi && gapi.hangout) {
 
 $(window).load(function() {
   console.log('window load');
-
-  // setup
-  /*
-  height = $('#feedback').height();
-  width = $('#feedback').width();
-  for(var i = 0; i < categories.length; i++) {
-    var category = categories[i];
-    $('#feedback').append("<div class='category'><div class='score local' id='local"+category+"'>"+category+"</div><div class='score other' id='other"+category+"'></div></div>");
-    $('.score').css('height', height / categories.length);
-  }
-  */
   startSpeech();
 });
 

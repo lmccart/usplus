@@ -48,18 +48,22 @@ var StatsHandler = function(db) {
 			
 			var message = {
 				type: "stats",
-				calcs: [["funct", "+funct"], //function words. for testing.
+				calcs: [
+								//["funct", "+funct"], //function words. for testing.
 								["posemo", "+posemo"], //use cat names if they correspond!
-								["negemo", "+negemo"], 
-								["anger", "+anger"], 
+								// ["negemo", "+negemo"], 
+								// ["anger", "+anger"], 
 								["i", "+i"], 
-								["we", "+we"], 
-								["complexity", "+excl+tentat+negate-incl+discrep"],
-								["status", "+we-i"],
-								["depression", "+i+bio+negemo-posemo"],
-								["formality", "-i+article+sixltr-present-discrep"],
+								// ["we", "+we"], 
+								// ["complexity", "+excl+tentat+negate-incl+discrep"],
+								// ["status", "+we-i"],
+								// ["depression", "+i+bio+negemo-posemo"],
+								// ["formality", "-i+article+sixltr-present-discrep"],
 								["honesty", "+i+excl-negemo"],
-								["feminine", "feminine"]],
+								["femininity", "+other+posemo+sixltr-negate-article-preps-swear-money-number"],
+								["aggressiveness", "+anger+swear"]
+							],
+
 				tempVal: 0,
 				total: db.rowCount("word_instances")
 			};
