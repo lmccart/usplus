@@ -38,8 +38,6 @@ var notifications = {
 
 var localParticipant, remoteParticipant;
 
-var apiLoaded = false, windowLoaded = false;
-
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -58,9 +56,7 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
 
-      if(windowLoaded) {
-        updateAvatars();
-      }
+      updateAvatars();
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
@@ -89,7 +85,6 @@ if (gapi && gapi.hangout) {
       gapi.hangout.av.effects.onFaceTrackingDataChanged.add(onFaceTrackingDataChanged);
 
       gapi.hangout.onApiReady.remove(initHangout);
-      apiLoaded = true;
     }
   };
 
@@ -100,10 +95,6 @@ $(window).load(function() {
   console.log('window load');
   startSpeech();
   updateAvatars();
-  if(apiLoaded) {
-    updateAvatars();
-  }
-  windowLoaded = true;
 });
 
 
@@ -138,13 +129,12 @@ function draw() {
     if(notes) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
-          || (balance > parseFloat(notes[j][1]))) { // gt
-          console.log(notes[j][2]);
+          || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
+          console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
+          console.log("DISPLAY "+notes[j][2]);
+          gapi.hangout.layout.displayNotice(notes[j][2], false);
         }  
       }
-
-      //$('#command').text(getCommand(i, balances[i]));
-      //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     } 
   }
   
