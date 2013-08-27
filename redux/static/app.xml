@@ -46,37 +46,37 @@
         <div>
           <div class="leftColumn well">
             <div><img class="avatar" id="avatar0" src="//lmccart-fixus.appspot.com/static/img/avatar.png"/></div>
-            <div id="face0" class="face user0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
-            <div id="talkTime0" class="user0 time">0:00</div>
+            <div id="face0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-neutral.png"/></div>
+            <div id="talkTime0" class="time">0:00</div>
           </div>
           <div class="rightColumn well">
             <div><img class="avatar" id="avatar1" src="//lmccart-fixus.appspot.com/static/img/avatar.png"/></div>
-            <div id="face1" class="face user1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
-            <div id="talkTime1" class="user1 time">0:00</div>
+            <div id="face1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-happy.png"/></div>
+            <div id="talkTime1" class="time">0:00</div>
           </div>
         </div>
 
-        <a href="#" id="positivity-popover" rel="popover" data-content="...based on how many positive words you say." data-original-title="Positivity is...">Positivity</a>
+        <a href="#" class="category" id="positivity-popover" rel="popover" data-content="...based on how many positive words you say." data-original-title="Positivity is...">Positivity</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-posemo"></div>
         </div>
 
-        <a href="#" id="self-absorption-popover" rel="popover" data-content="...based on how much you use first person pronouns compared." data-original-title="Self absorption is...">Self absorption</a>
+        <a href="#" class="category" id="self-absorption-popover" rel="popover" data-content="...based on how much you use first person pronouns compared." data-original-title="Self absorption is...">Self absorption</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-i"></div>
         </div>
 
-        <a href="#" id="femininity-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Femininity is...">Femininity</a>
+        <a href="#" class="category" id="femininity-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Femininity is...">Femininity</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-femininity"></div>
         </div>
 
-        <a href="#" id="aggression-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Aggression is...">Aggression</a>
+        <a href="#" class="category" id="aggression-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Aggression is...">Aggression</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-aggression"></div>
         </div>
 
-        <a href="#" id="honesty-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Honesty is...">Honesty</a>
+        <a href="#" class="category" id="honesty-popover" rel="popover" data-content="...based on a complex heuristic." data-original-title="Honesty is...">Honesty</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-honesty"></div>
         </div>

@@ -161,7 +161,9 @@ function updateAvatars() {
   }
 
   $("#avatar0").attr('src', localPerson.image.url);
-  $("#avatar1").attr('src', remotePerson.image.url);
+  if(remotePerson) {
+    $("#avatar1").attr('src', remotePerson.image.url);
+  }
 }
 
 
