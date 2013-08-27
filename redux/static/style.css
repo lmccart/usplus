@@ -13,9 +13,11 @@ img {
 }
 .leftColumn {
   float: left;
+  border-color: #4d90fe;
 }
 .rightColumn {
   float: right;
+  border-color: #fac843;
 }
 .leftColumn, .rightColumn {
   text-align: center;
@@ -23,6 +25,10 @@ img {
 }
 .progress {
   margin-bottom: .5em;
+  border-color: #fac843;
+}
+.progress-bar {
+  border-color: #4d90fe;  
 }
 .time {
   font-size: 150%;
