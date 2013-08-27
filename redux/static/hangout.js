@@ -12,6 +12,32 @@ var categories = [
   "honesty"
 ];
 
+var notifications = {
+  "posemo" : [
+    [ 0, "0.25", "< 0.25 posemo"],
+    [ 1, "0.75", "> 0.75 posemo"]
+  ],
+  "i" : [
+    [ 1, "0.75", "> 0.75 i"]
+  ],
+  "aggression" : [
+    [ 0, "0.25", "< 0.25 aggression"],
+    [ 1, "0.75", "> 0.75 aggression"]
+  ],
+  "honesty" : [
+    [ 0, "0.25", "< 0.25 honesty"]
+  ],
+  "st" : [
+    [ 0, "0.25", "< 0.25 speech time"],
+    [ 1, "0.75", "> 0.75 speech time"]
+  ]
+};
+
+
+
+
+var localParticipant, remoteParticipant;
+
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -74,7 +100,6 @@ $(window).load(function() {
 function draw() {
 
   // Update LIWC cats
-  var maxScale = 0.8;
 
   for(var i = 0; i < categories.length; i++) {
     var balance = 0.5;
@@ -97,10 +122,18 @@ function draw() {
     $('#category-'+category).width(pct);
 
     // PEND NOTIFY HERE
-    if(i == maxScale) {
+    var notes = notifications[category];
+    if(notes) {
+      for (var j=0; j<notes.length; j++) {
+        if ((!notes[j][0] && pct < parseFloat(notes[j][1])) // lt
+          || (pct > parseFloat(notes[j][1]))) { // gt
+          console.log(notes[j][2]);
+        } else console.log(notes[j], pct);  
+      }
+
       //$('#command').text(getCommand(i, balances[i]));
       //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
-    }
+    } else console.log(category);
   }
   
   // PEND NOTIFY HERE and AUTO MUTE
@@ -130,41 +163,6 @@ function updateAvatars() {
   $("#avatar1").attr('src', remotePerson.image.url);
 }
 
-function updateSpeechTime(itvl) {
-
-  var numSamples = 1000/itvl;
-
-  // get volumes
-  var volumes = gapi.hangout.av.getVolumes();
-
-  
-  for (var i=0; i<2; i++) {
-
-    var id = (i==0) ? localID : otherID;
-     
-    var vol = id ? volumes[id] : 0;
-    var volAvg = id ? parseFloat(gapi.hangout.data.getValue(id+"-volAvg")) : 0;
-
-    // update volume avg
-    if (!i) {
-      volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
-      gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
-    }
-
-    // update talk time
-    var st = id ? parseInt(gapi.hangout.data.getValue(id+"-st"), 10) : 0;
-    if (!i && (vol > 0 || volAvg > 1.0)) {
-      st += itvl;
-      gapi.hangout.data.setValue(id+"-st", String(st));
-    }
-
-    st = new Date(st);
-    st = st.toLocaleTimeString();
-    st = st.substring(st.indexOf(':')+1, st.indexOf(' '));
-
-    $('#talkTime'+i).text(st);
-  }
-}
 
 // Handle incoming messages and distribute to appropriate functions.
 function handleMessage(msg) {
