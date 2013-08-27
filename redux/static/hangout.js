@@ -38,6 +38,8 @@ var notifications = {
 
 var localParticipant, remoteParticipant;
 
+var apiLoaded = false, windowLoaded = false;
+
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -56,7 +58,9 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
 
-      updateAvatars();
+      if(windowLoaded) {
+        updateAvatars();
+      }
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
@@ -85,6 +89,7 @@ if (gapi && gapi.hangout) {
       gapi.hangout.av.effects.onFaceTrackingDataChanged.add(onFaceTrackingDataChanged);
 
       gapi.hangout.onApiReady.remove(initHangout);
+      apiLoaded = true;
     }
   };
 
@@ -94,6 +99,11 @@ if (gapi && gapi.hangout) {
 $(window).load(function() {
   console.log('window load');
   startSpeech();
+  updateAvatars();
+  if(apiLoaded) {
+    updateAvatars();
+  }
+  windowLoaded = true;
 });
 
 
