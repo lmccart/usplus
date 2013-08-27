@@ -178,12 +178,12 @@ function updateSpeechTime(itvl) {
     $('#talkTime'+i).text(st);
   }
 
-  // check for speaking time inbalance
+  // check for speaking time imbalance
   var now = new Date().getTime();
-  if(now - lastNotificationTime > 10000) {
+  if(now - lastNotificationTime > notificationInterval) {
 
     if (localTime / (localTime + otherTime) > 0.75) {
-      gapi.hangout.layout.displayNotice("You've been automuted because you're talking too much.", false);
+      gapi.hangout.layout.displayNotice("You've been auto-muted because you're talking too much.", false);
       gapi.hangout.av.setMicrophoneMute(true);
       lastNotificationTime = now;
     } 

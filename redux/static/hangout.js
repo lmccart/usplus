@@ -45,6 +45,7 @@ var otherID = "";
 var baseScore = 0;
 
 var lastNotificationTime = 0;
+var notificationInterval = 20*1000;
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -131,7 +132,7 @@ function notify() {
     // PEND NOTIFY HERE
     var notes = notifications[category];
     var now = new Date().getTime();
-    if(notes && now - lastNotificationTime > 10000) {
+    if(notes && now - lastNotificationTime > notificationInterval) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
