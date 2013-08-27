@@ -128,9 +128,9 @@ function draw() {
     if(notes) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && pct < parseFloat(notes[j][1])) // lt
-          || (pct > parseFloat(notes[j][1]))) { // gt
+          || (balance > parseFloat(notes[j][1]))) { // gt
           console.log(notes[j][2]);
-        } else console.log(notes[j], balance);  
+        } else console.log(notes[j], balance, pct > parseFloat(notes[j][1]);  
       }
 
       //$('#command').text(getCommand(i, balances[i]));
