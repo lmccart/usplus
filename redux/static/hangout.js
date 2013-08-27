@@ -25,7 +25,7 @@ if (gapi && gapi.hangout) {
 
       console.log("hangout ready");
 
-      updateUsernames();
+      updateAvatars();
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
@@ -41,7 +41,7 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
-        updateUsernames();
+        updateAvatars();
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
         var idFound = false;
@@ -113,7 +113,7 @@ function draw() {
 }
 
 var localPerson, remotePerson;
-function updateUsernames() {
+function updateAvatars() {
   // get participants
   localPerson = gapi.hangout.getLocalParticipant().person;
   participants = gapi.hangout.getParticipants();
@@ -124,8 +124,8 @@ function updateUsernames() {
     }
   }
 
-  $("#username0").text(localPerson.displayName);
-  $("#username1").text(remotePerson.displayName);
+  $("#avatar0").attr('src', localPerson.image.url);
+  $("#avatar1").attr('src', remotePerson.image.url);
 }
 
 function updateSpeechTime(itvl) {

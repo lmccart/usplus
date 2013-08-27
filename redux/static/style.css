@@ -10,6 +10,10 @@ body {
 img {
   margin: .5em;
 }
+.avatar {
+  width: 34px;
+  height: 34px;
+}
 .leftColumn {
   text-align: center;
   width: 50%;
