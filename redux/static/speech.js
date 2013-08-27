@@ -145,6 +145,7 @@ function updateSpeechTime(itvl) {
   // get volumes
   var volumes = gapi.hangout.av.getVolumes();
 
+  var localTime = 0, otherTime = 0;
   
   for (var i=0; i<2; i++) {
 
@@ -164,6 +165,10 @@ function updateSpeechTime(itvl) {
     if (!i && (vol > 0 || volAvg > 1.0)) {
       st += itvl;
       gapi.hangout.data.setValue(id+"-st", String(st));
+      localTime = st;
+    }
+    else if (i) {
+      otherTime = st;
     }
 
     st = new Date(st);
@@ -172,16 +177,17 @@ function updateSpeechTime(itvl) {
 
     $('#talkTime'+i).text(st);
   }
-/*
-      if(notes) {
-      for (var j=0; j<notes.length; j++) {
-        if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
-          || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
-          console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
-          console.log("DISPLAY "+notes[j][2]);
-          gapi.hangout.layout.displayNotice(notes[j][2], false);
-          break;
-        }  
-      }
-    } */
+
+  // check for speaking time inbalance
+  var now = new Date().getTime();
+  if(now - lastNotificationTime > 10000) {
+
+    if (localTime / (localTime + otherTime) > 0.75) {
+      gapi.hangout.layout.displayNotice("You've been automuted because you're talking too much.", false);
+      gapi.hangout.av.setMicrophoneMute(true);
+      lastNotificationTime = now;
+    } 
+  } 
 }
+
+
