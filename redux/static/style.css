@@ -1,14 +1,15 @@
 body {
   font-family: 'Lato', sans-serif;
-}
-#fixusMain {
-  font-family: 'Lato', sans-serif;
   font-weight: 300;
   color: black;
   padding: .5em;
 }
 img {
   margin: .5em;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
 }
 .leftColumn {
   text-align: center;
@@ -19,25 +20,6 @@ img {
   text-align: center;
   width: 50%;
   float: right;
-}
-.user0 {
-  color: gray;
-}
-.user1 {
-  color: black;
-}
-.username {
-  font-size: 150%;
-}
-.bar-outside {
-  background-color: black;
-  width: 100%;
-  height: 1em;
-}
-.bar-inside {
-  background-color: gray;
-  width: 25%;
-  height: 100%;
 }
 .progress {
   margin: 0;

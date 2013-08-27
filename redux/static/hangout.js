@@ -51,18 +51,7 @@ if (gapi && gapi.hangout) {
 
       console.log("hangout ready");
 
-      // get participants
-      localParticipant = gapi.hangout.getLocalParticipant();
-      participants = gapi.hangout.getParticipants();
-      for(i in participants) {
-        person = participants[i].person;
-        if(person != localParticipant) {
-          remoteParticipant = person;
-        }
-      }
-
-      $("#username0").text(localParticipant.displayName);
-      $("#username1").text(remoteParticipant.displayName);
+      updateAvatars();
 
       // init data vals
       localID = gapi.hangout.getLocalParticipantId();
@@ -78,6 +67,7 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
+        updateAvatars();
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
         var idFound = false;
@@ -155,6 +145,23 @@ function draw() {
   // Update smile
 }
 
+<<<<<<< HEAD
+=======
+var localPerson, remotePerson;
+function updateAvatars() {
+  // get participants
+  localPerson = gapi.hangout.getLocalParticipant().person;
+  participants = gapi.hangout.getParticipants();
+  for(i in participants) {
+    person = participants[i].person;
+    if(person != localPerson) {
+      remotePerson = person;
+    }
+  }
+
+  $("#avatar0").attr('src', localPerson.image.url);
+  $("#avatar1").attr('src', remotePerson.image.url);
+}
 
 
 // Handle incoming messages and distribute to appropriate functions.
