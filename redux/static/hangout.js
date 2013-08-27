@@ -145,8 +145,6 @@ function draw() {
   // Update smile
 }
 
-<<<<<<< HEAD
-=======
 var localPerson, remotePerson;
 function updateAvatars() {
   // get participants
