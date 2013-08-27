@@ -129,12 +129,11 @@ function draw() {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (balance > parseFloat(notes[j][1]))) { // gt
-          console.log(notes[j][2]);
+          console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
+          console.log("DISPLAY "+notes[j][2]);
+          gapi.hangout.layout.displayNotice(notes[j][2], false);
         }  
       }
-
-      //$('#command').text(getCommand(i, balances[i]));
-      //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
     } 
   }
   
