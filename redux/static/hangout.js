@@ -119,7 +119,8 @@ function updateAvatars() {
   participants = gapi.hangout.getParticipants();
   for(i in participants) {
     person = participants[i].person;
-    console.log("updating avatar " + i + " from: " + person);
+    console.log("updating avatar " + i);
+    console.log(person);
     if(person != localPerson) {
       remotePerson = person;
     }
