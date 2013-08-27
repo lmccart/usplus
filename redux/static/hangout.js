@@ -51,6 +51,11 @@ if (gapi && gapi.hangout) {
 
       console.log("hangout ready");
 
+      // attach listeners
+      gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
+        handleStateChange(stateChangeEvent);
+      });
+
       updateAvatars();
 
       // init data vals
@@ -62,10 +67,7 @@ if (gapi && gapi.hangout) {
         gapi.hangout.data.setValue(localID+"-"+categories[i], String(baseScore));
       }
 
-      // attach listeners
-      gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
-        handleStateChange(stateChangeEvent);
-      });
+
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
@@ -128,12 +130,12 @@ function draw() {
         if ((!notes[j][0] && pct < parseFloat(notes[j][1])) // lt
           || (pct > parseFloat(notes[j][1]))) { // gt
           console.log(notes[j][2]);
-        } else console.log(notes[j], pct);  
+        } else console.log(notes[j], balance);  
       }
 
       //$('#command').text(getCommand(i, balances[i]));
       //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
-    } else console.log(category);
+    } 
   }
   
   // PEND NOTIFY HERE and AUTO MUTE
@@ -182,7 +184,7 @@ function handleMessage(msg) {
 }
 
 function handleStateChange(ev) {
-  //console.log('state changed');
+  console.log('state changed');
   //console.log(gapi.hangout.data.getValue(localID+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
