@@ -137,3 +137,39 @@ function checkSpeaker() {
   selfSpeaking = localVol >= otherVol;
   if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
 }
+
+function updateSpeechTime(itvl) {
+
+  var numSamples = 1000/itvl;
+
+  // get volumes
+  var volumes = gapi.hangout.av.getVolumes();
+
+  
+  for (var i=0; i<2; i++) {
+
+    var id = (i==0) ? localID : otherID;
+     
+    var vol = id ? volumes[id] : 0;
+    var volAvg = id ? parseFloat(gapi.hangout.data.getValue(id+"-volAvg")) : 0;
+
+    // update volume avg
+    if (!i) {
+      volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
+      gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
+    }
+
+    // update talk time
+    var st = id ? parseInt(gapi.hangout.data.getValue(id+"-st"), 10) : 0;
+    if (!i && (vol > 0 || volAvg > 1.0)) {
+      st += itvl;
+      gapi.hangout.data.setValue(id+"-st", String(st));
+    }
+
+    st = new Date(st);
+    st = st.toLocaleTimeString();
+    st = st.substring(st.indexOf(':')+1, st.indexOf(' '));
+
+    $('#talkTime'+i).text(st);
+  }
+}
