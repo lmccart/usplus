@@ -98,6 +98,7 @@ if (gapi && gapi.hangout) {
 $(window).load(function() {
   console.log('window load');
   startSpeech();
+  updateAvatars();
 });
 
 
