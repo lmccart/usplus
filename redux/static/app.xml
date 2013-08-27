@@ -56,27 +56,27 @@
           </div>
         </div>
 
-        <a href="#" class="category" id="positivity-popover" rel="popover" data-trigger="hover" data-content="...based on how many positive words you say." data-original-title="Positivity is...">Positivity</a>
+        <a href="#" class="category" id="positivity-popover" rel="popover" data-trigger="hover" placement="top" data-content="Positivity is based on how many positive words you say.">Positivity</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-posemo"></div>
         </div>
 
-        <a href="#" class="category" id="self-absorption-popover" rel="popover" data-trigger="hover" data-content="...based on how much you use first person pronouns compared." data-original-title="Self absorption is...">Self absorption</a>
+        <a href="#" class="category" id="self-absorption-popover" rel="popover" data-trigger="hover" placement="top" data-content="Self absorption is based on how much you use first person pronouns compared.">Self absorption</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-i"></div>
         </div>
 
-        <a href="#" class="category" id="femininity-popover" rel="popover" data-trigger="hover" data-content="...based on a complex heuristic." data-original-title="Femininity is...">Femininity</a>
+        <a href="#" class="category" id="femininity-popover" rel="popover" data-trigger="hover" placement="top" data-content="Femininity is based on a complex heuristic.">Femininity</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-femininity"></div>
         </div>
 
-        <a href="#" class="category" id="aggression-popover" rel="popover" data-trigger="hover" data-content="...based on a complex heuristic." data-original-title="Aggression is...">Aggression</a>
+        <a href="#" class="category" id="aggression-popover" rel="popover" data-trigger="hover" placement="top" data-content="Aggression is based on a complex heuristic.">Aggression</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-aggression"></div>
         </div>
 
-        <a href="#" class="category" id="honesty-popover" rel="popover" data-trigger="hover" data-content="...based on a complex heuristic." data-original-title="Honesty is...">Honesty</a>
+        <a href="#" class="category" id="honesty-popover" rel="popover" data-trigger="hover" placement="top" data-content="Honesty is based on a complex heuristic.">Honesty</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-honesty"></div>
         </div>
