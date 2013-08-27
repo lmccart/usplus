@@ -251,11 +251,13 @@ function onFaceTrackingDataChanged(event) {
     imagePointSum.y /= imagePoints.length;
     scale = length(imagePointSum);
     mouthWidth = distance(event.mouthLeft, event.mouthRight);
-    smileAmount = mouthWidth / scale;
+    eyeWidth = distance(event.leftEye, event.rightEye);
+    smileAmount = mouthWidth / eyeWidth;
 
-    var smile = smileAmount / 30;
+    var smile = smileAmount / 1;
     var pct = Math.round(Math.min(smile, Math.max(smile, 0), 1)*100) + "%";
     $('#debug-smile').width(pct);
+    $('#debug-smile-text').text(Math.floor(smileAmount * 100) / 100);
   } catch (e) {
     console.log(e+": "+e.message);
   }
