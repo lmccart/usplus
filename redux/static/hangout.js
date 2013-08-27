@@ -45,6 +45,7 @@ var otherID = "";
 var baseScore = 0;
 
 var lastNotificationTime = 0;
+var notificationInterval = 20*1000;
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -130,8 +131,8 @@ function notify() {
 
     // PEND NOTIFY HERE
     var notes = notifications[category];
-    var now = new Date().getMilliseconds();
-    if(notes && now - lastNotificationTime > 5000) {
+    var now = new Date().getTime();
+    if(notes && now - lastNotificationTime > notificationInterval) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
@@ -140,7 +141,6 @@ function notify() {
           gapi.hangout.layout.displayNotice(notes[j][2], false);
 
           lastNotificationTime = now;
-
           break;
         }  
       }
@@ -190,10 +190,6 @@ function handleMessage(msg) {
 }
 
 function handleStateChange(ev) {
-  console.log('state changed');
-  //console.log(gapi.hangout.data.getValue(localID+"-st"));
-  //gapi.hangout.layout.displayNotice(flip, true);
-
   notify();
 }
 
