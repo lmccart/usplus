@@ -202,29 +202,6 @@ function manualInputSubmit() {
   parser.parseLine(document.getElementById('manualInput').value)
 }
 
-
-function rgb(brightness) {
-  return 'rgb(' + brightness + ',' + brightness + ',' + brightness + ')';
-}
-
-function background(brightness, ctx) {
-  ctx.save();
-  ctx.fillStyle = rgb(brightness);
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.restore();
-}
-
-function fill(brightness, ctx) {
-  brightness |= 0;
-  ctx.strokeStyle = ctx.fillStyle = rgb(brightness);
-}
-
-function circle(center, radius, ctx) {
-  ctx.beginPath();
-  ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
-  ctx.fill();
-}
-
 function unnormalize(point, ctx) {
   result = new Object();
   result.x = map(point.x, -.5, +.5, 0, ctx.canvas.width);
@@ -233,7 +210,6 @@ function unnormalize(point, ctx) {
 }
 
 function length(a) {
-  //return Math.sqrt(a.x * b.x + a.y * b.y);
   return Math.sqrt(a.x * a.x + a.y * a.y);
 }
 
@@ -242,80 +218,40 @@ function distance(a, b) {
 }
 
 var lastEvent;
-var lastRoll, lastPan, lastTilt, lastScale, lastX;
+var smileAmount;
 function onFaceTrackingDataChanged(event) {
   try {
-    lastEvent = event;
-
     if (!event.hasFace) {
       return;
     }
+    imagePoints = [
+      event.leftEye,
+      event.leftEyebrowLeft,
+      event.leftEyebrowRight,
 
-    $("#debugText").text(event.roll + " " + event.pan + " " + event.tilt);
+      event.rightEye,
+      event.rightEyebrowLeft,
+      event.rightEyebrowRight,
 
-    var canvas = document.getElementById("debugCanvas");
-    if (canvas) {
-      var ctx = canvas.getContext('2d');
+      event.lowerLip,
+      event.upperLip,
+      event.mouthCenter,
+      event.mouthLeft,
+      event.mouthRight,
 
-      background(255, ctx);
-      fill(0, ctx);
-
-      imagePoints = [
-        event.leftEye,
-        event.leftEyebrowLeft,
-        event.leftEyebrowRight,
-
-        event.rightEye,
-        event.rightEyebrowLeft,
-        event.rightEyebrowRight,
-
-        event.lowerLip,
-        event.upperLip,
-        event.mouthCenter,
-        event.mouthLeft,
-        event.mouthRight,
-
-        event.noseRoot,
-        event.noseTip
-      ];
-
-      for(point in imagePoints) {
-        circle(unnormalize(imagePoints[point], ctx), 2, ctx);
-      }
-
-
-      // type error somewhere around here>>
-      imagePointSum = {x: 0, y: 0};
-      for(point in imagePoints) {
-        imagePointSum.x += imagePoints[point].x;
-        imagePointSum.y += imagePoints[point].y;
-      }
-      imagePointSum.x /= imagePoints.length;
-      imagePointSum.y /= imagePoints.length;
-      scale = length(imagePointSum);
-      mouthWidth = distance(event.mouthLeft, event.mouthRight);
-      //console.log(mouthWidth / scale);
-
-      /*
-      lastRoll.unshift(event.roll);
-      lastRoll.pop();
-      lastPan.unshift(event.pan);
-      lastPan.pop();
-      lastTilt.unshift(event.tilt);
-      lastTilt.pop();
-
-      var dist = Math.sqrt(
-          (event.leftEye.x - event.noseTip.x) *
-              (event.leftEye.x - event.noseTip.x) +
-                  (event.leftEye.y - event.noseTip.y) *
-                      (event.leftEye.y - event.noseTip.y));
-
-      lastScale.unshift(dist);
-      lastScale.pop();
-
-      lastX.unshift(event.noseTip.x);
-      lastX.pop();*/
+      event.noseRoot,
+      event.noseTip
+    ];
+    imagePointSum = {x: 0, y: 0};
+    for(point in imagePoints) {
+      imagePointSum.x += imagePoints[point].x;
+      imagePointSum.y += imagePoints[point].y;
     }
+    imagePointSum.x /= imagePoints.length;
+    imagePointSum.y /= imagePoints.length;
+    scale = length(imagePointSum);
+    mouthWidth = distance(event.mouthLeft, event.mouthRight);
+    smileAmount = mouthWidth / scale;
   } catch (e) {
     console.log(e+": "+e.message);
   }
