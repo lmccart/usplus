@@ -4,6 +4,8 @@ parser.initialize();
 var width, height;
 
 
+
+
 var categories = [
   "posemo",
   "i",
@@ -41,6 +43,8 @@ var localParticipant, remoteParticipant;
 var localID = "";
 var otherID = "";
 var baseScore = 0;
+
+var lastNotificationTime = 0;
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -99,7 +103,7 @@ $(window).load(function() {
 
 
 
-function draw() {
+function notify() {
 
   // Update LIWC cats
 
@@ -125,22 +129,21 @@ function draw() {
 
     // PEND NOTIFY HERE
     var notes = notifications[category];
-    if(notes) {
+    var now = new Date().getMilliseconds();
+    if(notes && now - lastNotificationTime > 5000) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
           console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
           console.log("DISPLAY "+notes[j][2]);
           gapi.hangout.layout.displayNotice(notes[j][2], false);
+
+          lastNotificationTime = now;
+
+          break;
         }  
       }
     } 
-  }
-  
-  // PEND NOTIFY HERE and AUTO MUTE
-  if(true) {
-    //$('#command').text(getCommand(i, balances[i]));
-    //gapi.hangout.layout.displayNotice(getCommand(i, balances[i]), false);
   }
 
   // Update smile
@@ -190,7 +193,7 @@ function handleStateChange(ev) {
   //console.log(gapi.hangout.data.getValue(localID+"-st"));
   //gapi.hangout.layout.displayNotice(flip, true);
 
-  draw();
+  notify();
 }
 
 
