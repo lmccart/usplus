@@ -12,15 +12,22 @@ img {
   height: 34px;
 }
 .leftColumn {
-  text-align: center;
-  width: 50%;
   float: left;
 }
 .rightColumn {
-  text-align: center;
-  width: 50%;
   float: right;
 }
+.leftColumn, .rightColumn {
+  text-align: center;
+  width: 48%;
+}
 .progress {
-  margin: 0;
+  margin-bottom: .5em;
+}
+.time {
+  font-size: 150%;
+}
+.category {
+  color: black;
+  font-size: 120%;
 }
