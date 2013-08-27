@@ -89,6 +89,7 @@
         $("#self-absorption-popover").popover();
         $("#femininity-popover").popover();
         $("#aggression-popover").popover();
+        $("#honesty-popover").popover();
       });
       </script>
 
