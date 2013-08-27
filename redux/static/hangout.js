@@ -67,7 +67,6 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
-        updateAvatars();
         console.log("participants changed");
         var participants = gapi.hangout.getParticipants();
         var idFound = false;
@@ -79,6 +78,7 @@ if (gapi && gapi.hangout) {
           }
         }
         if (!idFound) otherID = ""; // reset to empty if no other participant
+        updateAvatars();
       });
       gapi.hangout.av.effects.onFaceTrackingDataChanged.add(onFaceTrackingDataChanged);
 
@@ -154,6 +154,7 @@ function updateAvatars() {
   participants = gapi.hangout.getParticipants();
   for(i in participants) {
     person = participants[i].person;
+    console.log("updating avatar " + i + " from: " + person);
     if(person != localPerson) {
       remotePerson = person;
     }
