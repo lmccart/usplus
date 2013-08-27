@@ -1,8 +1,10 @@
 #main {
-  font-family: 'Lato', sans-serif;
+  padding: .5em;
+}
+div {
+  font-family: 'Lato';
   font-weight: 300;
   color: black;
-  padding: .5em;
 }
 img {
   margin: .5em;
@@ -25,10 +27,10 @@ img {
 }
 .progress {
   margin-bottom: .5em;
-  border-color: #fac843;
+  background-color: #fac843;
 }
 .progress-bar {
-  border-color: #4d90fe;  
+  background-color: #4d90fe;  
 }
 .time {
   font-size: 150%;
@@ -36,4 +38,8 @@ img {
 .category {
   color: black;
   font-size: 120%;
+}
+a.category:link, a.category:active, a.category:visited, a.category:hover {
+  color: black;
+  text-decoration: none;
 }
