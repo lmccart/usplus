@@ -14,22 +14,22 @@ var categories = [
 
 var notifications = {
   "posemo" : [
-    [ 0, "0.25", "< 0.25 posemo"],
-    [ 1, "0.75", "> 0.75 posemo"]
+    [ 0, 0.25, "< 0.25 posemo"],
+    [ 1, 0.75, "> 0.75 posemo"]
   ],
   "i" : [
-    [ 1, "0.75", "> 0.75 i"]
+    [ 1, 0.75, "> 0.75 i"]
   ],
   "aggression" : [
-    [ 0, "0.25", "< 0.25 aggression"],
-    [ 1, "0.75", "> 0.75 aggression"]
+    [ 0, 0.25, "< 0.25 aggression"],
+    [ 1, 0.75, "> 0.75 aggression"]
   ],
   "honesty" : [
-    [ 0, "0.25", "< 0.25 honesty"]
+    [ 0, 0.25, "< 0.25 honesty"]
   ],
   "st" : [
-    [ 0, "0.25", "< 0.25 speech time"],
-    [ 1, "0.75", "> 0.75 speech time"]
+    [ 0, 0.25, "< 0.25 speech time"],
+    [ 1, 0.75, "> 0.75 speech time"]
   ]
 };
 
