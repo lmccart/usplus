@@ -127,7 +127,7 @@ function draw() {
     var notes = notifications[category];
     if(notes) {
       for (var j=0; j<notes.length; j++) {
-        if ((!notes[j][0] && pct < parseFloat(notes[j][1])) // lt
+        if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (balance > parseFloat(notes[j][1]))) { // gt
           console.log(notes[j][2]);
         }  
