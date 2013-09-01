@@ -17,14 +17,14 @@ var categories = [
 var notifications = {
   "posemo" : [
     [ 0, 0.25, "need more posemo"],
-    [ 1, 0.75, "need less posemo"]
+    [ 1, 0.8, "need less posemo"]
   ],
   "i" : [
     [ 1, 0.75, "need less i"]
   ],
   "aggression" : [
     [ 0, 0.25, "need more aggression"],
-    [ 1, 0.75, "need less aggression"]
+    [ 1, 0.8, "need less aggression"]
   ],
   "honesty" : [
     [ 0, 0.25, "need more honesty"]
