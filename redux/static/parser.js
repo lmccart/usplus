@@ -84,7 +84,12 @@ var Parser = function(db) {
 					// add message
 					if (word) {
 						word = word.toString();
-						var cats = this.getCats(word.toString());
+			
+						if (word.indexOf('*') != -1) {
+							word = this.reDirty(word);
+						}
+
+						var cats = this.getCats(word);
 						statsHandler.logWordInstance(word, cats);
 						// var msg = {type: "word", word:word, cats:cats};
 						// send message
@@ -99,8 +104,9 @@ var Parser = function(db) {
 		},
 		
 		getCats: function(w) {
-			var cats = [];
 			
+			var cats = [];
+
 			// check for regular match
 			var res = db.query("LIWC_words", {word: w.toLowerCase()}); 
 			if (res.length > 0) {
@@ -124,6 +130,12 @@ var Parser = function(db) {
 						 
 			return cats;
 		}
+	},
+
+	reDirty: function(w) {
+		if (w == 'f***') return 'fuck';
+		else if (w == 's***') return 'shit';
+		else if (w == 's***') return 'shit';
 	}
 };
 

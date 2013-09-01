@@ -69,22 +69,22 @@
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-posemo"></div>
         </div>
 
-        <a href="#" class="category" id="self-absorption-popover" rel="popover" data-trigger="hover" placement="top" data-content="Self absorption is based on how much you use first person pronouns compared.">Self absorption</a>
+        <a href="#" class="category" id="self-absorption-popover" rel="popover" data-trigger="hover" placement="top" data-content="Self absorption is based on how much you use first person pronouns.">Self absorption</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-i"></div>
         </div>
 
-        <a href="#" class="category" id="femininity-popover" rel="popover" data-trigger="hover" placement="top" data-content="Femininity is based on a complex heuristic.">Femininity</a>
+        <a href="#" class="category" id="femininity-popover" rel="popover" data-trigger="hover" placement="top" data-content="Femininity is based on a complex heuristic that looks something like this +other+posemo+sixltr-negate-article-preps-swear-money-number.">Femininity</a>
          <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-femininity"></div>
         </div>
 
-        <a href="#" class="category" id="aggression-popover" rel="popover" data-trigger="hover" placement="top" data-content="Aggression is based on a complex heuristic.">Aggression</a>
+        <a href="#" class="category" id="aggression-popover" rel="popover" data-trigger="hover" placement="top" data-content="Aggression is based on the number of angry and swear words you say.">Aggression</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-aggression"></div>
         </div>
 
-        <a href="#" class="category" id="honesty-popover" rel="popover" data-trigger="hover" placement="top" data-content="Honesty is based on a complex heuristic.">Honesty</a>
+        <a href="#" class="category" id="honesty-popover" rel="popover" data-trigger="hover" placement="top" data-content="Honesty is based on the number of self-related pronouns and exclusive words (ex: but, without, exclude) minus the number of negative words you say.">Honesty</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-honesty"></div>
         </div>

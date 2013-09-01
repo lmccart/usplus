@@ -16,18 +16,18 @@ var categories = [
 
 var notifications = {
   "posemo" : [
-    [ 0, 0.25, "need more posemo"],
-    [ 1, 0.8, "need less posemo"]
+    [ 0, 0.25, ["Try to look on the bright side.", "Stop being such a downer.", "Try to be more positive."]],
+    [ 1, 0.8, ["Tone it down a bit, your partner doesn't sound so happy."]]
   ],
   "i" : [
-    [ 1, 0.75, "need less i"]
+    [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on your partner a little more."]]
   ],
   "aggression" : [
-    [ 0, 0.25, "need more aggression"],
-    [ 1, 0.8, "need less aggression"]
+    [ 0, 0.25, ["You are sounding like a pushover."]],
+    [ 1, 0.8, ["Tone down the aggression."]]
   ],
   "honesty" : [
-    [ 0, 0.25, "need more honesty"]
+    [ 0, 0.25, ["What are you hiding? Your partner is speaking much more honestly."]]
   ]
 };
 
@@ -120,9 +120,11 @@ function notify() {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
-          console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
-          console.log("DISPLAY "+notes[j][2]);
-          gapi.hangout.layout.displayNotice(notes[j][2], false);
+          //console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
+          //console.log("DISPLAY "+notes[j][2]);
+          var msgs = notes[j][2];
+          var randMsg = msgs[Math.floor(Math.random() * msgs.length)];
+          gapi.hangout.layout.displayNotice(randMsg, false);
 
           lastNotification = category;
           lastNotificationTime = now;
