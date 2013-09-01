@@ -138,12 +138,13 @@ var Parser = function(db) {
        "f***": "fuck",
        "b***": "butt",
        "c***": "cock",
-       "t***": "tits"
+       "t***": "tits",
+       "f***": "fucker",
+       "f****": "fucking"
 		};
 
 		var s = swears[w];
 		if (s) w = swears[w];
-	}
 };
 
 
