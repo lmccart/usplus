@@ -133,9 +133,16 @@ var Parser = function(db) {
 	},
 
 	reDirty: function(w) {
-		if (w == 'f***') return 'fuck';
-		else if (w == 's***') return 'shit';
-		else if (w == 's***') return 'shit';
+
+		var swears = {
+       "f***": "fuck",
+       "b***": "butt",
+       "c***": "cock",
+       "t***": "tits"
+		};
+
+		var s = swears[w];
+		if (s) w = swears[w];
 	}
 };
 
