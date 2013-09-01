@@ -164,16 +164,17 @@ function updateSpeechTime(itvl) {
   var now = new Date().getTime();
   if(now - lastNotificationTime > notificationInterval) {
 
-    if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute() && localTime > 30*1000) {
+    // 60s imbalance triggers notification
+    if (localTime - otherTime) > 60*1000 && !gapi.hangout.av.getMicrophoneMute()) {
       gapi.hangout.layout.displayNotice("You've been auto-muted because you're talking too much.", false);
-      //gapi.hangout.av.setMicrophoneMute(true); //pend temp
+      gapi.hangout.av.setMicrophoneMute(true); //pend temp
       
       // reset both sts on automute
       for (var i=0; i<2; i++) {
         var id = (i==0) ? localID : otherID;
         if (id) gapi.hangout.data.setValue(id+"-st", String(st));
       }
-      
+
       lastNotificationTime = now;
     } 
   } 
