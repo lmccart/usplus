@@ -182,7 +182,7 @@ function updateSpeechTime(itvl) {
   var now = new Date().getTime();
   if(now - lastNotificationTime > notificationInterval) {
 
-    if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute()) {
+    if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute() && localTime > 30*1000) {
       gapi.hangout.layout.displayNotice("You've been auto-muted because you're talking too much.", false);
       gapi.hangout.av.setMicrophoneMute(true);
       lastNotificationTime = now;
