@@ -137,7 +137,7 @@ function notify() {
 
 function updateParticipants() {
   // get participants
-  localPerson = gapi.hangout.getlocalPerson().person;
+  localPerson = gapi.hangout.getLocalParticipant().person;
   participants = gapi.hangout.getParticipants();
 
   console.log("participants updated: " + participants.length);
