@@ -8,7 +8,6 @@ var selfSpeaking = false;
 
 function startSpeech() {
 
-  showInfo('info_start');
   if (!('webkitSpeechRecognition' in window)) {
     upgrade();
   } else {
@@ -21,7 +20,6 @@ function startSpeech() {
 
     recognition.onstart = function() {
       recognizing = true;
-      showInfo('info_speak_now');
     };
 
     recognition.onerror = function(event) {
@@ -30,13 +28,13 @@ function startSpeech() {
         startButton();
       }
       if (event.error == 'audio-capture') {
-        showInfo('info_no_microphone');
+        console.log('info_no_microphone');
       }
       if (event.error == 'not-allowed') {
         if (event.timeStamp - start_timestamp < 100) {
-          showInfo('info_blocked');
+          console.log('info_blocked');
         } else {
-          showInfo('info_denied');
+          console.log('info_denied');
         }
       }
     };
@@ -88,10 +86,6 @@ function startSpeech() {
   startButton();
 }
 
-function upgrade() {
-  showInfo('info_upgrade');
-}
-
 var two_line = /\n\n/g;
 var one_line = /\n/g;
 function linebreak(s) {
@@ -108,23 +102,8 @@ function startButton(event) {
     ignore_onend = false;
     // final_span.innerHTML = '';
     // interim_span.innerHTML = '';
-    showInfo('info_allow');
     start_timestamp = event ? event.timeStamp : new Date().getTime();
   }
-}
-
-function showInfo(s) {
-
-  // if (s) {
-  //   for (var child = info.firstChild; child; child = child.nextSibling) {
-  //     if (child.style) {
-  //       child.style.display = child.id == s ? 'inline' : 'none';
-  //     }
-  //   }
-  //   info.style.visibility = 'visible';
-  // } else {
-  //   info.style.visibility = 'hidden';
-  // }
 }
 
 
@@ -182,9 +161,9 @@ function updateSpeechTime(itvl) {
   var now = new Date().getTime();
   if(now - lastNotificationTime > notificationInterval) {
 
-    if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute()) {
+    if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute() && localTime > 30*1000) {
       gapi.hangout.layout.displayNotice("You've been auto-muted because you're talking too much.", false);
-      gapi.hangout.av.setMicrophoneMute(true);
+      //gapi.hangout.av.setMicrophoneMute(true); //pend temp
       lastNotificationTime = now;
     } 
   } 
