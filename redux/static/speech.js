@@ -163,7 +163,7 @@ function updateSpeechTime(itvl) {
 
     if (localTime / (localTime + otherTime) > 0.75 && !gapi.hangout.av.getMicrophoneMute() && localTime > 30*1000) {
       gapi.hangout.layout.displayNotice("You've been auto-muted because you're talking too much.", false);
-      gapi.hangout.av.setMicrophoneMute(true);
+      //gapi.hangout.av.setMicrophoneMute(true); //pend temp
       lastNotificationTime = now;
     } 
   } 
