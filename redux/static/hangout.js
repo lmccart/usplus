@@ -41,6 +41,7 @@ var otherID = "";
 var baseScore = 0;
 
 var lastNotificationTime = 0;
+var lastNotification = "";
 var notificationInterval = 20*1000;
 
 // wait until hangout ready then load everything
@@ -60,7 +61,6 @@ if (gapi && gapi.hangout) {
       updateParticipants();
 
       // init data vals
-      gapi.hangout.data.setValue(localID+"-wc", "0");
       gapi.hangout.data.setValue(localID+"-st", "0");
       gapi.hangout.data.setValue(localID+"-displayst", "0");
       gapi.hangout.data.setValue(localID+"-volAvg", "0");
@@ -114,10 +114,9 @@ function notify() {
     //console.log(pct);
     $('#category-'+category).width(pct);
 
-    // PEND NOTIFY HERE
     var notes = notifications[category];
     var now = new Date().getTime();
-    if(notes && now - lastNotificationTime > notificationInterval) {
+    if(notes && now - lastNotificationTime > notificationInterval && category != lastNotification) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
@@ -125,6 +124,7 @@ function notify() {
           console.log("DISPLAY "+notes[j][2]);
           gapi.hangout.layout.displayNotice(notes[j][2], false);
 
+          lastNotification = category;
           lastNotificationTime = now;
           break;
         }  
@@ -173,11 +173,6 @@ function handleMessage(msg) {
       console.log(localID+"-"+categories[i]);
       gapi.hangout.data.setValue(localID+"-"+categories[i], String(msg[categories[i]]));
     }
-  }
-  else if (msg.type == 'wordcount') {
-    var count = parseInt(gapi.hangout.data.getValue(localID+"-wc"), 10);
-    count += msg.count;
-    gapi.hangout.data.setValue(localID+"-wc", String(count));
   }
 }
 
