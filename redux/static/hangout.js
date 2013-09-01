@@ -34,8 +34,8 @@ var notifications = {
 
 
 
-var localParticipant, remoteParticipant;
-
+var localPerson;
+var otherPerson;
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -57,10 +57,9 @@ if (gapi && gapi.hangout) {
         handleStateChange(stateChangeEvent);
       });
 
-      updateAvatars();
+      updateParticipants();
 
       // init data vals
-      localID = gapi.hangout.getLocalParticipantId();
       gapi.hangout.data.setValue(localID+"-wc", "0");
       gapi.hangout.data.setValue(localID+"-st", "0");
       gapi.hangout.data.setValue(localID+"-displayst", "0");
@@ -71,18 +70,7 @@ if (gapi && gapi.hangout) {
 
 
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
-        console.log("participants changed");
-        var participants = gapi.hangout.getParticipants();
-        var idFound = false;
-        for (var i=0; i<participants.length; i++) {
-          if (participants[i].id != localID) {
-            otherID = participants[i].id;
-            console.log("otherID set to "+otherID);
-            break;
-          }
-        }
-        if (!idFound) otherID = ""; // reset to empty if no other participant
-        updateAvatars();
+        updateParticipants();
       });
       gapi.hangout.av.effects.onFaceTrackingDataChanged.add(onFaceTrackingDataChanged);
 
@@ -96,7 +84,7 @@ if (gapi && gapi.hangout) {
 $(window).load(function() {
   console.log('window load');
   startSpeech();
-  updateAvatars();
+  updateParticipants();
 });
 
 
@@ -147,23 +135,30 @@ function notify() {
   // Update smile
 }
 
-var localPerson, remotePerson;
-function updateAvatars() {
+function updateParticipants() {
   // get participants
-  localPerson = gapi.hangout.getLocalParticipant().person;
+  localPerson = gapi.hangout.getlocalPerson().person;
   participants = gapi.hangout.getParticipants();
+
+  console.log("participants updated: " + participants.length);
+
   for(i in participants) {
     person = participants[i].person;
     console.log("updating avatar " + i);
     console.log(person);
     if(person != localPerson) {
-      remotePerson = person;
+      otherPerson = person;
     }
   }
 
+  // update IDs
+  localID = localPerson.id;
+  otherID = otherPerson.id;
+
+  // update avatars
   $("#avatar0").attr('src', localPerson.image.url);
-  if(remotePerson) {
-    $("#avatar1").attr('src', remotePerson.image.url);
+  if(otherPerson) {
+    $("#avatar1").attr('src', otherPerson.image.url);
   }
 }
 
