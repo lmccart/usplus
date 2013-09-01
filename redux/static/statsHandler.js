@@ -42,6 +42,15 @@ var StatsHandler = function(db) {
 			//console.log("w:"+word+" c:"+cats);
 		},
 	
+		logWordInstance: function(word, cats) {
+			// insert word
+			var ind = db.insert("word_instances", {word: word, cats: cats});
+			// delete all but last 100 words
+			var d = db.deleteRows("word_instances", function(row) { return (row.ID < ind-100); });
+			//console.log('deleted '+d+' at '+ind);
+			//console.log(ind);
+		},
+
 		doStats: function() {
 	
 			var total = db.rowCount("word_instances");
