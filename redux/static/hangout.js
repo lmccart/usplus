@@ -34,8 +34,8 @@ var notifications = {
 
 
 
-var localPerson;
-var otherPerson;
+var localParticipant;
+var otherParticipant;
 var localID = "";
 var otherID = "";
 var baseScore = 0;
@@ -136,28 +136,28 @@ function notify() {
 
 function updateParticipants() {
   // get participants
-  localPerson = gapi.hangout.getLocalParticipant().person;
+  localParticipant = gapi.hangout.getlocalParticipant();
   participants = gapi.hangout.getParticipants();
 
   console.log("participants updated: " + participants.length);
 
   for(i in participants) {
-    person = participants[i].person;
+    participant = participants[i];
     console.log("updating avatar " + i);
-    console.log(person);
-    if(person != localPerson) {
-      otherPerson = person;
+    console.log(participant);
+    if(participant != localParticipant) {
+      otherParticipant = participant;
     }
   }
 
   // update IDs
-  localID = localPerson.id;
-  otherID = otherPerson.id;
+  localID = localParticipant.id;
+  otherID = otherParticipant.id;
 
   // update avatars
-  $("#avatar0").attr('src', localPerson.image.url);
-  if(otherPerson) {
-    $("#avatar1").attr('src', otherPerson.image.url);
+  $("#avatar0").attr('src', localParticipant.person.image.url);
+  if(otherParticipant) {
+    $("#avatar1").attr('src', otherParticipant.person.image.url);
   }
 }
 
