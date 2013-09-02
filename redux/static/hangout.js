@@ -332,7 +332,7 @@ function onFaceTrackingDataChanged(event) {
     }
     if(smileState !== lastSmileState) {
       setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
-      gapi.hangout.data.setValue(localID+"-smileState", smileState);}
+      gapi.hangout.data.setValue(localID+"-smileState", smileState);
     }
     lastSmileState = smileState;
   } catch (e) {
