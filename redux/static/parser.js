@@ -129,34 +129,37 @@ var Parser = function(db) {
 			}
 						 
 			return cats;
+		},
+
+		reDirty: function(w) {
+
+
+			var swears = {
+				"f***": "fuck",
+				"f*****": "fucker",
+				"f******": "fucking",
+				"b***": "butt",
+				"c***": "cock",
+				"t***": "tits",
+				"f***": "fucker",
+				"f****": "fucking",
+				"c***": "cunt",
+				"b****": "bitch",
+				"b******": "bitches",
+				"b******": "bitching",
+				"a******": "asshole",
+				"p***": "piss",
+				"p****": "pussy",
+				"n*****": "nigger",
+				"s***": "slut",
+				"w****": "whore"
+			};
+
+			var s = swears[w];
+			if (s) return swears[w];
+			else return w;
 		}
-	},
-
-	reDirty: function(w) {
-
-		var swears = {
-		"f***": "fuck",
-		"f*****": "fucker",
-		"f******": "fucking",
-		"b***": "butt",
-		"c***": "cock",
-		"t***": "tits",
-		"f***": "fucker",
-		"f****": "fucking",
-		"c***": "cunt",
-		"b****": "bitch",
-		"b******": "bitches",
-		"b******": "bitching",
-		"a******": "asshole",
-		"p***": "piss",
-		"p****": "pussy",
-		"n*****": "nigger",
-		"s***": "slut",
-		"w****": "whore"
-		};
-
-		var s = swears[w];
-		if (s) w = swears[w];
+	}
 };
 
 
