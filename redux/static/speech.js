@@ -70,10 +70,8 @@ function startSpeech() {
   startButton();
 }
 
-var two_line = /\n\n/g;
-var one_line = /\n/g;
 function linebreak(s) {
-  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+  return s.replace(/\n\n/g, '<p></p>').replace(/\n/g, '<br>');
 }
 
 
