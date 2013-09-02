@@ -47,11 +47,9 @@ var Parser = function(db) {
 			//split input string with RegExo
 			var tokens = line.match(spaceRegEx);
 
-			for (i in tokens) //JRO - hack to only process one token at a time
-			{
+			for (i in tokens) {
 				//If the element isn't the last in an array, it is a new word
-				if (tokens[i] !== "") 
-				{
+				if (tokens[i] !== "") {
 					var word = tokens[i].toString();
 		
 					if (word.indexOf('*') != -1) {
@@ -80,13 +78,10 @@ var Parser = function(db) {
 			
 			// check for wildcards
 			else {
-			// select all books by Torday and Sparrow
 				res = db.query("LIWC_words_wild", function(row) {
-			    if(w.toLowerCase().indexOf(row.word) == 0) {
-			        return true;
-			    } else {
-			        return false;
-			    }
+			    if(w.toLowerCase().indexOf(row.word) == 0)
+			    	return true;
+			    else return false;
 			  });
 			  if (res.length > 0) {
 				  cats = res[0].cats;
@@ -97,8 +92,6 @@ var Parser = function(db) {
 		},
 
 		reDirty: function(w) {
-
-
 			var swears = {
 				"f***": "fuck",
 				"f*****": "fucker",

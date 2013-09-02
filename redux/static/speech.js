@@ -153,6 +153,8 @@ function updateSpeechTime(itvl) {
       otherTime = st;
     }
 
+    console.log("displayst:"+displayst+" st:"+st);
+
     displayst = new Date(displayst);
     displayst = displayst.toLocaleTimeString();
     displayst = displayst.substring(displayst.indexOf(':')+1, displayst.indexOf(' '));
