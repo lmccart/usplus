@@ -112,7 +112,7 @@ function notify() {
     }
 
     var category = categories[i];
-    var pct = Math.round(Math.min(balance, Math.max(balance, 0), 1)*100) + "%";
+    var pct = Math.round(clamp(balance, 0, 1)*100) + "%";
     //console.log(pct);
     $('#category-'+category).width(pct);
 
@@ -140,8 +140,13 @@ function notify() {
   if(otherID) {
     var otherSmileState = gapi.hangout.data.getValue(otherID+"-smileState");
     setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
+    if(otherSmileState == "sad") {
+      gapi.hangout.layout.displayNotice("It looks like you made them sad.", false);
+    }
   }
 }
+
+function display
 
 function updateParticipants() {
   // get participants
@@ -274,6 +279,7 @@ var smileHistoryLength = 450; // 15 seconds at 30 fps
 var smileAmount;
 var smileLowpass;
 var smileHistory = [];
+var lastSmileState = "neutral";
 var lastSmile = 0;
 var smileHysteresis = new Hysteresis();
 function onFaceTrackingDataChanged(event) {
@@ -323,8 +329,11 @@ function onFaceTrackingDataChanged(event) {
     } else {
       smileState = "neutral";
     }
-    setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
-    gapi.hangout.data.setValue(localID+"-smileState", smileState);
+    if(smileState !== lastSmileState) {
+      setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
+      gapi.hangout.data.setValue(localID+"-smileState", smileState);}
+    }
+    lastSmileState = smileState;
   } catch (e) {
     console.log(e+": "+e.message);
   }
