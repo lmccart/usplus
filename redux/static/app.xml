@@ -46,12 +46,12 @@
         <div>
           <div class="leftColumn well">
             <div><img class="avatar" id="avatar0" src="//lmccart-fixus.appspot.com/static/img/avatar.png"/></div>
-            <div id="face0"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png"/></div>
+            <div><img id="face0" src="//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png"/></div>
             <div id="talkTime0" class="time">0:00</div>
           </div>
           <div class="rightColumn well">
             <div><img class="avatar" id="avatar1" src="//lmccart-fixus.appspot.com/static/img/avatar.png"/></div>
-            <div id="face1"><img src="//lmccart-fixus.appspot.com/static/img/emoticon-other-happy.png"/></div>
+            <div><img id="face1" src="//lmccart-fixus.appspot.com/static/img/emoticon-other-neutral.png"/></div>
             <div id="talkTime1" class="time">0:00</div>
           </div>
         </div>

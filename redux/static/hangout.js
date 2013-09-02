@@ -205,8 +205,17 @@ function distance(a, b) {
   return length({x: b.x - a.x, y: b.y - a.y});
 }
 
+function clamp(x, low, high) {
+  return Math.max(low, Math.min(high, x));
+}
+
 var lastEvent;
 var smileAmount;
+var smileLowpass;
+var smileThreshold = .05;
+var smileHistory = [];
+var smileHistoryTime = 15; // 15 seconds
+var smileHistoryLength = 450; // 15 seconds at 30 fps
 function onFaceTrackingDataChanged(event) {
   try {
     if (!event.hasFace) {
@@ -242,10 +251,34 @@ function onFaceTrackingDataChanged(event) {
     eyeWidth = distance(event.leftEye, event.rightEye);
     smileAmount = mouthWidth / eyeWidth;
 
-    var smile = smileAmount / 1;
-    var pct = Math.round(Math.min(smile, Math.max(smile, 0), 1)*100) + "%";
-    $('#debug-smile').width(pct);
+    $('#debug-smile').width(Math.round(clamp(smileAmount, 0, 1)*100) + "%");
     $('#debug-smile-text').text(Math.floor(smileAmount * 100) / 100);
+
+    var now = new Date().getTime() / 1000;
+    smileHistory.push({time: now, amount: smileAmount});
+    if(smileHistory.length > smileHistoryLength) {
+      smileHistory.shift();
+    }
+    var smileSum = 0;
+    var weightSum = 0;
+    for(i in smileHistory) {
+      var cur = smileHistory[i];
+      var curWeight = Math.max(0, Math.sin(cur.time * Math.PI / smileHistoryTime));
+      var curSmile = curWeight * cur.smile;
+      smileSum += curSmile;
+      weightSum += curWeight;
+    }
+    smileLowpass = smileSum / weightSum;
+
+    $('#debug-smile-lowpass').width(Math.round(clamp(smileLowpass, 0, 1)*100) + "%");
+
+    if(smileAmount > smileLowpass + smileThreshold) {
+      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-happy.png");
+    } else if(smileAmount < smileLowpass - smileThreshold) {
+      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-sad.png");
+    } else {
+      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png");
+    }
   } catch (e) {
     console.log(e+": "+e.message);
   }
