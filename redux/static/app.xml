@@ -43,6 +43,15 @@
 
       <div id="main">
 
+        <div style="display: none; visibility: hidden">
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png"/>
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-local-happy.png"/>
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-local-sad.png"/>
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-other-neutral.png"/>
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-other-happy.png"/>
+          <img src="//lmccart-fixus.appspot.com/static/img/emoticon-other-sad.png"/>
+        </div>
+
         <div>
           <div class="leftColumn well">
             <div><img class="avatar" id="avatar0" src="//lmccart-fixus.appspot.com/static/img/avatar.png"/></div>
