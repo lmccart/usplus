@@ -40,10 +40,6 @@ var localID = "";
 var otherID = "";
 var baseScore = 0;
 
-var lastNotificationTime = 0;
-var lastNotification = "";
-var notificationInterval = 45*1000;
-
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
 
@@ -86,7 +82,6 @@ $(window).load(function() {
   console.log('window load');
   startSpeech();
   updateParticipants();
-  lastNotificationTime = new Date().getTime();
 });
 
 
@@ -118,7 +113,7 @@ function notify() {
 
     var notes = notifications[category];
     var now = new Date().getTime();
-    if(notes && now - lastNotificationTime > notificationInterval && category != lastNotification) {
+    if(notes) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
@@ -126,10 +121,7 @@ function notify() {
           //console.log("DISPLAY "+notes[j][2]);
           var msgs = notes[j][2];
           var randMsg = msgs[Math.floor(Math.random() * msgs.length)];
-          gapi.hangout.layout.displayNotice(randMsg, false);
-
-          lastNotification = category;
-          lastNotificationTime = now;
+          displayNotice("category", randMsg, 5*1000);
           break;
         }  
       }
@@ -141,12 +133,29 @@ function notify() {
     var otherSmileState = gapi.hangout.data.getValue(otherID+"-smileState");
     setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
     if(otherSmileState == "sad") {
-      gapi.hangout.layout.displayNotice("It looks like you made them sad.", false);
+      displayNotice("remote-smile", "It looks like you made them sad.", 5*1000);
     }
   }
 }
 
-function displayNotice(type, msg, delay) { 
+var lastNotificationTime = {};
+function displayNotice(type, msg, delay) {
+  var needToTrigger = false;
+  var now = new Date().getTime();
+  if(lastNotificationTime[type]) {
+    var prev = lastNotificationTime[type];
+    var diff = now - prev;
+    if(diff > delay) {
+      needToTrigger = true;
+    }
+  } else {
+    needToTrigger = true;
+  }
+  if(needToTrigger) {
+    lastNotificationTime[type] = now;
+    gapi.hangout.layout.displayNotice(msg, false);
+  }
+  return needToTrigger;
 }
 
 function updateParticipants() {
@@ -327,6 +336,7 @@ function onFaceTrackingDataChanged(event) {
       smileState = "happy";
     } else if(now - lastSmile > smileSadLength) {
       smileState = "sad";
+      displayNotice("local-smile", "It looks like they made you sad.", 5*1000);
     } else {
       smileState = "neutral";
     }
