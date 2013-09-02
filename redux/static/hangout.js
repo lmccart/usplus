@@ -64,6 +64,7 @@ if (gapi && gapi.hangout) {
       gapi.hangout.data.setValue(localID+"-st", "0");
       gapi.hangout.data.setValue(localID+"-displayst", "0");
       gapi.hangout.data.setValue(localID+"-volAvg", "0");
+      gapi.hangout.data.setValue(localID+"-smileState", "neutral");
       for (var i=0; i<categories.length; i++) {
         gapi.hangout.data.setValue(localID+"-"+categories[i], String(baseScore));
       }
