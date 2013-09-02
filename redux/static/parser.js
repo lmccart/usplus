@@ -142,7 +142,7 @@ var Parser = function(db) {
 		"c***": "cock",
 		"t***": "tits",
 		"f***": "fucker",
-		"f****": "fucking"
+		"f****": "fucking",
 		"c***": "cunt",
 		"b****": "bitch",
 		"b******": "bitches",
