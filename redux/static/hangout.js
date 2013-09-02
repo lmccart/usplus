@@ -136,6 +136,10 @@ function notify() {
   }
 
   // Update smile
+  if(otherID) {
+    var otherSmileState = gapi.hangout.data.getValue(otherID+"-smileState");
+    setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
+  }
 }
 
 function updateParticipants() {
@@ -260,16 +264,16 @@ function setSrc(id, src) {
 // an alternative approach to smile detection
 // is to do 2-cluster k-means analysis on the last
 // 30 seconds of data and determine which class the
-// current smile amount belongs to. 
-var lastEvent;
+// current smile amount belongs to.
+// some settings for smile detection immediately follow:
+var smileThreshold = 1.0; // multiplier on standard deviation
+var smileHistoryTime = 15; // 15 seconds
+var smileSadLength = 15; // no smiles in this many seconds make a sad face
+var smileHistoryLength = 450; // 15 seconds at 30 fps
 var smileAmount;
 var smileLowpass;
 var smileHistory = [];
-var smileThreshold = 1.0; // multiplier on standard deviation
-var smileHistoryTime = 15; // 15 seconds
-var smileSadLength = 15; // no smiles in this long makes a sad face
 var lastSmile = 0;
-var smileHistoryLength = 450; // 15 seconds at 30 fps
 var smileHysteresis = new Hysteresis();
 function onFaceTrackingDataChanged(event) {
   try {
@@ -309,14 +313,17 @@ function onFaceTrackingDataChanged(event) {
 
     var curSmileState = smileAmount > smileLowpass + stdDev * smileThreshold;
     smileHysteresis.update(curSmileState);
+    var smileState;
     if(smileHysteresis.getState()) {
       lastSmile = now;
-      setSrc("#face0", "//lmccart-fixus.appspot.com/static/img/emoticon-local-happy.png");
+      smileState = "happy";
     } else if(now - lastSmile > smileSadLength) {
-      setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-sad.png");
+      smileState = "sad";
     } else {
-      setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png");
+      smileState = "neutral";
     }
+    setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
+    gapi.hangout.data.setValue(localID+"-smileState", smileState);
   } catch (e) {
     console.log(e+": "+e.message);
   }
