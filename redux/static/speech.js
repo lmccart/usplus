@@ -1,6 +1,4 @@
 
-
-var final_transcript = '';
 var recognizing = false;
 var start_timestamp;
 var recognition;
@@ -50,7 +48,6 @@ function startSpeech() {
     recognition.onresult = function(event) {
       // check it's your own audio
       if (selfSpeaking) {
-        var interim_transcript = '';
         if (typeof(event.results) == 'undefined') {
           recognition.onend = null;
           recognition.stop();
@@ -60,24 +57,12 @@ function startSpeech() {
         //console.log(event);
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            final_transcript += event.results[i][0].transcript;
-            final_transcript += "(" + event.results[i][0].confidence + ")";
 
             console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
             parser.parseLine(event.results[i][0].transcript);
 
-          } else {
-            interim_transcript += "|";
-            for (var j = 0; j < event.results[i].length; ++j) {
-              interim_transcript += event.results[i][j].transcript;
-              interim_transcript += "(" + event.results[i][j].confidence + ")";
-              interim_transcript += " | ";
-            }
-          }
+          } 
         }
-        final_transcript = final_transcript;
-        //final_span.innerHTML = linebreak(final_transcript);
-        //interim_span.innerHTML = linebreak(interim_transcript);
       } //else console.log("other person speaking");
     };
   }
@@ -96,12 +81,9 @@ function linebreak(s) {
 function startButton(event) {
   console.log("start "+recognizing);
   if (!recognizing) {
-    final_transcript = '';
     recognition.lang = 'en-US';
     recognition.start();
     ignore_onend = false;
-    // final_span.innerHTML = '';
-    // interim_span.innerHTML = '';
     start_timestamp = event ? event.timeStamp : new Date().getTime();
   }
 }
@@ -111,7 +93,6 @@ function checkSpeaker() {
   var volumes = gapi.hangout.av.getVolumes();
   var localVol = localID ? volumes[localID] : 0;
   var otherVol = otherID ? volumes[otherID] : 0;
-  //console.log(volumes);
   var prevSpeaking = selfSpeaking;
   selfSpeaking = localVol >= otherVol;
   // if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
@@ -147,8 +128,10 @@ function updateSpeechTime(itvl) {
       displayst += itvl;
       if (!isNaN(st)) gapi.hangout.data.setValue(id+"-st", String(st));
       else console.log("NOT A NUMBER "+st);
+
       if (!isNaN(displayst)) gapi.hangout.data.setValue(id+"-displayst", String(displayst));
       else console.log("NOT A NUMBER "+displayst);
+
       localTime = isNaN(st) ? 0 : st;
     }
     else if (i) {
