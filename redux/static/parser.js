@@ -38,7 +38,7 @@ var Parser = function(db) {
 	
 		parseLine: function(line) {
 		
-			console.log(line);
+			//console.log(line);
 			var spaceRegEx = new RegExp(/\S{1,}/g);
 			//var wordRegEx = new RegExp(/[\w|@|#]{1,}/);
 			
@@ -54,8 +54,8 @@ var Parser = function(db) {
 		
 					if (word.indexOf('*') != -1) {
 						word = this.reDirty(word);
-						console.log(word);
-					} else console.log("not dirty "+word);
+						console.log("dirty "+word);
+					} 
 
 					var cats = this.getCats(word);
 					statsHandler.logWordInstance(word, cats);

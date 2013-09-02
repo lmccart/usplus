@@ -78,7 +78,7 @@ function startSpeech() {
         final_transcript = final_transcript;
         //final_span.innerHTML = linebreak(final_transcript);
         //interim_span.innerHTML = linebreak(interim_transcript);
-      } else console.log("other person speaking");
+      } //else console.log("other person speaking");
     };
   }
 
@@ -149,14 +149,13 @@ function updateSpeechTime(itvl) {
       else console.log("NOT A NUMBER "+st);
       if (!isNaN(displayst)) gapi.hangout.data.setValue(id+"-displayst", String(displayst));
       else console.log("NOT A NUMBER "+displayst);
-      localTime = isNan(st) ? 0 : st;
+      localTime = isNaN(st) ? 0 : st;
     }
     else if (i) {
       otherTime = isNaN(st) ? 0 : st;
     }
 
     displayst = isNaN(displayst) ? 0 : displayst;
-    console.log("displayst:"+displayst+" st:"+st);
 
     displayst = new Date(displayst);
     displayst = displayst.toLocaleTimeString();
