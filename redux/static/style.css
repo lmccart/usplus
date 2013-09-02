@@ -32,6 +32,10 @@ img {
 .progress-bar {
   background-color: #4d90fe;  
 }
+.face {
+  width: 64px;
+  height: 64px;
+}
 .time {
   font-size: 150%;
 }

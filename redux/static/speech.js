@@ -114,7 +114,7 @@ function checkSpeaker() {
   //console.log(volumes);
   var prevSpeaking = selfSpeaking;
   selfSpeaking = localVol >= otherVol;
-  if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
+  // if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
 }
 
 function updateSpeechTime(itvl) {
