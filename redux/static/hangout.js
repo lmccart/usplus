@@ -14,6 +14,8 @@ var categories = [
   "honesty"
 ];
 
+var femRange = [0, 0];
+
 var notifications = {
   "posemo" : [
     [ 0, 0.25, ["Try to look on the bright side.", "Stop being such a downer.", "Try to be more positive."]],
@@ -98,21 +100,31 @@ function notify() {
   // Update LIWC cats
 
   for(var i = 0; i < categories.length; i++) {
+    var category = categories[i];
+
     var balance = 0.5;
 
-    var val = gapi.hangout.data.getValue(localID+"-"+categories[i]);
+    var val = gapi.hangout.data.getValue(localID+"-"+category);
     var localScore = val ? parseFloat(val) : 0;
-    //console.log(localScore);
 
-    val = otherID ? gapi.hangout.data.getValue(otherID+"-"+categories[i]) : false;
+    val = otherID ? gapi.hangout.data.getValue(otherID+"-"+category) : false;
     var otherScore = val ? parseFloat(val) : baseScore;
+
+    // do range mapping for fem
+    if (category == "femininity") {
+      femRange[0] = Math.min(localScore, otherScore, femRange[0]);
+      femRange[1] = Math.max(localScore, otherScore, femRange[1]);
+
+      localScore = clamp(map(localScore, femRange[0], femRange[1], 0, 1), 0, 1);
+      otherScore = clamp(map(otherScore, femRange[0], femRange[1], 0, 1), 0, 1);
+    }
+
     var totalScore = localScore+otherScore;
     
     if(totalScore > 0) {
       balance = localScore / totalScore;
     }
 
-    var category = categories[i];
     var pct = Math.round(clamp(balance, 0, 1)*100) + "%";
     //console.log(pct);
     $('#category-'+category).width(pct);
