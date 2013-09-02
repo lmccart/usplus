@@ -145,14 +145,17 @@ function updateSpeechTime(itvl) {
     if (!i && (vol > 0 || volAvg > 1.0)) {
       st += itvl;
       displayst += itvl;
-      gapi.hangout.data.setValue(id+"-st", String(st));
-      gapi.hangout.data.setValue(id+"-displayst", String(displayst));
-      localTime = st;
+      if (!isNaN(st)) gapi.hangout.data.setValue(id+"-st", String(st));
+      else console.log("NOT A NUMBER "+st);
+      if (!isNaN(displayst)) gapi.hangout.data.setValue(id+"-displayst", String(displayst));
+      else console.log("NOT A NUMBER "+displayst);
+      localTime = isNan(st) ? 0 : st;
     }
     else if (i) {
-      otherTime = st;
+      otherTime = isNaN(st) ? 0 : st;
     }
 
+    displayst = isNaN(displayst) ? 0 : displayst;
     console.log("displayst:"+displayst+" st:"+st);
 
     displayst = new Date(displayst);
