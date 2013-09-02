@@ -146,7 +146,8 @@ function notify() {
   }
 }
 
-function display
+function displayNotice(type, msg, delay) { 
+}
 
 function updateParticipants() {
   // get participants
