@@ -149,7 +149,7 @@ function updateSpeechTime(itvl) {
       else console.log("NOT A NUMBER "+st);
       if (!isNaN(displayst)) gapi.hangout.data.setValue(id+"-displayst", String(displayst));
       else console.log("NOT A NUMBER "+displayst);
-      localTime = isNan(st) ? 0 : st;
+      localTime = isNaN(st) ? 0 : st;
     }
     else if (i) {
       otherTime = isNaN(st) ? 0 : st;
