@@ -121,7 +121,7 @@ function notify() {
           //console.log("DISPLAY "+notes[j][2]);
           var msgs = notes[j][2];
           var randMsg = msgs[Math.floor(Math.random() * msgs.length)];
-          displayNotice("category", randMsg, 45*1000);
+          displayNotice("category", randMsg, 5*1000);
           break;
         }  
       }
@@ -133,7 +133,7 @@ function notify() {
     var otherSmileState = gapi.hangout.data.getValue(otherID+"-smileState");
     setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
     if(otherSmileState == "sad") {
-      displayNotice("remote-smile", "It looks like you made them sad.", 60*1000);
+      displayNotice("remote-smile", "It looks like you made them sad.", 5*1000);
     }
   }
 }
@@ -342,7 +342,7 @@ function onFaceTrackingDataChanged(event) {
     if(smileState !== lastSmileState) {
       setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
       gapi.hangout.data.setValue(localID+"-smileState", smileState);
-      displayNotice("local-smile", "It looks like they made you sad.", 60*1000);
+      displayNotice("local-smile", "It looks like they made you sad.", 5*1000);
     }
     lastSmileState = smileState;
   } catch (e) {
