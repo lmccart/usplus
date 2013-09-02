@@ -148,8 +148,8 @@ function updateSpeechTime(itvl) {
   }
 
   // 60s imbalance triggers notification
-  if (localTime - otherTime > 5*1000) {
-    displayNotice("automute", "You've been auto-muted because you're talking too much.", automuteTimeout);
+  if (localTime - otherTime > automuteTimeout) {
+    displayNotice("automute", "You've been auto-muted because you're talking too much.", automuteNoticeTimeout);
     if(!gapi.hangout.av.getMicrophoneMute()) {
       gapi.hangout.av.setMicrophoneMute(true); //pend temp
       
