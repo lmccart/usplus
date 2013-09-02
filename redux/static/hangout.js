@@ -145,7 +145,7 @@ function notify() {
     if(otherSmileState) {
       setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
       if(otherSmileState == "sad") {
-        displayNotice("other-smile", "They're looking a bit sad.", sadNoticeTimeout);
+        displayNotice("smile", "They're looking a bit sad.", sadNoticeTimeout);
       }
     }
   }
@@ -352,7 +352,6 @@ function onFaceTrackingDataChanged(event) {
       smileState = "happy";
     } else if(now - lastSmile > smileSadLength) {
       smileState = "sad";
-      displayNotice("local-smile", "You're looking a bit sad.", sadNoticeTimeout);
     } else {
       smileState = "neutral";
     }

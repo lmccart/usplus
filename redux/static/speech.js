@@ -56,8 +56,7 @@ function startSpeech() {
         }
         //console.log(event);
         for (var i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-
+          if (event.results[i].isFinal && !gapi.hangout.av.getMicrophoneMute()) {
             console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
             parser.parseLine(event.results[i][0].transcript);
 
