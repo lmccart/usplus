@@ -158,9 +158,9 @@ function updateParticipants() {
   localID = localParticipant.id;
 
   // update avatars
-  $("#avatar0").attr('src', localParticipant.person.image.url);
+  setSrc("#avatar0", localParticipant.person.image.url);
   if(otherParticipant) {
-    $("#avatar1").attr('src', otherParticipant.person.image.url);
+    setSrc("#avatar1", otherParticipant.person.image.url);
     otherID = otherParticipant.id;
   }
 }
@@ -249,6 +249,14 @@ function clamp(x, low, high) {
   return Math.max(low, Math.min(high, x));
 }
 
+// it looks like jquery resets the src even when it's the same as before
+// so we check before setting to avoid that
+function setSrc(id, src) {
+  if($(id).attr('src') !== src) {
+    $(id).attr('src', src);
+  }
+}
+
 // an alternative approach to smile detection
 // is to do 2-cluster k-means analysis on the last
 // 30 seconds of data and determine which class the
@@ -271,8 +279,6 @@ function onFaceTrackingDataChanged(event) {
     mouthWidth = distance(event.mouthLeft, event.mouthRight);
     eyeWidth = distance(event.leftEye, event.rightEye);
     smileAmount = mouthWidth / eyeWidth;
-
-    $('#debug-smile').width(Math.round(clamp(smileAmount, 0, 1)*100) + "%");
 
     var now = new Date().getTime() / 1000;
     if(smileAmount)
@@ -301,18 +307,15 @@ function onFaceTrackingDataChanged(event) {
     }
     stdDev = Math.sqrt(stdDev / smileHistory.length);
 
-    $('#debug-smile-text').text(Math.floor(smileAmount * 100) / 100 + " dev: " + Math.floor(stdDev * 10000) / 10000);
-    $('#debug-smile-lowpass').width(Math.round(clamp(smileLowpass, 0, 1)*100) + "%");
-
     var curSmileState = smileAmount > smileLowpass + stdDev * smileThreshold;
     smileHysteresis.update(curSmileState);
     if(smileHysteresis.getState()) {
       lastSmile = now;
-      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-happy.png");
+      setSrc("#face0", "//lmccart-fixus.appspot.com/static/img/emoticon-local-happy.png");
     } else if(now - lastSmile > smileSadLength) {
-      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-sad.png");
+      setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-sad.png");
     } else {
-      $('#face0').attr('src', "//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png");
+      setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-neutral.png");
     }
   } catch (e) {
     console.log(e+": "+e.message);

@@ -56,14 +56,6 @@
           </div>
         </div>
 
-        <div>Smile: <span id="debug-smile-text"></span></div>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="debug-smile"></div>
-        </div>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="debug-smile-lowpass"></div>
-        </div>
-
         <a href="#" class="category" id="positivity-popover" rel="popover" data-trigger="hover" placement="top" data-content="Positivity is based on how many positive words you say.">Positivity</a>
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" id="category-posemo"></div>
