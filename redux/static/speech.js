@@ -78,7 +78,7 @@ function startSpeech() {
         final_transcript = final_transcript;
         //final_span.innerHTML = linebreak(final_transcript);
         //interim_span.innerHTML = linebreak(interim_transcript);
-      } else console.log("other person speaking");
+      } //else console.log("other person speaking");
     };
   }
 
@@ -156,7 +156,6 @@ function updateSpeechTime(itvl) {
     }
 
     displayst = isNaN(displayst) ? 0 : displayst;
-    console.log("displayst:"+displayst+" st:"+st);
 
     displayst = new Date(displayst);
     displayst = displayst.toLocaleTimeString();
