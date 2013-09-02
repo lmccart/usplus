@@ -65,7 +65,7 @@ var Parser = function(db) {
 						//console.log('number');
 						word = numWord[0];
 					}
-					//console.log("tok2:"+tok);
+					// console.log("tok2:"+tok);
 		
 					// pull any abbreviations
 					var abbrevWord = tok.match(abbrevRegEx);
@@ -73,7 +73,7 @@ var Parser = function(db) {
 						//console.log('abbrev');
 						word = abbrevWord[0];
 					}
-					//console.log("tok3:"+tok);
+					// console.log("tok3:"+tok);
 		
 					// pull out word
 					var plainWord = tok.match(wordRegEx);
@@ -91,7 +91,7 @@ var Parser = function(db) {
 
 						var cats = this.getCats(word);
 						statsHandler.logWordInstance(word, cats);
-						// var msg = {type: "word", word:word, cats:cats};
+						var msg = {type: "word", word:word, cats:cats};
 						// send message
 						// handleMessage(msg);
 					}
@@ -139,14 +139,11 @@ var Parser = function(db) {
 				"f*****": "fucker",
 				"f******": "fucking",
 				"b***": "butt",
-				"c***": "cock",
-				"t***": "tits",
-				"f***": "fucker",
-				"f****": "fucking",
 				"c***": "cunt",
+				"t***": "tits",
 				"b****": "bitch",
 				"b******": "bitches",
-				"b******": "bitching",
+				"b*******": "bitching",
 				"a******": "asshole",
 				"p***": "piss",
 				"p****": "pussy",
