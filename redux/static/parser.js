@@ -129,22 +129,24 @@ var Parser = function(db) {
 			}
 						 
 			return cats;
+		},
+
+		reDirty: function(w) {
+
+			var swears = {
+	       "f***": "fuck",
+	       "b***": "butt",
+	       "c***": "cock",
+	       "t***": "tits",
+	       "f***": "fucker",
+	       "f****": "fucking"
+			};
+
+			var s = swears[w];
+			if (s) return swears[w];
+			else return w;
 		}
-	},
-
-	reDirty: function(w) {
-
-		var swears = {
-       "f***": "fuck",
-       "b***": "butt",
-       "c***": "cock",
-       "t***": "tits",
-       "f***": "fucker",
-       "f****": "fucking"
-		};
-
-		var s = swears[w];
-		if (s) w = swears[w];
+	}
 };
 
 
