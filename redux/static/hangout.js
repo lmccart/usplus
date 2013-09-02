@@ -336,13 +336,13 @@ function onFaceTrackingDataChanged(event) {
       smileState = "happy";
     } else if(now - lastSmile > smileSadLength) {
       smileState = "sad";
+      displayNotice("local-smile", "It looks like they made you sad.", 5*1000);
     } else {
       smileState = "neutral";
     }
     if(smileState !== lastSmileState) {
       setSrc('#face0', "//lmccart-fixus.appspot.com/static/img/emoticon-local-" + smileState + ".png");
       gapi.hangout.data.setValue(localID+"-smileState", smileState);
-      displayNotice("local-smile", "It looks like they made you sad.", 5*1000);
     }
     lastSmileState = smileState;
   } catch (e) {
