@@ -17,14 +17,14 @@ var categories = [
 var notifications = {
   "posemo" : [
     [ 0, 0.25, ["Try to look on the bright side.", "Stop being such a downer.", "Try to be more positive."]],
-    [ 1, 0.8, ["Tone it down a bit, your partner doesn't sound so happy."]]
+    [ 1, 0.82, ["Tone it down a bit, your partner doesn't sound so happy."]]
   ],
   "i" : [
     [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on your partner a little more."]]
   ],
   "aggression" : [
     [ 0, 0.25, ["You are sounding like a pushover."]],
-    [ 1, 0.8, ["Tone down the aggression."]]
+    [ 1, 0.82, ["Tone down the aggression."]]
   ],
   "honesty" : [
     [ 0, 0.25, ["What are you hiding? Your partner is speaking much more honestly."]]
@@ -42,7 +42,7 @@ var baseScore = 0;
 
 var lastNotificationTime = 0;
 var lastNotification = "";
-var notificationInterval = 20*1000;
+var notificationInterval = 45*1000;
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -85,6 +85,7 @@ $(window).load(function() {
   console.log('window load');
   startSpeech();
   updateParticipants();
+  lastNotificationTime = new Date().getTime();
 });
 
 
