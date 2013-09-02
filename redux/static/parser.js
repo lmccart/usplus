@@ -135,12 +135,24 @@ var Parser = function(db) {
 	reDirty: function(w) {
 
 		var swears = {
-       "f***": "fuck",
-       "b***": "butt",
-       "c***": "cock",
-       "t***": "tits",
-       "f***": "fucker",
-       "f****": "fucking"
+		"f***": "fuck",
+		"f*****": "fucker",
+		"f******": "fucking",
+		"b***": "butt",
+		"c***": "cock",
+		"t***": "tits",
+		"f***": "fucker",
+		"f****": "fucking"
+		"c***": "cunt",
+		"b****": "bitch",
+		"b******": "bitches",
+		"b******": "bitching",
+		"a******": "asshole",
+		"p***": "piss",
+		"p****": "pussy",
+		"n*****": "nigger",
+		"s***": "slut",
+		"w****": "whore"
 		};
 
 		var s = swears[w];
