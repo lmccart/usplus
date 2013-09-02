@@ -170,7 +170,6 @@ function handleMessage(msg) {
   console.log(msg);
 
   if (msg.type == 'stats') {
-    console.log(msg);
     for(var i = 0; i < categories.length; i++) {
       console.log(localID+"-"+categories[i]);
       gapi.hangout.data.setValue(localID+"-"+categories[i], String(msg[categories[i]]));

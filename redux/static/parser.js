@@ -40,62 +40,27 @@ var Parser = function(db) {
 		
 			console.log(line);
 			var spaceRegEx = new RegExp(/\S{1,}/g);
-			var numberRegEx = new RegExp(/\d{1,}.{1,}\d{1,}/);
-			var abbrevRegEx = new RegExp(/\w{1,}[\'|\-]\w{1,}/); //JRO edit\
-			var wordRegEx = new RegExp(/[\w|@|#]{1,}/);
+			//var wordRegEx = new RegExp(/[\w|@|#]{1,}/);
 			
 			
 			// add words to sentence
 			//split input string with RegExo
 			var tokens = line.match(spaceRegEx);
-			var msg = {type: "wordcount", count:tokens.length};
-			handleMessage(msg);
 
 			for (i in tokens) //JRO - hack to only process one token at a time
 			{
 				//If the element isn't the last in an array, it is a new word
 				if (tokens[i] !== "") 
 				{
-					var tok = tokens[i];
-					
-					var word = null;
-					// pull any numbers	
-					var numWord = tok.match(numberRegEx);
-					if (numWord) {
-						//console.log('number');
-						word = numWord[0];
-					}
-					// console.log("tok2:"+tok);
+					var word = tokens[i].toString();
 		
-					// pull any abbreviations
-					var abbrevWord = tok.match(abbrevRegEx);
-					if (abbrevWord && !word) {
-						//console.log('abbrev');
-						word = abbrevWord[0];
-					}
-					// console.log("tok3:"+tok);
-		
-					// pull out word
-					var plainWord = tok.match(wordRegEx);
-					if (plainWord && !word) {
-						word = plainWord[0];
-					} 
-		
-					// add message
-					if (word) {
-						word = word.toString();
-			
-						if (word.indexOf('*') != -1) {
-							word = this.reDirty(word);
-						}
+					if (word.indexOf('*') != -1) {
+						word = this.reDirty(word);
+						console.log(word);
+					} else console.log("not dirty "+word);
 
-						var cats = this.getCats(word);
-						statsHandler.logWordInstance(word, cats);
-						var msg = {type: "word", word:word, cats:cats};
-						// send message
-						// handleMessage(msg);
-					}
-
+					var cats = this.getCats(word);
+					statsHandler.logWordInstance(word, cats);
 				}
 			}
 			
