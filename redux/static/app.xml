@@ -37,7 +37,7 @@
       <script src="//lmccart-fixus.appspot.com/static/LIWC.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/parser.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/speech.js"></script>
-      <script src="//lmccart-fixus.appspot.com/static/face.js"></script>
+      <script src="//lmccart-fixus.appspot.com/static/tracker.js"></script>
       <script src="//lmccart-fixus.appspot.com/static/hangout.js"></script>
 
       <link rel="stylesheet" href="//lmccart-fixus.appspot.com/static/style.css" type="text/css">
