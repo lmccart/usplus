@@ -119,23 +119,25 @@ function updateSpeechTime(itvl) {
 
     // update talk time
     var st = id ? parseInt(gapi.hangout.data.getValue(id+"-st"), 10) : 0;
+    st = isNaN(st) ? 0 : st;
     var displayst = id ? parseInt(gapi.hangout.data.getValue(id+"-displayst"), 10) : 0;
+    displayst = isNaN(displayst) ? 0 : displayst;
+
+
+
     if (!i && (vol > 0 || volAvg > 1.0)) {
       st += itvl;
       displayst += itvl;
-      if (!isNaN(st)) gapi.hangout.data.setValue(id+"-st", String(st));
-      else console.log("NOT A NUMBER "+st);
+      
+      gapi.hangout.data.setValue(id+"-st", String(st));
+      gapi.hangout.data.setValue(id+"-displayst", String(displayst));
 
-      if (!isNaN(displayst)) gapi.hangout.data.setValue(id+"-displayst", String(displayst));
-      else console.log("NOT A NUMBER "+displayst);
-
-      localTime = isNaN(st) ? 0 : st;
+      localTime = st;
     }
     else if (i) {
-      otherTime = isNaN(st) ? 0 : st;
+      otherTime = st;
     }
 
-    displayst = isNaN(displayst) ? 0 : displayst;
 
     displayst = new Date(displayst);
     displayst = displayst.toLocaleTimeString();

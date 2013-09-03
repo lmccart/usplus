@@ -115,8 +115,12 @@ function notify() {
       femRange[0] = Math.min(localScore, otherScore, femRange[0]);
       femRange[1] = Math.max(localScore, otherScore, femRange[1]);
 
+      console.log(femRange);
+
       localScore = clamp(map(localScore, femRange[0], femRange[1], 0, 1), 0, 1);
       otherScore = clamp(map(otherScore, femRange[0], femRange[1], 0, 1), 0, 1);
+
+      console.log(localScore, otherScore);
     }
 
     var totalScore = localScore+otherScore;

@@ -33,6 +33,7 @@ function Hysteresis() {
 }
 
 function map(x, inmin, inmax, outmin, outmax) {
+  if (inmax == inmin) return 0;
   return ((x-inmin) / (inmax-inmin)) * (outmax-outmin) + outmin;
 }
 
