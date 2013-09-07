@@ -6,10 +6,28 @@ var Parser = function(db) {
 
 	return {
 	
-		initialize: function() {
+		initialize: function(dbVersion) {
 			// making two tables for LIWC because it's faster
 			console.log("building");
 
+
+			// check last version, drop and recreate tables if nec
+			if (!db.tableExists('stats')) {
+				this.dropTables();
+			}
+		  else {
+		  	var res = db.query("stats", {version: dbVersion});
+		  	if (!res || res.length == 0) {
+		  		this.dropTables();
+		  	}
+		  }
+
+		  // remake tables
+		  if (!db.tableExists("stats")) {
+		  	db.createTable("stats", ["version"]);
+				db.insert("stats", {version: dbVersion});
+				console.log('updated version to '+dbVersion);
+		  }
 
 			// load non-wild table if needed
 		  if (!db.tableExists("LIWC_words")) {
@@ -19,6 +37,7 @@ var Parser = function(db) {
 		  		if (LIWC[i]['word'])
 				  	db.insertOrUpdate("LIWC_words", {word: LIWC[i]['word']}, {word: LIWC[i]['word'], wildcard: false, cats: LIWC[i]['cat']});
 		  	}
+
 		  	console.log("loaded nonwild "+LIWC.length);
 		  	db.commit();
 	 		}
@@ -113,6 +132,12 @@ var Parser = function(db) {
 			var s = swears[w];
 			if (s) return swears[w];
 			else return w;
+		},
+
+		dropTables: function() {		
+			if (db.tableExists('stats')) db.dropTable('stats');
+			if (db.tableExists('LIWC_words')) db.dropTable('LIWC_words');
+			if (db.tableExists('LIWC_words_wild')) db.dropTable('LIWC_words_wild');
 		}
 	}
 };

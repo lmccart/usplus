@@ -1,6 +1,7 @@
 var db = new localStorageDB("db", localStorage);;
-var parser = Parser(db)
-parser.initialize();
+var parser = Parser(db);
+var dbVersion = 1;
+parser.initialize(dbVersion);
 
 var tracker = Tracker();
 
@@ -19,17 +20,17 @@ var femRange = [0, 0];
 var notifications = {
   "posemo" : [
     [ 0, 0.25, ["Try to look on the bright side.", "Stop being such a downer.", "Try to be more positive."]],
-    [ 1, 0.82, ["Tone it down a bit, your partner doesn't sound so happy."]]
+    [ 1, 0.82, ["Tone it down a bit, THEM doesn't sound so happy."]]
   ],
   "i" : [
-    [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on your partner a little more."]]
+    [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on THEM a little more."]]
   ],
   "aggression" : [
     [ 0, 0.25, ["You are sounding like a pushover."]],
     [ 1, 0.82, ["Tone down the aggression."]]
   ],
   "honesty" : [
-    [ 0, 0.25, ["What are you hiding? Your partner is speaking much more honestly."]]
+    [ 0, 0.25, ["What are you hiding? THEM is speaking much more honestly."]]
   ]
 };
 
@@ -56,7 +57,7 @@ if (gapi && gapi.hangout) {
 
       // attach listeners
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
-        handleStateChange(stateChangeEvent);
+        notify(stateChangeEvent);
       });
 
       updateParticipants();
@@ -92,7 +93,7 @@ $(window).load(function() {
 
 
 
-function notify() {
+function notify(ev) {
 
   // Update LIWC cats
 
@@ -139,6 +140,7 @@ function notify() {
           var randMsg = msgs[Math.floor(Math.random() * msgs.length)];
 
           if (category !== lastCategoryNotice) {
+            if (otherParticipant.person) randMsg = randMsg.replace('THEM',  formatFirstName(otherParticipant.person.displayName));
             if (displayNotice("category", randMsg, categoryNoticeTimeout)) {
               lastCategoryNotice = category;
             }
@@ -155,7 +157,7 @@ function notify() {
     if(otherSmileState) {
       setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
       if(otherSmileState == "sad") {
-        displayNotice("smile", "They're looking a bit sad.", sadNoticeTimeout);
+        displayNotice("smile", formatFirstName(otherParticipant.person.displayName)+" is looking a bit sad.", sadNoticeTimeout);
       }
     }
   }
@@ -222,10 +224,6 @@ function handleMessage(msg) {
       gapi.hangout.data.setValue(localParticipant.id+"-"+categories[i], String(msg[categories[i]]));
     }
   }
-}
-
-function handleStateChange(ev) {
-  notify();
 }
 
 
@@ -308,3 +306,7 @@ function setSrc(id, src) {
   }
 }
 
+function formatFirstName(str) {
+    str = str.split(' ')[0]
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
