@@ -54,7 +54,6 @@ function startSpeech() {
           upgrade();
           return;
         }
-        //console.log(event);
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal && !gapi.hangout.av.getMicrophoneMute()) {
             console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
@@ -88,11 +87,9 @@ function startButton(event) {
 
 function checkSpeaker() {
   var volumes = gapi.hangout.av.getVolumes();
-  var localVol = localID ? volumes[localID] : 0;
-  var otherVol = otherID ? volumes[otherID] : 0;
-  var prevSpeaking = selfSpeaking;
+  var localVol = localParticipant.id ? volumes[localParticipant.id] : 0;
+  var otherVol = otherParticipant.id ? volumes[otherParticipant.id] : 0;
   selfSpeaking = localVol >= otherVol;
-  // if (prevSpeaking != selfSpeaking) console.log("selfSpeaking switched to "+selfSpeaking);
 }
 
 function updateSpeechTime(itvl) {
@@ -106,7 +103,7 @@ function updateSpeechTime(itvl) {
   
   for (var i=0; i<2; i++) {
 
-    var id = (i==0) ? localID : otherID;
+    var id = (i==0) ? localParticipant.id : otherParticipant.id;
      
     var vol = id ? volumes[id] : 0;
     var volAvg = id ? parseFloat(gapi.hangout.data.getValue(id+"-volAvg")) : 0;
@@ -154,7 +151,7 @@ function updateSpeechTime(itvl) {
       
       // reset both sts on automute
       for (var i=0; i<2; i++) {
-        var id = (i==0) ? localID : otherID;
+        var id = (i==0) ? localParticipant.id : otherParticipant.id;
         if (id) gapi.hangout.data.setValue(id+"-st", String(st));
       }
     }

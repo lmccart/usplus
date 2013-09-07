@@ -43,10 +43,7 @@ var displayNoticeTimeout = 45 * 1000;
 var conversationStartTime;
 
 var localParticipant;
-var otherParticipant;
-var localID = "";
-var otherID = "";
-var baseScore = 0;
+var otherParticipant = {}; // initialize to empty obj
 
 // wait until hangout ready then load everything
 if (gapi && gapi.hangout) {
@@ -65,12 +62,12 @@ if (gapi && gapi.hangout) {
       updateParticipants();
 
       // init data vals
-      gapi.hangout.data.setValue(localID+"-st", "0");
-      gapi.hangout.data.setValue(localID+"-displayst", "0");
-      gapi.hangout.data.setValue(localID+"-volAvg", "0");
-      gapi.hangout.data.setValue(localID+"-smileState", "neutral");
+      gapi.hangout.data.setValue(localParticipant.id+"-st", "0");
+      gapi.hangout.data.setValue(localParticipant.id+"-displayst", "0");
+      gapi.hangout.data.setValue(localParticipant.id+"-volAvg", "0");
+      gapi.hangout.data.setValue(localParticipant.id+"-smileState", "neutral");
       for (var i=0; i<categories.length; i++) {
-        gapi.hangout.data.setValue(localID+"-"+categories[i], String(baseScore));
+        gapi.hangout.data.setValue(localParticipant.id+"-"+categories[i], "0");
       }
 
 
@@ -104,11 +101,11 @@ function notify() {
 
     var balance = 0.5;
 
-    var val = gapi.hangout.data.getValue(localID+"-"+category);
+    var val = gapi.hangout.data.getValue(localParticipant.id+"-"+category);
     var localScore = val ? parseFloat(val) : 0;
 
-    val = otherID ? gapi.hangout.data.getValue(otherID+"-"+category) : false;
-    var otherScore = val ? parseFloat(val) : baseScore;
+    val = otherParticipant ? gapi.hangout.data.getValue(otherParticipant.id+"-"+category) : false;
+    var otherScore = val ? parseFloat(val) : 0;
 
     // do range mapping for fem
     if (category == "femininity") {
@@ -153,8 +150,8 @@ function notify() {
   }
 
   // Update smile
-  if(otherID) {
-    var otherSmileState = gapi.hangout.data.getValue(otherID+"-smileState");
+  if(otherParticipant.id) {
+    var otherSmileState = gapi.hangout.data.getValue(otherParticipant.id+"-smileState");
     if(otherSmileState) {
       setSrc('#face1', "//lmccart-fixus.appspot.com/static/img/emoticon-other-" + otherSmileState + ".png");
       if(otherSmileState == "sad") {
@@ -187,8 +184,12 @@ function displayNotice(type, msg, delay) {
 }
 
 function updateParticipants() {
+
+  console.log('update participants');
+
   // get participants
   localParticipant = gapi.hangout.getLocalParticipant();
+  console.log(localParticipant);
   participants = gapi.hangout.getParticipants();
 
   console.log("participants updated: " + participants.length);
@@ -202,14 +203,10 @@ function updateParticipants() {
     }
   }
 
-  // update IDs
-  localID = localParticipant.id;
-
   // update avatars
   setSrc("#avatar0", localParticipant.person.image.url);
-  if(otherParticipant) {
+  if(otherParticipant.person) {
     setSrc("#avatar1", otherParticipant.person.image.url);
-    otherID = otherParticipant.id;
     conversationStartTime = new Date().getTime();
   }
 }
@@ -221,8 +218,8 @@ function handleMessage(msg) {
 
   if (msg.type == 'stats') {
     for(var i = 0; i < categories.length; i++) {
-      console.log(localID+"-"+categories[i]);
-      gapi.hangout.data.setValue(localID+"-"+categories[i], String(msg[categories[i]]));
+      console.log(localParticipant.id+"-"+categories[i]);
+      gapi.hangout.data.setValue(localParticipant.id+"-"+categories[i], String(msg[categories[i]]));
     }
   }
 }
