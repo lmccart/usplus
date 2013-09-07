@@ -1,11 +1,12 @@
 var db = new localStorageDB("db", localStorage);;
 var parser = Parser(db);
-var dbVersion = 1;
+var dbVersion = 1; // update this var if LIWC dictionaries change!
 parser.initialize(dbVersion);
 
 var tracker = Tracker();
 
 var lastCategoryNotice = "";
+var lastNotificationTime = {};
 
 var categories = [
   "posemo",
@@ -163,7 +164,6 @@ function notify(ev) {
   }
 }
 
-var lastNotificationTime = {};
 function displayNotice(type, msg, delay) {
   var needToTrigger = false;
   var now = new Date().getTime();
