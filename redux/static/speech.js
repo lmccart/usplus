@@ -14,7 +14,7 @@ function startSpeech() {
     recognition.interimResults = true;
 
     setInterval(checkSpeaker, 100);
-    setInterval(function(){updateSpeechTime(250);}, 250);
+    setInterval(function(){updateSpeechTime(500);}, 500);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -105,29 +105,31 @@ function updateSpeechTime(itvl) {
 
     var id = (i==0) ? localParticipant.id : otherParticipant.id;
      
+    if (id) vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst").split(';');
+
     var vol = id ? volumes[id] : 0;
-    var volAvg = id ? parseFloat(gapi.hangout.data.getValue(id+"-volAvg")) : 0;
+    var volAvg = id ? parseFloat(vals[0]) : 0;
 
     // update volume avg
     if (!i) {
       volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
-      gapi.hangout.data.setValue(id+"-volAvg", String(volAvg));
     }
 
     // update talk time
-    var st = id ? parseInt(gapi.hangout.data.getValue(id+"-st"), 10) : 0;
-    st = isNaN(st) ? 0 : st;
-    var displayst = id ? parseInt(gapi.hangout.data.getValue(id+"-displayst"), 10) : 0;
-    displayst = isNaN(displayst) ? 0 : displayst;
-
+    var st = 0, displayst = 0;
+    if (id) {
+      st = parseInt(vals[1], 10);
+      if (isNaN(st)) st = 0;
+      displayst = parseInt(vals[2], 10);
+      if (isNaN(displayst)) displayst = 0;
+    }
 
 
     if (!i && (vol > 0 || volAvg > 1.0)) {
       st += itvl;
       displayst += itvl;
       
-      gapi.hangout.data.setValue(id+"-st", String(st));
-      gapi.hangout.data.setValue(id+"-displayst", String(displayst));
+      gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvg)+";"+String(st)+";"+String(displayst));
 
       localTime = st;
     }
@@ -152,7 +154,7 @@ function updateSpeechTime(itvl) {
       // reset both sts on automute
       for (var i=0; i<2; i++) {
         var id = (i==0) ? localParticipant.id : otherParticipant.id;
-        if (id) gapi.hangout.data.setValue(id+"-st", String(st));
+        if (id) gapi.hangout.data.setValue(id+"-st;displayst", "0;"+String(displayst));
       }
     }
   } 

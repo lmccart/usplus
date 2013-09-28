@@ -16,6 +16,11 @@ var categories = [
   "honesty"
 ];
 
+var zeroCatString = "";
+for (var i=0; i<categories.length; i++) {
+  zeroCatString += "0;";
+}
+
 var femRange = [0, 0];
 
 var notifications = {
@@ -64,13 +69,9 @@ if (gapi && gapi.hangout) {
       updateParticipants();
 
       // init data vals
-      gapi.hangout.data.setValue(localParticipant.id+"-st", "0");
-      gapi.hangout.data.setValue(localParticipant.id+"-displayst", "0");
-      gapi.hangout.data.setValue(localParticipant.id+"-volAvg", "0");
+      gapi.hangout.data.setValue(localParticipant.id+"-volAvg;st;displayst", "0;0;0");
       gapi.hangout.data.setValue(localParticipant.id+"-smileState", "neutral");
-      for (var i=0; i<categories.length; i++) {
-        gapi.hangout.data.setValue(localParticipant.id+"-"+categories[i], "0");
-      }
+      gapi.hangout.data.setValue(localParticipant.id+"-cats", zeroCatString);
 
 
       gapi.hangout.onParticipantsChanged.add(function(partChangeEvent) {
@@ -98,16 +99,16 @@ function notify(ev) {
 
   // Update LIWC cats
 
+  var localCatVals = gapi.hangout.data.getValue(localParticipant.id+"-cats").split(';');
+  var otherCatVals = otherParticipant ? gapi.hangout.data.getValue(otherParticipant.id+"-cats").split(';') : zeroCatString;
+
   for(var i = 0; i < categories.length; i++) {
     var category = categories[i];
 
     var balance = 0.5;
 
-    var val = gapi.hangout.data.getValue(localParticipant.id+"-"+category);
-    var localScore = val ? parseFloat(val) : 0;
-
-    val = otherParticipant ? gapi.hangout.data.getValue(otherParticipant.id+"-"+category) : false;
-    var otherScore = val ? parseFloat(val) : 0;
+    var localScore = localCatVals[i] ? parseFloat(localCatVals[i]) : 0;
+    var otherScore = otherCatVals[i] ? parseFloat(otherCatVals[i]) : 0;
 
     // do range mapping for fem
     if (category == "femininity") {
@@ -219,10 +220,12 @@ function handleMessage(msg) {
   console.log(msg);
 
   if (msg.type == 'stats') {
+    var catString = '';
     for(var i = 0; i < categories.length; i++) {
       console.log(localParticipant.id+"-"+categories[i]);
-      gapi.hangout.data.setValue(localParticipant.id+"-"+categories[i], String(msg[categories[i]]));
+      catString += String(msg[categories[i]])+';';
     }
+    gapi.hangout.data.setValue(localParticipant.id+"-cats", catString);
   }
 }
 
