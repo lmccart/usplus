@@ -14,7 +14,7 @@ function startSpeech() {
     recognition.interimResults = true;
 
     setInterval(checkSpeaker, 100);
-    setInterval(function(){updateSpeechTime(500);}, 500);
+    setInterval(function(){updateSpeechTime(250);}, 250);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -99,7 +99,7 @@ function updateSpeechTime(itvl) {
   // get volumes
   var volumes = gapi.hangout.av.getVolumes();
 
-  var localTime = 0, otherTime = 0;
+  var sts = [0,0], displaysts = [0,0], volAvgs = [0,0];
   
   for (var i=0; i<2; i++) {
 
@@ -108,41 +108,38 @@ function updateSpeechTime(itvl) {
     if (id) vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst").split(';');
 
     var vol = id ? volumes[id] : 0;
-    var volAvg = id ? parseFloat(vals[0]) : 0;
+    var volAvgs[i] = id ? parseFloat(vals[0]) : 0;
 
     // update volume avg
     if (!i) {
-      volAvg = (vol + (numSamples-1)*volAvg)/numSamples;
+      volAvgs[i] = (vol + (numSamples-1)*volAvgs[i])/numSamples;
     }
 
     // update talk time
-    var st = 0, displayst = 0;
     if (id) {
-      st = parseInt(vals[1], 10);
-      if (isNaN(st)) st = 0;
-      displayst = parseInt(vals[2], 10);
-      if (isNaN(displayst)) displayst = 0;
+      sts[i] = parseInt(vals[1], 10);
+      if (isNaN(sts[i])) sts[i] = 0;
+      displaysts[i] = parseInt(vals[2], 10);
+      if (isNaN(displaysts[i])) displaysts[i] = 0;
     }
 
 
-    if (!i && (vol > 0 || volAvg > 1.0)) {
-      st += itvl;
-      displayst += itvl;
-      
-      gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvg)+";"+String(st)+";"+String(displayst));
+    if (!i && (vol > 0 || volAvgs[i] > 1.0)) {
+      sts[i] += itvl;
+      displaysts[s] += itvl;
 
-      localTime = st;
+      localTime = sts[i];
     }
     else if (i) {
-      otherTime = st;
+      otherTime = sts[i];
     }
 
 
-    displayst = new Date(displayst);
-    displayst = displayst.toLocaleTimeString();
-    displayst = displayst.substring(displayst.indexOf(':')+1, displayst.indexOf(' '));
+    displaysts[i] = new Date(displaysts[i]);
+    displaysts[i] = displaysts[i].toLocaleTimeString();
+    displaysts[i] = displaysts[i].substring(displaysts[i].indexOf(':')+1, displaysts[i].indexOf(' '));
 
-    $('#talkTime'+i).text(displayst);
+    $('#talkTime'+i).text(displaysts[i]);
   }
 
   // 60s imbalance triggers notification
@@ -154,8 +151,10 @@ function updateSpeechTime(itvl) {
       // reset both sts on automute
       for (var i=0; i<2; i++) {
         var id = (i==0) ? localParticipant.id : otherParticipant.id;
-        if (id) gapi.hangout.data.setValue(id+"-st;displayst", "0;"+String(displayst));
+        gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[i])+";"+String(0)+";"+String(displaysts[i]));
       }
     }
+
+    else if (id) gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[0])+";"+String(sts[0])+";"+String(displaysts[0]));
   } 
 }
