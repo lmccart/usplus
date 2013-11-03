@@ -1,19 +1,13 @@
 #main {
   padding: .5em;
 }
-body {
-  background-color: #060606;
-}
 div {
   font-family: 'Lato';
   font-weight: 300;
-  color: white;
+  color: black;
 }
 img {
   margin: .5em;
-}
-.well {
-  background-color: #333;
 }
 .avatar {
   width: 34px;
@@ -46,10 +40,10 @@ img {
   font-size: 150%;
 }
 .category {
-  color: white;
+  color: black;
   font-size: 120%;
 }
 a.category:link, a.category:active, a.category:visited, a.category:hover {
-  color: white;
+  color: black;
   text-decoration: none;
 }
