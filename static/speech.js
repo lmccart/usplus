@@ -100,6 +100,7 @@ function updateSpeechTime(itvl) {
   var volumes = gapi.hangout.av.getVolumes();
 
   var sts = [0,0], displaysts = [0,0], volAvgs = [0,0];
+  var localTime = 0, otherTime = 0;
   
   for (var i=0; i<2; i++) {
 
