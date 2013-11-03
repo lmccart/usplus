@@ -99,8 +99,16 @@ function notify(ev) {
 
   // Update LIWC cats
 
-  var localCatVals = gapi.hangout.data.getValue(localParticipant.id+"-cats").split(';');
-  var otherCatVals = otherParticipant ? gapi.hangout.data.getValue(otherParticipant.id+"-cats").split(';') : zeroCatString;
+  var localCatVals = gapi.hangout.data.getValue(localParticipant.id+"-cats");
+  if(!localCatVals) {
+    localCatVals = zeroCatString;
+  }
+  localCatVals = localCatVals.split(';');
+  var otherCatVals = gapi.hangout.data.getValue(otherParticipant.id+"-cats");
+  if(!otherCatVals) {
+    otherCatVals = zeroCatString;
+  }
+  otherCatVals = otherCatVals.split(';');
 
   for(var i = 0; i < categories.length; i++) {
     var category = categories[i];

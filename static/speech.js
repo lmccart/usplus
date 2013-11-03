@@ -105,10 +105,16 @@ function updateSpeechTime(itvl) {
 
     var id = (i==0) ? localParticipant.id : otherParticipant.id;
      
-    if (id) vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst").split(';');
+    if (id) {
+      vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst");
+      if(!vals) {
+        vals = "0;0;0";
+      }
+      vals = vals.split(';');
+    }
 
     var vol = id ? volumes[id] : 0;
-    var volAvgs[i] = id ? parseFloat(vals[0]) : 0;
+    volAvgs[i] = id ? parseFloat(vals[i]) : 0;
 
     // update volume avg
     if (!i) {
