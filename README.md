@@ -11,7 +11,7 @@ usplus
 
 + All relevant code is now located in redux/ dir, other dirs are just for reference. Push any new code with:
 ```
-appcfg.py update redux/
+appcfg.py update .
 ```
 
 + Log into google apis console to launch hangout in developer sandbox.
