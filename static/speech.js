@@ -133,7 +133,7 @@ function updateSpeechTime(itvl) {
 
     if (!i && (vol > 0 || volAvgs[i] > 1.0)) {
       sts[i] += itvl;
-      displaysts[s] += itvl;
+      displaysts[i] += itvl;
 
       localTime = sts[i];
     }
