@@ -14,7 +14,7 @@ function startSpeech() {
     recognition.interimResults = true;
 
     setInterval(checkSpeaker, 100);
-    setInterval(function(){updateSpeechTime(250);}, 250);
+    setInterval(function(){updateSpeechTime(500);}, 500);
 
     recognition.onstart = function() {
       recognizing = true;
@@ -99,69 +99,65 @@ function updateSpeechTime(itvl) {
   // get volumes
   var volumes = gapi.hangout.av.getVolumes();
 
-  var sts = [0,0], displaysts = [0,0], volAvgs = [0,0];
-  var localTime = 0, otherTime = 0;
-  
-  for (var i=0; i<2; i++) {
+  var volAvgs = [0,0], sts = [0,0], displaysts = [0,0];
 
-    var id = (i==0) ? localParticipant.id : otherParticipant.id;
+
+  // get vals for both
+  for (var k=0; k<2; k++) {
+
+    var id = (k==0) ? localParticipant.id : otherParticipant.id;
+    console.log(id, k);
      
     if (id) {
       vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst");
-      if(!vals) {
-        vals = "0;0;0";
+      if(vals) {
+        vals = vals.split(';');
+        volAvgs[k] = parseInt(vals[0], 10);
+        sts[k] = parseInt(vals[1], 10);
+        displaysts[k] = parseInt(vals[2], 10);
+
+        // double checking
+        if (isNaN(volAvgs[k])) volAvgs[k] = 0;
+        if (isNaN(sts[k])) sts[k] = 0;
+        if (isNaN(displaysts[k])) displaysts[k] = 0;
       }
-      vals = vals.split(';');
     }
-
-    var vol = id ? volumes[id] : 0;
-    volAvgs[i] = id ? parseFloat(vals[i]) : 0;
-
-    // update volume avg
-    if (!i) {
-      volAvgs[i] = (vol + (numSamples-1)*volAvgs[i])/numSamples;
-    }
-
-    // update talk time
-    if (id) {
-      sts[i] = parseInt(vals[1], 10);
-      if (isNaN(sts[i])) sts[i] = 0;
-      displaysts[i] = parseInt(vals[2], 10);
-      if (isNaN(displaysts[i])) displaysts[i] = 0;
-    }
-
-
-    if (!i && (vol > 0 || volAvgs[i] > 1.0)) {
-      sts[i] += itvl;
-      displaysts[i] += itvl;
-
-      localTime = sts[i];
-    }
-    else if (i) {
-      otherTime = sts[i];
-    }
-
-
-    displaysts[i] = new Date(displaysts[i]);
-    displaysts[i] = displaysts[i].toLocaleTimeString();
-    displaysts[i] = displaysts[i].substring(displaysts[i].indexOf(':')+1, displaysts[i].indexOf(' '));
-
-    $('#talkTime'+i).text(displaysts[i]);
   }
 
-  // 60s imbalance triggers notification
-  if (localTime - otherTime > automuteTimeout) {
-    displayNotice("automute", "You've been auto-muted because you're talking too much.", automuteNoticeTimeout);
-    if(!gapi.hangout.av.getMicrophoneMute()) {
-      gapi.hangout.av.setMicrophoneMute(true); //pend temp
-      
-      // reset both sts on automute
-      for (var i=0; i<2; i++) {
-        var id = (i==0) ? localParticipant.id : otherParticipant.id;
-        gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[i])+";"+String(0)+";"+String(displaysts[i]));
-      }
-    }
+  // update vals for self
+  if (localParticipant.id) {
+    var vol = volumes[localParticipant.id];
+    volAvgs[0] = (vol + (numSamples-1)*volAvgs[0])/numSamples;
 
-    else if (id) gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[0])+";"+String(sts[0])+";"+String(displaysts[0]));
-  } 
+    if (vol > 1.0 || volAvgs[0] > 1.0) {
+      sts[0] += itvl;
+      displaysts[0] += itvl;
+    }
+    console.log(vol, volAvgs[0], sts[0], displaysts[0]);
+    gapi.hangout.data.setValue(localParticipant.id+"-volAvg;st;displayst", String(volAvgs[0])+";"+String(sts[0])+";"+String(displaysts[0]));
+  }
+  
+
+  // 60s imbalance triggers notification
+  if (sts[0] - sts[1] > automuteTimeout && !gapi.hangout.av.getMicrophoneMute()) {
+  
+    displayNotice("automute", "You've been auto-muted because you're talking too much.", automuteNoticeTimeout);
+    gapi.hangout.av.setMicrophoneMute(true); 
+    
+    // reset both sts on automute
+    for (var k=0; k<2; i++) {
+      var id = (k==0) ? localParticipant.id : otherParticipant.id;
+      gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[k])+";"+String(0)+";"+String(displaysts[k]));
+    }
+  }  
+
+
+  for (var k=0; k<2; k++) {
+    displaysts[k] = new Date(displaysts[k]);
+    displaysts[k] = displaysts[k].toLocaleTimeString();
+    displaysts[k] = displaysts[k].substring(displaysts[k].indexOf(':')+1, displaysts[k].indexOf(' '));
+
+    $('#talkTime'+k).text(displaysts[k]);
+  }
 }
+

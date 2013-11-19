@@ -22,8 +22,8 @@
   <Content type="html"><![CDATA[
   		<script type="text/javascript" src="//www.google.com/jsapi"></script>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
- 			<script type="text/javascript"
-      	src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4"></script>
+      <script type="text/javascript"
+        src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1"></script>
       <link href='https://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
 
       <link href="//lmccart-fixus.appspot.com/static/bootstrap/bootstrap.min.css" rel="stylesheet"> 
