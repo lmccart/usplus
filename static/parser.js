@@ -8,7 +8,7 @@ var Parser = function(db) {
 	
 		initialize: function(dbVersion) {
 			// making two tables for LIWC because it's faster
-			console.log("building");
+			//console.log("building");
 
 
 			// check last version, drop and recreate tables if nec
@@ -26,7 +26,7 @@ var Parser = function(db) {
 		  if (!db.tableExists("stats")) {
 		  	db.createTable("stats", ["version"]);
 				db.insert("stats", {version: dbVersion});
-				console.log('updated version to '+dbVersion);
+				//console.log('updated version to '+dbVersion);
 		  }
 
 			// load non-wild table if needed
@@ -38,7 +38,7 @@ var Parser = function(db) {
 				  	db.insertOrUpdate("LIWC_words", {word: LIWC[i]['word']}, {word: LIWC[i]['word'], wildcard: false, cats: LIWC[i]['cat']});
 		  	}
 
-		  	console.log("loaded nonwild "+LIWC.length);
+		  	//console.log("loaded nonwild "+LIWC.length);
 		  	db.commit();
 	 		}
 	  	// then load wild table
@@ -50,14 +50,14 @@ var Parser = function(db) {
 		  		if (LIWC_wild[i]['word'])
 				  	db.insertOrUpdate("LIWC_words_wild", {word: LIWC_wild[i]['word']}, {word: LIWC_wild[i]['word'], wildcard: true, cats: LIWC_wild[i]['cat']});
 		  	}
-		  	console.log("loaded wild "+LIWC_wild.length);
+		  	//console.log("loaded wild "+LIWC_wild.length);
 		  	db.commit();	
 			} 
 		}, 
 	
 		parseLine: function(line) {
 		
-			//console.log(line);
+			////console.log(line);
 			var spaceRegEx = new RegExp(/\S{1,}/g);
 			//var wordRegEx = new RegExp(/[\w|@|#]{1,}/);
 			
@@ -73,7 +73,7 @@ var Parser = function(db) {
 		
 					if (word.indexOf('*') != -1) {
 						word = this.reDirty(word);
-						console.log("dirty "+word);
+						//console.log("dirty "+word);
 					} 
 
 					var cats = this.getCats(word);

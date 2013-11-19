@@ -40,11 +40,11 @@ var StatsHandler = function(db) {
 		logWordInstance: function(word, cats) {
 			// insert word
 			var ind = db.insert("word_instances", {word: word, cats: cats});
-			console.log("w:"+word+" c:"+cats);
+			//console.log("w:"+word+" c:"+cats);
 			// delete all but last 100 words
 			var d = db.deleteRows("word_instances", function(row) { return (row.ID < ind-100); });
-			//console.log('deleted '+d+' at '+ind);
-			//console.log(ind);
+			////console.log('deleted '+d+' at '+ind);
+			////console.log(ind);
 		},
 
 		doStats: function() {
@@ -95,7 +95,7 @@ var StatsHandler = function(db) {
 				var catName = msg['calcs'][0][1].substring(1,catEndIndex);
 				var remainder = msg['calcs'][0][1].substring(catEndIndex);
 				
-				//console.log(traitModifier+" "+traitName+" "+catEndIndex+" "+catName+" "+remainder);
+				////console.log(traitModifier+" "+traitName+" "+catEndIndex+" "+catName+" "+remainder);
 			
 				
 				if (msg[traitName]) {
@@ -107,7 +107,7 @@ var StatsHandler = function(db) {
 					// pend: it may be faster to have one entry per word instead of one per instance
 					// and keep track of instanceno, this would change in logWordInstance method and here
 					var res = db.query("word_instances", function(row) {
-						//console.log("traitname:"+traitName+" cats:"+row.cats+" val"+$.inArray(traitName, row.cats));
+						////console.log("traitname:"+traitName+" cats:"+row.cats+" val"+$.inArray(traitName, row.cats));
 						return ($.inArray(catName, row.cats) != -1);
 					});
 					
@@ -117,7 +117,7 @@ var StatsHandler = function(db) {
 		},
 		
 		addVal: function(msg, modifier, name, val, remainder) {
-			//console.log("addVal "+modifier+" "+name+" "+val+" "+remainder);
+			////console.log("addVal "+modifier+" "+name+" "+val+" "+remainder);
 		
 			if (modifier === '-') val *= -1;
 		
@@ -128,7 +128,7 @@ var StatsHandler = function(db) {
 				msg['tempVal'] = 0;
 				msg['calcs'].shift();
 				
-				//console.log(val+" "+name+"="+msg[name]+" total:"+msg['total']+" "+msg['tempVal']);
+				////console.log(val+" "+name+"="+msg[name]+" total:"+msg['total']+" "+msg['tempVal']);
 			}
 			else {
 				msg['calcs'][0][1] = remainder;

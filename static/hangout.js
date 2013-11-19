@@ -59,7 +59,7 @@ if (gapi && gapi.hangout) {
     if (apiInitEvent.isApiReady) {
       //prepareAppDOM();
 
-      console.log("hangout ready");
+      //console.log("hangout ready");
 
       // attach listeners
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
@@ -87,7 +87,7 @@ if (gapi && gapi.hangout) {
 }
 
 $(window).load(function() {
-  console.log('window load');
+  //console.log('window load');
   startSpeech();
   updateParticipants();
 });
@@ -122,10 +122,10 @@ function notify(ev) {
     if (category == "femininity") {
       femRange[0] = Math.min(localScore, otherScore, femRange[0]);
       femRange[1] = Math.max(localScore, otherScore, femRange[1]);
-      //console.log(femRange);
+      ////console.log(femRange);
       localScore = clamp(map(localScore, femRange[0], femRange[1], 0, 1), 0, 1);
       otherScore = clamp(map(otherScore, femRange[0], femRange[1], 0, 1), 0, 1);
-      //console.log(localScore, otherScore);
+      ////console.log(localScore, otherScore);
     }
 
     var totalScore = localScore+otherScore;
@@ -135,7 +135,7 @@ function notify(ev) {
     }
 
     var pct = Math.round(clamp(balance, 0, 1)*100) + "%";
-    //console.log(pct);
+    ////console.log(pct);
     $('#category-'+category).width(pct);
 
     var notes = notifications[category];
@@ -144,8 +144,8 @@ function notify(ev) {
       for (var j=0; j<notes.length; j++) {
         if ((!notes[j][0] && balance < parseFloat(notes[j][1])) // lt
           || (notes[j][0] && balance > parseFloat(notes[j][1]))) { // gt
-          //console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
-          //console.log("DISPLAY "+notes[j][2]);
+          ////console.log(notes[j][2] + " " + !notes[j][0]+" "+parseFloat(notes[j][1])+" "+balance);
+          ////console.log("DISPLAY "+notes[j][2]);
           var msgs = notes[j][2];
           var randMsg = msgs[Math.floor(Math.random() * msgs.length)];
 
@@ -196,19 +196,19 @@ function displayNotice(type, msg, delay) {
 
 function updateParticipants() {
 
-  console.log('update participants');
+  //console.log('update participants');
 
   // get participants
   localParticipant = gapi.hangout.getLocalParticipant();
-  console.log(localParticipant);
+  //console.log(localParticipant);
   participants = gapi.hangout.getParticipants();
 
-  console.log("participants updated: " + participants.length);
+  //console.log("participants updated: " + participants.length);
 
   for(i in participants) {
     participant = participants[i];
-    console.log("updating avatar " + i);
-    console.log(participant);
+    //console.log("updating avatar " + i);
+    //console.log(participant);
     if(participant != localParticipant) {
       otherParticipant = participant;
     }
@@ -225,12 +225,12 @@ function updateParticipants() {
 
 // Handle incoming messages and distribute to appropriate functions.
 function handleMessage(msg) {
-  console.log(msg);
+  //console.log(msg);
 
   if (msg.type == 'stats') {
     var catString = '';
     for(var i = 0; i < categories.length; i++) {
-      console.log(localParticipant.id+"-"+categories[i]);
+      //console.log(localParticipant.id+"-"+categories[i]);
       catString += String(msg[categories[i]])+';';
     }
     gapi.hangout.data.setValue(localParticipant.id+"-cats", catString);

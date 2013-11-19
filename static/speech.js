@@ -22,17 +22,17 @@ function startSpeech() {
 
     recognition.onerror = function(event) {
       if (event.error == 'no-speech') {
-        console.log("no speech RESTART");
+        //console.log("no speech RESTART");
         startButton();
       }
       if (event.error == 'audio-capture') {
-        console.log('info_no_microphone');
+        //console.log('info_no_microphone');
       }
       if (event.error == 'not-allowed') {
         if (event.timeStamp - start_timestamp < 100) {
-          console.log('info_blocked');
+          //console.log('info_blocked');
         } else {
-          console.log('info_denied');
+          //console.log('info_denied');
         }
       }
     };
@@ -41,7 +41,7 @@ function startSpeech() {
       recognizing = false;
 
       // retrigger
-      console.log("RESTART");
+      //console.log("RESTART");
       startButton();
     };
 
@@ -56,12 +56,12 @@ function startSpeech() {
         }
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal && !gapi.hangout.av.getMicrophoneMute()) {
-            console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
+            //console.log("event: "+event.results[i][0].transcript+" ("+event.results[i][0].confidence+")");
             parser.parseLine(event.results[i][0].transcript);
 
           } 
         }
-      } //else console.log("other person speaking");
+      } //else //console.log("other person speaking");
     };
   }
 
@@ -75,7 +75,7 @@ function linebreak(s) {
 
 
 function startButton(event) {
-  console.log("start "+recognizing);
+  //console.log("start "+recognizing);
   if (!recognizing) {
     recognition.lang = 'en-US';
     recognition.start();
@@ -106,7 +106,7 @@ function updateSpeechTime(itvl) {
   for (var k=0; k<2; k++) {
 
     var id = (k==0) ? localParticipant.id : otherParticipant.id;
-    console.log(id, k);
+    ////console.log(id, k);
      
     if (id) {
       vals = gapi.hangout.data.getValue(id+"-volAvg;st;displayst");
@@ -133,7 +133,7 @@ function updateSpeechTime(itvl) {
       sts[0] += itvl;
       displaysts[0] += itvl;
     }
-    console.log(vol, volAvgs[0], sts[0], displaysts[0]);
+    ////console.log(vol, volAvgs[0], sts[0], displaysts[0]);
     gapi.hangout.data.setValue(localParticipant.id+"-volAvg;st;displayst", String(volAvgs[0])+";"+String(sts[0])+";"+String(displaysts[0]));
   }
   
@@ -145,7 +145,7 @@ function updateSpeechTime(itvl) {
     gapi.hangout.av.setMicrophoneMute(true); 
     
     // reset both sts on automute
-    for (var k=0; k<2; i++) {
+    for (var k=0; k<2; k++) {
       var id = (k==0) ? localParticipant.id : otherParticipant.id;
       gapi.hangout.data.setValue(id+"-volAvg;st;displayst", String(volAvgs[k])+";"+String(0)+";"+String(displaysts[k]));
     }
