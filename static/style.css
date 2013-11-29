@@ -56,4 +56,5 @@ input {
 
 #debug {
   margin: 30px 0 0 10px;
+  display: none;
 }

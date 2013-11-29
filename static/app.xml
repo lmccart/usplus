@@ -95,7 +95,7 @@
 
 
 
-      <div id="debug" style="display:none">
+      <div id="debug">
 
         Positivity <input type="text" name="posemo_0"><input type="text" name="posemo_1"><br>
         Self absorption <input type="text" name="i_0"><input type="text" name="i_1"><br>

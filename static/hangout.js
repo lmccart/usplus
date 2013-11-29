@@ -119,7 +119,7 @@ $(window).load(function() {
   $('#debug_submit').click(function(e) {
     for (var i=0; i<categories.length; i++) {
       var start = $('input[name='+categories[i]+'_0]').val();
-      console.log(start, end);
+      console.log(categories[i], start);
       // set to start vals
       var pct = Math.round(clamp(start, 0, 1)*100) + "%";
       $('#category-'+categories[i]).width(pct);
