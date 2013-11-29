@@ -115,7 +115,6 @@ $(window).load(function() {
     });
   }
 
-  $('#debug').show();
   $('#debug_submit').click(function(e) {
     for (var i=0; i<categories.length; i++) {
       var start = $('input[name='+categories[i]+'_0]').val();
@@ -125,6 +124,7 @@ $(window).load(function() {
       $('#category-'+categories[i]).width(pct);
     }
   });
+  setTimeout(function() {$('#debug').css('display', 'block');}, 2000);
 });
 
 function notify(ev) {
