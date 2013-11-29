@@ -93,6 +93,18 @@
 
       </div>
 
+
+
+      <div id="debug" style="display:none">
+
+        Positivity <input type="text" name="posemo_0"><input type="text" name="posemo_1"><br>
+        Self absorption <input type="text" name="i_0"><input type="text" name="i_1"><br>
+        Feminitity <input type="text" name="femininity_0"><input type="text" name="femininity_1"><br>
+        Aggression <input type="text" name="aggression_0"><input type="text" name="aggression_1"><br>
+        Honesty <input type="text" name="honesty_0"><input type="text" name="honesty_1"><br>
+        <input type="submit" id="debug_submit" value="Submit">
+      </div>
+
       <script>
       $(function () {
         $("#positivity-popover").popover();

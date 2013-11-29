@@ -29,3 +29,12 @@ appcfg.py update .
 + parser.js -- handles parsing and logging of words when called by speech.js and hangout.js, holds pointer to statsHandler
 + statsHandler.js -- handles LIWC lookups and stat calculation 
 + LIWC.js -- just a holder for two large js vars which are really json objs, hacking around getJSON issues
+
+
+## Debug
+
+There is a line:
+```
+var debug = true;
+```
+Set to false for deploy!
