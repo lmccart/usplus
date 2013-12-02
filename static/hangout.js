@@ -116,12 +116,35 @@ $(window).load(function() {
   }
 
   $('#debug_submit').click(function(e) {
+
+    for (var k=0; k<2; k++) {
+      var talk = parseInt($('input[name=talk_'+k+']').val(), 10)*1000;
+      console.log(talk);
+
+      if (talk) {
+        if (k == 0 && localParticipant.id)  {
+          gapi.hangout.data.setValue(localParticipant.id+"-volAvg;st;displayst", "0;"+String(talk)+";"+String(talk));
+        } else if (otherParticipant.id) {
+          gapi.hangout.data.setValue(otherParticipant.id+"-volAvg;st;displayst", "0;"+String(talk)+";"+String(talk));
+        }
+
+        talk = new Date(talk);
+        console.log(talk);
+        talk = talk.toLocaleTimeString();
+        talk = talk.substring(talk.indexOf(':')+1, talk.indexOf(' '));
+        console.log(talk);
+        $('#talkTime'+k).text(talk);
+      }
+    }    
+
     for (var i=0; i<categories.length; i++) {
       var start = $('input[name='+categories[i]+'_0]').val();
-      console.log(categories[i], start);
-      // set to start vals
-      var pct = Math.round(clamp(start, 0, 1)*100) + "%";
-      $('#category-'+categories[i]).width(pct);
+      if (start) {
+        console.log(categories[i], start);
+        // set to start vals
+        var pct = Math.round(clamp(start, 0, 1)*100) + "%";
+        $('#category-'+categories[i]).width(pct);
+      }
     }
   });
   setTimeout(function() {$('#debug').css('display', 'block');}, 2000);

@@ -97,12 +97,14 @@
 
       <div id="debug">
 
+        My talk <input type="text" name="talk_0" style="width:50px !important"><br>
+        Your talk <input type="text" name="talk_1" style="width:50px !important"><br>
         Positivity <input type="text" name="posemo_0"><br>
         Self absorption <input type="text" name="i_0"><br>
         Feminitity <input type="text" name="femininity_0"><br>
         Aggression <input type="text" name="aggression_0"><br>
         Honesty <input type="text" name="honesty_0"><br>
-        <input type="submit" id="debug_submit" value="Submit">
+        <input type="submit" id="debug_submit" value="Submit" style="width:50px !important">
       </div>
 
       <script>
