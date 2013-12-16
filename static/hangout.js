@@ -26,7 +26,7 @@ var femRange = [0, 0];
 var notifications = {
   "posemo" : [
     [ 0, 0.25, ["Try to look on the bright side.", "Stop being such a downer.", "Try to be more positive."]],
-    [ 1, 0.82, ["Tone it down a bit, THEM doesn't sound so happy."]]
+    [ 1, 0.82, ["Tone it down a bit, THEM does not sound so happy."]]
   ],
   "i" : [
     [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on THEM a little more."]]
