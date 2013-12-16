@@ -47,14 +47,3 @@ a.category:link, a.category:active, a.category:visited, a.category:hover {
   color: black;
   text-decoration: none;
 }
-
-input {
-  width: 30px;
-  margin: 5px 0 0 10px;
-  padding: 2px;
-}
-
-#debug {
-  margin: 30px 0 0 10px;
-  display: none;
-}

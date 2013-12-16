@@ -1,5 +1,3 @@
-var debug = true;
-
 var db = new localStorageDB("db", localStorage);;
 var parser = Parser(db);
 var dbVersion = 1; // update this var if LIWC dictionaries change!
@@ -34,7 +32,7 @@ var notifications = {
     [ 1, 0.75, ["Stop talking about yourself so much.", "Focus on THEM a little more."]]
   ],
   "aggression" : [
-    [ 0, 0.25, ["You are sounding like a pushover.", "Be more aggressive."]],
+    [ 0, 0.25, ["You are sounding like a pushover."]],
     [ 1, 0.82, ["Tone down the aggression."]]
   ],
   "honesty" : [
@@ -65,7 +63,7 @@ if (gapi && gapi.hangout) {
 
       // attach listeners
       gapi.hangout.data.onStateChanged.add(function(stateChangeEvent) {
-        if (!debug) notify(stateChangeEvent);
+        notify(stateChangeEvent);
       });
 
       updateParticipants();
@@ -92,40 +90,10 @@ $(window).load(function() {
   //console.log('window load');
   startSpeech();
   updateParticipants();
-
-  if (debug) {
-
-    // extra stuff for getting video assets
-    $('body').keypress(function(e) {
-      var msg;
-      if (e.which == 33) msg = notifications['posemo'][0][2][1];
-      if (e.which == 34) msg = notifications['posemo'][0][2][2];
-      if (e.which == 35) msg = notifications['i'][0][2][0];
-      if (e.which == 36) msg = notifications['aggression'][0][2][0];
-      if (e.which == 37) msg = notifications['aggression'][1][2][0];
-      if (e.which == 38) msg = notifications['honesty'][0][2][0];
-      if (e.which == 39) msg = "You've been auto-muted because you're talking too much.";
-      if (e.which == 40) msg = notifications['aggression'][0][2][1];
-
-      if (msg) {
-        msg = msg.replace('THEM', 'Clare');
-        gapi.hangout.layout.displayNotice(msg, false);
-      }
-
-    });
-  }
-
-  $('#debug_submit').click(function(e) {
-    for (var i=0; i<categories.length; i++) {
-      var start = $('input[name='+categories[i]+'_0]').val();
-      console.log(categories[i], start);
-      // set to start vals
-      var pct = Math.round(clamp(start, 0, 1)*100) + "%";
-      $('#category-'+categories[i]).width(pct);
-    }
-  });
-  setTimeout(function() {$('#debug').css('display', 'block');}, 2000);
 });
+
+
+
 
 function notify(ev) {
 
@@ -353,11 +321,3 @@ function formatFirstName(str) {
     str = str.split(' ')[0]
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-
-
-
-
-
-
-
