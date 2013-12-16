@@ -151,9 +151,8 @@ function updateSpeechTime(itvl) {
     }
   }  
 
-  var num = debug ? 2 : 1;
 
-  for (var k=0; k<debug; k++) {
+  for (var k=0; k<2; k++) {
     displaysts[k] = new Date(displaysts[k]);
     displaysts[k] = displaysts[k].toLocaleTimeString();
     displaysts[k] = displaysts[k].substring(displaysts[k].indexOf(':')+1, displaysts[k].indexOf(' '));
