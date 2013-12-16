@@ -1,4 +1,4 @@
-var debug = true;
+var debug = false;
 
 var db = new localStorageDB("db", localStorage);;
 var parser = Parser(db);
