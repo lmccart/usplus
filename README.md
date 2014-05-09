@@ -9,10 +9,7 @@ usplus
 	+ [tutorial hello world google app engine w python](https://developers.google.com/appengine/docs/python/gettingstartedpython27/helloworld) -- note that the app.yaml file already exists in the repo you won't need to recreate this, no python file is needed we're just using the static dir mapping.
 	+ [helpful post from okfocus about getting setup](http://drawwithyourface.tumblr.com/post/23308876869/geting-up-and-running-with-google-hangouts)
 
-+ All relevant code is now located in redux/ dir, other dirs are just for reference. Push any new code with:
-```
-appcfg.py update .
-```
++ All relevant code is now located in redux/ dir, other dirs are just for reference. Push any new code with: `appcfg.py update .`
 
 + Log into google apis console to launch hangout in developer sandbox.
 	+ [google hangout api](https://developers.google.com/+/hangouts/getting-started)
